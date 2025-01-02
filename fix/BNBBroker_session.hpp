@@ -25,10 +25,10 @@ public:
    bool operator() (const FIX8::BNB::Heartbeat *msg) const;
    // bool operator() (const FIX8::BNB::TestRequest *msg) const;
    // bool operator() (const FIX8::BNB::Reject *msg) const;
-   // bool operator() (const FIX8::BNB::Logout *msg) const;
+   bool operator() (const FIX8::BNB::Logout *msg) const;
    // bool operator() (const FIX8::BNB::ExecutionReport *msg) const;
    // bool operator() (const FIX8::BNB::OrderCancelReject *msg) const;
-   // bool operator() (const FIX8::BNB::Logon *msg) const;
+   bool operator() (const FIX8::BNB::Logon *msg) const;
    // bool operator() (const FIX8::BNB::News *msg) const;
    // bool operator() (const FIX8::BNB::NewOrderSingle *msg) const;
    // bool operator() (const FIX8::BNB::NewOrderList *msg) const;
@@ -52,7 +52,7 @@ public:
 
    // Override these methods if required but remember to call the base class method first.
    bool handle_logon(const unsigned seqnum, const FIX8::Message *msg);
-   FIX8::Message *generate_logon(const unsigned heartbeat_interval, const FIX8::f8String davi=FIX8::f8String());
+   // FIX8::Message *generate_logon(const unsigned heartbeat_interval, const FIX8::f8String davi=FIX8::f8String());
    // bool handle_logout(const unsigned seqnum, const FIX8::Message *msg);
    // Message *generate_logout();
    // bool handle_heartbeat(const unsigned seqnum, const FIX8::Message *msg);
@@ -70,7 +70,6 @@ public:
    // bool authenticate(SessionID& id, const FIX8::Message *msg);
 
    // Override these methods to intercept admin and application methods.
-   // bool handle_admin(const unsigned seqnum, const FIX8::Message *msg);
-
+   bool handle_admin(const unsigned seqnum, const FIX8::Message *msg);
    bool handle_application(const unsigned seqnum, const FIX8::Message *&msg);   
 };

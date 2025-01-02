@@ -4,8 +4,22 @@
 // Override these methods to receive specific message callbacks.
 bool BNBBroker_router_client::operator()(const FIX8::BNB::Heartbeat *msg) const
 {
+   std::cout << "BNBBroker_router_client::operator() (const FIX8::BNB::Heartbeat *msg)" << std::endl;
    return false;
 }
+
+bool BNBBroker_router_client::operator() (const FIX8::BNB::Logon *msg) const
+{
+   std::cout << "BNBBroker_router_client::operator() (const FIX8::BNB::Logon *msg)" << std::endl;
+   return false;
+}
+
+bool BNBBroker_router_client::operator() (const FIX8::BNB::Logout *msg) const
+{
+   std::cout << "BNBBroker_router_client::operator() (const FIX8::BNB::Logout *msg)" << std::endl;
+   return false;
+}
+
 /*
 bool BNBBroker_router_client::operator() (const FIX8::BNB::TestRequest *msg) const
 {
@@ -17,10 +31,6 @@ bool BNBBroker_router_client::operator() (const FIX8::BNB::Reject *msg) const
 
 }
 
-bool BNBBroker_router_client::operator() (const FIX8::BNB::Logout *msg) const
-{
-
-}
 
 bool BNBBroker_router_client::operator() (const FIX8::BNB::ExecutionReport *msg) const
 {
@@ -32,10 +42,6 @@ bool BNBBroker_router_client::operator() (const FIX8::BNB::OrderCancelReject *ms
 
 }
 
-bool BNBBroker_router_client::operator() (const FIX8::BNB::Logon *msg) const
-{
-
-}
 
 bool BNBBroker_router_client::operator() (const FIX8::BNB::News *msg) const
 {
@@ -94,10 +100,10 @@ bool BNBBroker_session_client::handle_logon(const unsigned seqnum, const FIX8::M
    return false;
 }
 
-FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat_interval, const FIX8::f8String davi)
-{
-   return nullptr;
-}
+// FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat_interval, const FIX8::f8String davi)
+// {
+//    return nullptr;
+// }
 
 // bool BNBBroker_session_client::handle_logout(const unsigned seqnum, const FIX8::Message *msg)
 // {
@@ -162,5 +168,12 @@ FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat
 
 bool BNBBroker_session_client::handle_application(const unsigned seqnum, const FIX8::Message *&msg)
 {
+   std::cout << "BNBBroker_session_client::handle_application" << std::endl;
+   return enforce(seqnum, msg) || msg->process(_router);
+}
+
+bool BNBBroker_session_client::handle_admin(const unsigned seqnum, const FIX8::Message *msg)
+{
+   std::cout << "BNBBroker_session_client::handle_admin" << std::endl;
    return enforce(seqnum, msg) || msg->process(_router);
 }

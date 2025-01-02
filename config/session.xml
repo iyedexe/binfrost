@@ -4,8 +4,6 @@
             fix_version="4400"
             target_comp_id="SPOT"
             heartbeat_interval="10"
-            session_log="session_log_file"
-            protocol_log="protocol_log"
             tcp_recv_buffer="100663296"
             tcp_send_buffer="100663296"
             tcp_nodelay="true"
@@ -14,6 +12,8 @@
             process_model="pipelined"
             enforce_compids="false"
             silent_disconnect="false"
+            session_log="session_log"
+            protocol_log="protocol_log"
             persist="file0"/>
  
    <session name="BROKER"
@@ -33,4 +33,26 @@
             port="9000"
             active="true"
             sender_comp_id="DC" />
+
+    <persist name="file0"
+        type="file" 
+        dir="./run"
+        use_session_id="true"
+        rotation="5"
+        db="client" />
+  
+    <log name="session_log"
+        type="session"
+        filename="|/bin/cat"
+        rotation="5"
+        delimiter="[]"
+        levels="info|warn|error|fatal"
+        flags="timestamp|sequence|compress|thread"/>
+ 
+    <log name="protocol_log"
+        type="protocol"
+        filename="./run/myfix_client_protocol.log"
+        rotation="5"
+        flags="sequence|append|direction"/>
+
 </fix8>
