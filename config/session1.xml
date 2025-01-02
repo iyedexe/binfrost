@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<fix8>
+    <session name="BROKER"
+        role="initiator"
+        fix_version="4400"
+        no_chksum="true"
+        active="true"
+        ip="fix-oe.testnet.binance.vision"
+        port="9000"
+        sender_comp_id="EXAMPLE_BROKER"
+        target_comp_id="SPOT"
+        default_appl_ver_id="9"
+        session_log="session_log"
+        protocol_log="protocol_log"
+        login_retry_interval="15000"
+        reset_sequence_numbers="false"
+        ignore_logon_sequence_check="false"
+        tcp_recv_buffer="1572864"
+        tcp_send_buffer="1572864"
+        login_retries="100"
+        process_model="pipelined"
+        silent_disconnect="false"
+        decoder="performance"
+        permissive_mode="false"
+        connect_timeout="10"
+        persist="file0" />
+  
+    <schedule name="test_schedule0"
+        start_time="10:00:00"
+        end_time="16:00:00"
+        start_day="1"
+        end_day="5"
+        reject_code="7"
+        reject_text="Test system is not accepting any business messages at the moment"
+        utc_offset_mins="!{ now=`date +%z`; echo $(( ($now / 100) * 60 + ($now % 100) )) }" />
+   
+    <persist name="file0"
+        type="file" dir="./run"
+        use_session_id="true"
+        rotation="5"
+        db="client" />
+  
+    <log name="session_log"
+        type="session"
+        filename="|/bin/cat"
+        rotation="5"
+        delimiter="[]"
+        levels="info|warn|error|fatal"
+        flags="timestamp|sequence|compress|thread"/>
+ 
+    <log name="protocol_log"
+        type="protocol"
+        filename="./run/myfix_client_protocol.log"
+        rotation="5"
+        flags="sequence|append|direction"/>
+</fix8>
