@@ -9,10 +9,12 @@ include_directories(${CMAKE_SOURCE_DIR}/fix)
 #   target_link_libraries(bar ${FIX8_LIBRARIES} ${POCO_LIBRARIES} ${BerkeleyDB_CXX_LIBRARIES})
 
 set(CMAKE_CXX_STANDARD 20)
-
-set(CMAKE_MODULE_PATH "/usr/local/share/fix8/contrib")
+# set(CMAKE_MODULE_PATH )
+list(APPEND CMAKE_MODULE_PATH "/usr/local/share/fix8/contrib")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 find_package(Fix8 REQUIRED)
 find_package(Poco REQUIRED COMPONENTS Net Foundation)
+find_package(Sodium REQUIRED)
 
 file(GLOB_RECURSE BNBFIXCLIENTSOURCES "fix/*.cpp")
 
@@ -23,4 +25,4 @@ set(COMMON_SOURCES
 
 add_executable(broker ${COMMON_SOURCES})
 # target_include_directories(broker PRIVATE ${Poco_INCLUDE_DIRS})
-target_link_libraries(broker ${FIX8_LIBRARIES} ${Poco_LIBRARIES} ${BerkeleyDB_CXX_LIBRARIES})
+target_link_libraries(broker ${FIX8_LIBRARIES} ${Poco_LIBRARIES} ${BerkeleyDB_CXX_LIBRARIES} sodium)

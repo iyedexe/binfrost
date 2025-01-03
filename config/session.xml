@@ -7,7 +7,7 @@
             tcp_recv_buffer="100663296"
             tcp_send_buffer="100663296"
             tcp_nodelay="true"
-            reset_sequence_numbers="false"
+            reset_sequence_numbers="true"
             ignore_logon_sequence_check="true"
             process_model="pipelined"
             enforce_compids="false"

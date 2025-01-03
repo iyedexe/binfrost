@@ -7,6 +7,7 @@
 #include "oe/BNBBroker_router.hpp"
 #include "oe/BNBBroker_types.hpp"
 #include "oe/BNBBroker_classes.hpp"
+#include "utils.hpp"
 
 //-------------------------------------------------------------------------------------------------
 // client session and router classes
@@ -52,10 +53,10 @@ public:
 
    // Override these methods if required but remember to call the base class method first.
    bool handle_logon(const unsigned seqnum, const FIX8::Message *msg);
-   // FIX8::Message *generate_logon(const unsigned heartbeat_interval, const FIX8::f8String davi=FIX8::f8String());
-   // bool handle_logout(const unsigned seqnum, const FIX8::Message *msg);
+   FIX8::Message *generate_logon(const unsigned heartbeat_interval, const FIX8::f8String davi=FIX8::f8String());
+   bool handle_logout(const unsigned seqnum, const FIX8::Message *msg);
    // Message *generate_logout();
-   // bool handle_heartbeat(const unsigned seqnum, const FIX8::Message *msg);
+   bool handle_heartbeat(const unsigned seqnum, const FIX8::Message *msg);
    // Message *generate_heartbeat(const f8String& testReqID);
    // bool handle_resend_request(const unsigned seqnum, const FIX8::Message *msg);
    // Message *generate_resend_request(const unsigned begin, const unsigned end=0);
