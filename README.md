@@ -27,9 +27,10 @@ make install
 https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360487/3.+Using+f8c+-+the+Fix8+compiler.   
 
 ## Configure and use generated Code.   
-
+https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360504/6.+Session+configuration.   
 
 ## Constructuing a message:    
+https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360493/4.+Using+the+generated+code.    
 https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360514/7.+Constructing+a+new+message.   
 
 ## Sign ED25519 payload.  (VERY HARD)

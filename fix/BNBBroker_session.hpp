@@ -24,12 +24,12 @@ public:
 
    // Override these methods to receive specific message callbacks.
    bool operator() (const FIX8::BNB::Heartbeat *msg) const;
-   // bool operator() (const FIX8::BNB::TestRequest *msg) const;
-   // bool operator() (const FIX8::BNB::Reject *msg) const;
-   bool operator() (const FIX8::BNB::Logout *msg) const;
-   // bool operator() (const FIX8::BNB::ExecutionReport *msg) const;
-   // bool operator() (const FIX8::BNB::OrderCancelReject *msg) const;
    bool operator() (const FIX8::BNB::Logon *msg) const;
+   bool operator() (const FIX8::BNB::Logout *msg) const;
+   bool operator() (const FIX8::BNB::TestRequest *msg) const;
+   bool operator() (const FIX8::BNB::Reject *msg) const;
+   bool operator() (const FIX8::BNB::ExecutionReport *msg) const;
+   bool operator() (const FIX8::BNB::OrderCancelReject *msg) const;
    // bool operator() (const FIX8::BNB::News *msg) const;
    // bool operator() (const FIX8::BNB::NewOrderSingle *msg) const;
    // bool operator() (const FIX8::BNB::NewOrderList *msg) const;

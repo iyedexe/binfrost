@@ -2,45 +2,63 @@
 
 bool BNBBroker_router_client::operator()(const FIX8::BNB::Heartbeat *msg) const
 {
-   std::cout << "BNBBroker_router_client::operator() (const FIX8::BNB::Heartbeat *msg)" << std::endl;
-   return false;
+   std::string message_str;
+   msg->encode(message_str);
+   std::cout << "BNBBroker_router_client::operator() (const FIX8::BNB::Heartbeat *msg) = ["<< message_str << "]"<< std::endl;
+   return true;
 }
 
 bool BNBBroker_router_client::operator() (const FIX8::BNB::Logon *msg) const
 {
-   std::cout << "BNBBroker_router_client::operator() (const FIX8::BNB::Logon *msg)" << std::endl;
-   return false;
+   std::string message_str;
+   msg->encode(message_str);
+   std::cout << "BNBBroker_router_client::operator() (const FIX8::BNB::Logon *msg) = ["<< message_str << "]"<< std::endl;
+   return true;
 }
 
 bool BNBBroker_router_client::operator() (const FIX8::BNB::Logout *msg) const
 {
-   std::cout << "BNBBroker_router_client::operator() (const FIX8::BNB::Logout *msg)" << std::endl;
-   return false;
+   std::string message_str;
+   msg->encode(message_str);
+   std::cout << "BNBBroker_router_client::operator() (const FIX8::BNB::Logout *msg) = ["<< message_str << "]"<< std::endl;
+   return true;
 }
 
-/*
+
 bool BNBBroker_router_client::operator() (const FIX8::BNB::TestRequest *msg) const
 {
-
+   std::string message_str;
+   msg->encode(message_str);
+   std::cout << "BNBBroker_router_client::operator() (const FIX8::BNB::TestRequest *msg) = ["<< message_str << "]"<< std::endl;
+   return true;
 }
 
 bool BNBBroker_router_client::operator() (const FIX8::BNB::Reject *msg) const
 {
-
+   std::string message_str;
+   msg->encode(message_str);
+   std::cout << "BNBBroker_router_client::operator() (const FIX8::BNB::Reject *msg) = ["<< message_str << "]"<< std::endl;
+   return true;
 }
 
 
 bool BNBBroker_router_client::operator() (const FIX8::BNB::ExecutionReport *msg) const
 {
-
+   std::string message_str;
+   msg->encode(message_str);
+   std::cout << "BNBBroker_router_client::operator() (const FIX8::BNB::ExecutionReport *msg) = ["<< message_str << "]"<< std::endl;
+   return true;
 }
 
 bool BNBBroker_router_client::operator() (const FIX8::BNB::OrderCancelReject *msg) const
 {
-
+   std::string message_str;
+   msg->encode(message_str);
+   std::cout << "BNBBroker_router_client::operator() (const FIX8::BNB::OrderCancelReject *msg) = ["<< message_str << "]"<< std::endl;
+   return true;
 }
 
-
+/*
 bool BNBBroker_router_client::operator() (const FIX8::BNB::News *msg) const
 {
 
