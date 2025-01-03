@@ -11,7 +11,7 @@ int main()
         )
     );
     std::cout << "Broker client session created" << std::endl;
-    bool wait = false;
+    bool wait = true;
     mc->start(wait);
     std::cout << "Broker client session started" << std::endl;
 

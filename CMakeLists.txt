@@ -25,4 +25,4 @@ set(COMMON_SOURCES
 
 add_executable(broker ${COMMON_SOURCES})
 # target_include_directories(broker PRIVATE ${Poco_INCLUDE_DIRS})
-target_link_libraries(broker ${FIX8_LIBRARIES} ${Poco_LIBRARIES} ${BerkeleyDB_CXX_LIBRARIES} sodium)
+target_link_libraries(broker ${FIX8_LIBRARIES} ${Poco_LIBRARIES} sodium PocoNetSSL)

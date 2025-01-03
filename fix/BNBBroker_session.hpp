@@ -73,4 +73,5 @@ public:
    // Override these methods to intercept admin and application methods.
    bool handle_admin(const unsigned seqnum, const FIX8::Message *msg);
    bool handle_application(const unsigned seqnum, const FIX8::Message *&msg);   
+   std::string getState();
 };

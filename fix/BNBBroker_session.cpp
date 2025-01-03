@@ -117,6 +117,10 @@ bool BNBBroker_session_client::handle_logon(const unsigned seqnum, const FIX8::M
    std::cout << "BNBBroker_session_client::handle_logon, seqnum={" << seqnum <<"}, content={"<< message_str << "}" << std::endl;
    return true;
 }
+std::string BNBBroker_session_client::getState()
+{
+   return get_session_state_string(get_session_state());
+}
 
 FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat_interval, const FIX8::f8String davi)
 {
@@ -126,18 +130,18 @@ FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat
 
    auto private_key = loadPrivateKey(std::getenv("PRIVATE_KEY_PATH"));
    auto public_key = loadPublicKey(std::getenv("PUBLIC_KEY_PATH"));
-
+   std::string sendingTime = getCurrentTimestamp();
    std::string raw_data = logonRawData(private_key,
                                        public_key,
                                        "BROKER",
                                        "SPOT",
                                        std::to_string(1),
                                        // "20240612-08:52:21.613");
-                                       getCurrentTimestamp());
-   std::cout << "Signature :: " << raw_data << std::endl;
+                                       sendingTime);
+   // std::cout << "Signature :: " << raw_data << std::endl;
+   // std::cout << "State : " << getState() << std::endl;
 
-
-   FIX8::BNB::Logon *nos(new FIX8::BNB::Logon);
+   FIX8::BNB::Logon* nos = new FIX8::BNB::Logon();
 
    *nos << new FIX8::BNB::EncryptMethod(0)
         << new FIX8::BNB::HeartBtInt(10) // heartbeat interval [5, 60]
@@ -148,9 +152,9 @@ FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat
         << new FIX8::BNB::MessageHandling(2)
         << new FIX8::BNB::ResponseMode(1);
 
-   std::string encoded;
-   nos->encode(encoded);
-   std::cout << "Encoded payload :: " << encoded << std::endl;
+   // std::string encoded;
+   // nos->encode(encoded);
+   // std::cout << "Encoded payload :: " << encoded << std::endl;
    return nos;
 }
 

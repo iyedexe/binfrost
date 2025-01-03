@@ -5,23 +5,39 @@ https://fix8.org/howitworks.html.
 https://fix8.org/fix8/html/index.html.   
 
 ## Install FIX8 dependencies:
-```
-git clone -b poco-1.14.0-release https://github.com/pocoproject/poco.git   
-mkdir cmake-build    
-cd cmake-build   
-cmake ..   
-sudo cmake --build . --target install   
+### Install openssl
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib   
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib64   
 ```
-## Install FIX8: (HARD)
+sudo dnf install perl
+wget https://www.openssl.org/source/openssl-3.3.1g.tar.gz
+tar -xzvf openssl-1.1.1g.tar.gz
+cd openssl-1.1.1g
+./config
+make
+make test
+sudo make install
+```
+
+### Install libsodium
+```
+wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.20-stable.tar.gz
+./configure 
+make && make check
+sudo make install
+```
+### Install POCO
+```
+sudo yum install poco-devel poco-foundation poco-net poco-netssl poco-crypto
+```
+
+
+## Install FIX8: 
 ```
 git clone git@github.com:fix8/fix8.git   
 ./bootstrap   
-./configure  
+./configure --enable-ssl
 make  
-make install  
+sudo make install  
 ```
 ## Generate Fix code using xml:
 https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360487/3.+Using+f8c+-+the+Fix8+compiler.   
@@ -37,11 +53,12 @@ https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360514/7.+Constructing+a+n
 https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api#signaturecomputation.   
 https://doc.libsodium.org/public-key_cryptography/public-key_signatures#detached-mode.   
 
+## SSL configuration :
+https://fix8engine.atlassian.net/wiki/spaces/FX/pages/15368200/4.+Configuring+SSL+Clients+and+Servers.    
+
 # TODO : 
 ## Why no log on response ?
 
-## SSL configuration :
-https://fix8engine.atlassian.net/wiki/spaces/FX/pages/15368200/4.+Configuring+SSL+Clients+and+Servers.    
 
 ## Fix manual setup
 setting export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib64.   

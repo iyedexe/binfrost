@@ -3,18 +3,23 @@
    <default role="acceptor"
             fix_version="4400"
             target_comp_id="SPOT"
+            ssl_context="ssl1" 
+            load_default_cas="true"
             heartbeat_interval="10"
-            tcp_recv_buffer="100663296"
-            tcp_send_buffer="100663296"
+            tcp_recv_buffer="425984"
+            tcp_send_buffer="425984"
             tcp_nodelay="true"
             reset_sequence_numbers="true"
-            ignore_logon_sequence_check="true"
+            ignore_logon_sequence_check="false"
             process_model="pipelined"
             enforce_compids="false"
             silent_disconnect="false"
             session_log="session_log"
             protocol_log="protocol_log"
-            persist="file0"/>
+            persist=""/>
+
+    <ssl_context name="ssl1"
+        verification_mode="none" />
  
    <session name="BROKER"
             ip="fix-oe.testnet.binance.vision"
@@ -33,13 +38,6 @@
             port="9000"
             active="true"
             sender_comp_id="DC" />
-
-    <persist name="file0"
-        type="file" 
-        dir="./run"
-        use_session_id="true"
-        rotation="5"
-        db="client" />
   
     <log name="session_log"
         type="session"
@@ -51,8 +49,11 @@
  
     <log name="protocol_log"
         type="protocol"
-        filename="./run/myfix_client_protocol.log"
+        filename="|/bin/cat"
         rotation="5"
+        delimiter="|"
+        levels="info|warn|error|fatal"
         flags="sequence|append|direction"/>
+
 
 </fix8>
