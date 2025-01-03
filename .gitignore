@@ -7,3 +7,6 @@ fix/md/*
 !fix/md/.gitkeep
 
 .vscode
+
+config/credentials.sh
+
