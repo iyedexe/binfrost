@@ -9,6 +9,7 @@
             tcp_recv_buffer="425984"
             tcp_send_buffer="425984"
             tcp_nodelay="true"
+            always_seqnum_assign="true"
             reset_sequence_numbers="true"
             ignore_logon_sequence_check="false"
             process_model="pipelined"
@@ -44,7 +45,7 @@
         filename="|/bin/cat"
         rotation="5"
         delimiter="[]"
-        levels="info|warn|error|fatal"
+        levels="info|warn|error|fatal|debug"
         flags="timestamp|sequence|compress|thread"/>
  
     <log name="protocol_log"

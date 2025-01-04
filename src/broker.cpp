@@ -11,8 +11,10 @@ int main()
         )
     );
     std::cout << "Broker client session created" << std::endl;
+
     bool wait = true;
-    mc->start(wait);
+    unsigned send_seqnum=0;
+    mc->start(wait, send_seqnum);
     std::cout << "Broker client session started" << std::endl;
 
     while (true)

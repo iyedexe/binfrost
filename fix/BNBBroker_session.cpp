@@ -124,54 +124,37 @@ std::string BNBBroker_session_client::getState()
 
 FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat_interval, const FIX8::f8String davi)
 {
-   if (sodium_init() < 0) {
-      throw std::runtime_error("libsodium initialization failed.");
-   }
-
    std::vector<unsigned char> privateKey = loadPrivateKeyFromString(readPemFile(std::getenv("PRIVATE_KEY_PATH")));
    std::vector<unsigned char> publicKey = derivePublicKeyFromPrivate(privateKey);
    std::string sendingTime = getCurrentTimestamp();
-   int sequence_number = 1;
-    
+   const unsigned sequence_number = _next_send_seq;
+   std::string senderCompID = "BROKER";
+   std::string targetCompID = "SPOT"; 
+   
    std::string raw_data = logonRawData(
       privateKey,
       publicKey,
-      "BROKER",
-      "SPOT",
+      senderCompID,
+      targetCompID,
       std::to_string(sequence_number),
       sendingTime
    );
 
    FIX8::BNB::Logon* nos = new FIX8::BNB::Logon();
 
-   *nos << new FIX8::BNB::EncryptMethod(0)
-        << new FIX8::BNB::HeartBtInt(10) // heartbeat interval [5, 60]
-        << new FIX8::BNB::RawDataLength(raw_data.size())
+   *nos << new FIX8::BNB::RawDataLength(raw_data.size())
         << new FIX8::BNB::RawData(raw_data)
+        << new FIX8::BNB::EncryptMethod(0)
+        << new FIX8::BNB::HeartBtInt(heartbeat_interval)
         << new FIX8::BNB::ResetSeqNumFlag("Y")
         << new FIX8::BNB::Username(std::getenv("API_KEY"))
         << new FIX8::BNB::MessageHandling(2);
-   
-   // Message length in bytes. 
-   
-   nos->Header()->add_field(new FIX8::BNB::SenderCompID("BROKER"));
-   nos->Header()->add_field(new FIX8::BNB::TargetCompID("SPOT"));
-   // nos->Header()->add_field(new FIX8::BNB::MsgSeqNum(1));
+ 
+   // nos->Header()->add_field(new FIX8::BNB::MsgSeqNum(sequence_number));
+   nos->Header()->add_field(new FIX8::BNB::SenderCompID(senderCompID));
    nos->Header()->add_field(new FIX8::BNB::SendingTime(sendingTime));
-   nos->Header()->add_field(new FIX8::BNB::RecvWindow(60000));
+   nos->Header()->add_field(new FIX8::BNB::TargetCompID(targetCompID));
 
-   std::string encodedMsg;
-   size_t msgSize = nos->encode(encodedMsg);
-   nos->Header()->add_field(FIX8::BNB::BodyLength::get_field_id(), 2, new FIX8::BNB::BodyLength(msgSize));
-   nos->Trailer()->add_field(FIX8::BNB::CheckSum::get_field_id(), 1, new FIX8::BNB::CheckSum(calculateFixChecksum(encodedMsg)));
-
-   // msgSize = nos->encode(encodedMsg);
-   std::cout << "Serialized payload :: [" << encodedMsg <<"]"<< std::endl;
-   std::cout << "Size :: [" << msgSize <<"]"<< std::endl;
-
-   std::stringstream stream;
-   nos->print(stream,0);
-   std::cout << "Encoded payload :: " << stream.str() << std::endl;
    return nos;
 }
 

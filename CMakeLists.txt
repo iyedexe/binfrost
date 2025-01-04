@@ -30,6 +30,7 @@ target_link_libraries(broker ${FIX8_LIBRARIES} ${Poco_LIBRARIES} sodium PocoNetS
 set(TEST_SOURCES
     ${BNBFIXCLIENTSOURCES}
     tests/encodingTest.cpp
+    tests/logonMessageTest.cpp
 )
 add_executable(tests ${TEST_SOURCES})
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain  ${FIX8_LIBRARIES} ${Poco_LIBRARIES} sodium PocoNetSSL)
