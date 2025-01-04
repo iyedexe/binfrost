@@ -128,18 +128,19 @@ FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat
       throw std::runtime_error("libsodium initialization failed.");
    }
 
-   auto private_key = loadPrivateKey(std::getenv("PRIVATE_KEY_PATH"));
-   auto public_key = loadPublicKey(std::getenv("PUBLIC_KEY_PATH"));
+   std::vector<unsigned char> privateKey = loadPrivateKeyFromString(readPemFile(std::getenv("PRIVATE_KEY_PATH")));
+   std::vector<unsigned char> publicKey = derivePublicKeyFromPrivate(privateKey);
    std::string sendingTime = getCurrentTimestamp();
-   std::string raw_data = logonRawData(private_key,
-                                       public_key,
-                                       "BROKER",
-                                       "SPOT",
-                                       std::to_string(1),
-                                       // "20240612-08:52:21.613");
-                                       sendingTime);
-   // std::cout << "Signature :: " << raw_data << std::endl;
-   // std::cout << "State : " << getState() << std::endl;
+   int sequence_number = 1;
+    
+   std::string raw_data = logonRawData(
+      privateKey,
+      publicKey,
+      "EXAMPLE",
+      "SPOT",
+      std::to_string(sequence_number),
+      sendingTime
+   );
 
    FIX8::BNB::Logon* nos = new FIX8::BNB::Logon();
 
@@ -149,12 +150,28 @@ FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat
         << new FIX8::BNB::RawData(raw_data)
         << new FIX8::BNB::ResetSeqNumFlag("Y")
         << new FIX8::BNB::Username(std::getenv("API_KEY"))
-        << new FIX8::BNB::MessageHandling(2)
-        << new FIX8::BNB::ResponseMode(1);
+        << new FIX8::BNB::MessageHandling(2);
 
-   // std::string encoded;
-   // nos->encode(encoded);
-   // std::cout << "Encoded payload :: " << encoded << std::endl;
+   std::string encodedMsg;
+   size_t msgSize = nos->encode(encodedMsg);
+   
+   // Message length in bytes. 
+   nos->Header()->add_field(FIX8::BNB::BodyLength::get_field_id(), 2, new FIX8::BNB::BodyLength(msgSize));
+   
+   nos->Header()->add_field(new FIX8::BNB::SenderCompID("BROKER"));
+   nos->Header()->add_field(new FIX8::BNB::TargetCompID("SPOT"));
+   // nos->Header()->add_field(new FIX8::BNB::MsgSeqNum(1));
+   nos->Header()->add_field(new FIX8::BNB::SendingTime(sendingTime));
+   nos->Header()->add_field(new FIX8::BNB::RecvWindow(60000));
+   
+   nos->Trailer()->add_field(FIX8::BNB::CheckSum::get_field_id(), 1, new FIX8::BNB::CheckSum(calculateFixChecksum(encodedMsg)));
+
+   // nos->encode(encodedMsg);
+   // std::cout << "Encoded payload :: " << encodedMsg << std::endl;
+
+   std::stringstream stream;
+   nos->print(stream,0);
+   std::cout << "Encoded payload :: " << stream.str() << std::endl;
    return nos;
 }
 

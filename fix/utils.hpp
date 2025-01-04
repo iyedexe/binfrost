@@ -7,6 +7,52 @@
 #include <vector>
 #include <sodium.h>
 
+inline std::vector<unsigned char> hexStringToVector(const std::string& hexStr) {
+    std::vector<unsigned char> vec;
+    for (size_t i = 0; i < hexStr.length(); i += 2) {
+        std::string byteString = hexStr.substr(i, 2);  // Take two characters (one byte)
+        unsigned char byte = static_cast<unsigned char>(std::stoi(byteString, nullptr, 16));
+        vec.push_back(byte);
+    }
+    return vec;
+}
+
+inline std::string vectorToHexString(const std::vector<unsigned char>& vec) {
+    std::ostringstream oss;
+    for (unsigned char byte : vec) {
+        oss << std::hex << std::setw(2) << std::setfill('0') << (int)byte;
+    }
+    return oss.str();
+}
+
+// Function that derives the public key from a private key
+inline std::vector<unsigned char> derivePublicKeyFromPrivate(const std::vector<unsigned char>& seed) {
+    std::vector<unsigned char> pk(crypto_sign_PUBLICKEYBYTES);
+    std::vector<unsigned char> sk(crypto_sign_SECRETKEYBYTES);
+
+    if (crypto_sign_seed_keypair(pk.data(), sk.data(), seed.data()) != 0) {
+        throw std::runtime_error("Failed to derive public key");
+    }
+    return pk;
+}
+
+
+inline std::string calculateFixChecksum(const std::string& message) {
+    // Calculate the sum of ASCII values of all characters in the message
+    int checksumValue = 0;
+    for (char ch : message) {
+        checksumValue += static_cast<unsigned char>(ch);
+    }
+
+    // Calculate the remainder when divided by 256
+    int checksumRemainder = checksumValue % 256;
+
+    // Format as a three-character, zero-padded string
+    std::ostringstream oss;
+    oss << std::setw(3) << std::setfill('0') << checksumRemainder;
+    return oss.str();
+}
+
 inline std::string getCurrentTimestamp() {
 
     auto now = std::chrono::system_clock::now();
@@ -26,41 +72,36 @@ inline std::string getCurrentTimestamp() {
     return oss.str();
 }
 
-inline std::vector<unsigned char> loadPrivateKey(const std::string& filepath) {
-    std::ifstream file(filepath, std::ios::binary);
-    if (!file) {
-        throw std::runtime_error("Failed to open private key file: " + filepath);
-    }
-
-    std::ostringstream oss;
-    oss << file.rdbuf();
-    std::string pem_key = oss.str();
-
-    // Extract raw private key from PEM (Assumes no password)
+inline std::string stripPrivateKey(const std::string& pem_key) {
     std::string pemHeader = "-----BEGIN PRIVATE KEY-----";
-    std::string pemFooter = "-----BEGIN PRIVATE KEY-----";
+    std::string pemFooter = "-----END PRIVATE KEY-----";
     size_t pem_start = pem_key.find(pemHeader);
     size_t pem_end = pem_key.find(pemFooter);
     if (pem_start == std::string::npos || pem_end == std::string::npos) {
         throw std::runtime_error("Invalid PEM format.");
     }
-    pem_key = pem_key.substr(pem_start + pemHeader.size()+1, pem_key.size() - pemHeader.size() - pemFooter.size() - 1); // Strip PEM headers
+    return pem_key.substr(pem_start + pemHeader.size()+1, pem_key.size() - pemHeader.size() - pemFooter.size() - 2); // Strip PEM headers
+}
 
-    std::vector<unsigned char> private_key(crypto_sign_ed25519_SECRETKEYBYTES);
+inline std::vector<unsigned char> loadPrivateKeyFromString(const std::string& pem_key) {
+    if (sodium_init() < 0) {
+      throw std::runtime_error("libsodium initialization failed.");
+    }
+    std::string barePemKey = stripPrivateKey(pem_key);
+
     // Decode base64-encoded PEM content into binary
-    if (sodium_base642bin(private_key.data(), private_key.size(),
-                          pem_key.c_str(), pem_key.size(),
+    std::vector<unsigned char> privateKey(crypto_sign_ed25519_SECRETKEYBYTES);
+    if (sodium_base642bin(privateKey.data(), privateKey.size(),
+                          barePemKey.c_str(), barePemKey.size(),
                           nullptr, nullptr, nullptr,
                           sodium_base64_VARIANT_ORIGINAL) != 0) {
         throw std::runtime_error("Failed to decode PEM key.");
     }
-    std::vector<unsigned char> sub_private_key(private_key.begin() + 16, private_key.end() - 16);
-
-
-    return sub_private_key;
+    std::vector<unsigned char> secretKey(privateKey.begin() + 16, privateKey.end() - 16);
+    return secretKey;
 }
 
-inline std::vector<unsigned char> loadPublicKey(const std::string& filepath) {
+inline std::string readPemFile(const std::string& filepath) {
     std::ifstream file(filepath, std::ios::binary);
     if (!file) {
         throw std::runtime_error("Failed to open private key file: " + filepath);
@@ -69,32 +110,8 @@ inline std::vector<unsigned char> loadPublicKey(const std::string& filepath) {
     std::ostringstream oss;
     oss << file.rdbuf();
     std::string pem_key = oss.str();
-
-    // Extract raw private key from PEM (Assumes no password)
-    std::string pemHeader = "-----BEGIN PUBLIC KEY-----";
-    std::string pemFooter = "-----BEGIN PUBLIC KEY-----";
-    size_t pem_start = pem_key.find(pemHeader);
-    size_t pem_end = pem_key.find(pemFooter);
-    if (pem_start == std::string::npos || pem_end == std::string::npos) {
-        throw std::runtime_error("Invalid PUB format.");
-    }
-    pem_key = pem_key.substr(pem_start + pemHeader.size()+1, pem_key.size() - pemHeader.size() - pemFooter.size() - 1); // Strip PEM headers
-
-    std::vector<unsigned char> public_key(2*crypto_sign_ed25519_PUBLICKEYBYTES);
-    // Decode base64-encoded PEM content into binary
-    if (sodium_base642bin(public_key.data(), public_key.size(),
-                          pem_key.c_str(), pem_key.size(),
-                          nullptr, nullptr, nullptr,
-                          sodium_base64_VARIANT_ORIGINAL) != 0) {
-        throw std::runtime_error("Failed to decode PUB key.");
-    }
-    std::vector<unsigned char> sub_public_key(public_key.begin() + 12, public_key.end() - 12);
-
-
-    return sub_public_key;
+    return pem_key;
 }
-
-
 
 inline std::string logonRawData(
                         std::vector<unsigned char>& private_key,
@@ -110,12 +127,12 @@ inline std::string logonRawData(
     full_secret_key.insert(full_secret_key.end(), public_key.begin(), public_key.end());
 
     // Initialize the vector with the first element "A" and separator '\x01'
-    std::vector<unsigned char> payload{'A', '1'};
+    std::vector<unsigned char> payload{'A', 1};
 
     // Helper lambda to append a string and separator to the result vector
     auto appendWithSeparator = [&payload](const std::string& value) {
         payload.insert(payload.end(), value.begin(), value.end());
-        payload.push_back('1');
+        payload.push_back(1);
     };
 
     // Append each element with the separator
