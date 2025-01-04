@@ -1,3 +1,7 @@
+# Description
+This repo aims to build a simple fix client for Binance.   
+Order Entry, Market Data, Drop Copy sessions to be supported.
+
 # DONE: 
 ## Read Docs: 
 https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api.   
@@ -56,9 +60,11 @@ https://doc.libsodium.org/public-key_cryptography/public-key_signatures#detached
 ## SSL configuration :
 https://fix8engine.atlassian.net/wiki/spaces/FX/pages/15368200/4.+Configuring+SSL+Clients+and+Servers.    
 
-# TODO : 
-## Why no log on response ?
+## Set header and footer on LogonMessage
+https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api#message-components.   
 
+# TODO : 
+## Make it work
 
 ## Fix manual setup
 setting export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib64.   
