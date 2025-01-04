@@ -136,7 +136,7 @@ FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat
    std::string raw_data = logonRawData(
       privateKey,
       publicKey,
-      "EXAMPLE",
+      "BROKER",
       "SPOT",
       std::to_string(sequence_number),
       sendingTime
@@ -151,23 +151,23 @@ FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat
         << new FIX8::BNB::ResetSeqNumFlag("Y")
         << new FIX8::BNB::Username(std::getenv("API_KEY"))
         << new FIX8::BNB::MessageHandling(2);
-
-   std::string encodedMsg;
-   size_t msgSize = nos->encode(encodedMsg);
    
    // Message length in bytes. 
-   nos->Header()->add_field(FIX8::BNB::BodyLength::get_field_id(), 2, new FIX8::BNB::BodyLength(msgSize));
    
    nos->Header()->add_field(new FIX8::BNB::SenderCompID("BROKER"));
    nos->Header()->add_field(new FIX8::BNB::TargetCompID("SPOT"));
    // nos->Header()->add_field(new FIX8::BNB::MsgSeqNum(1));
    nos->Header()->add_field(new FIX8::BNB::SendingTime(sendingTime));
    nos->Header()->add_field(new FIX8::BNB::RecvWindow(60000));
-   
+
+   std::string encodedMsg;
+   size_t msgSize = nos->encode(encodedMsg);
+   nos->Header()->add_field(FIX8::BNB::BodyLength::get_field_id(), 2, new FIX8::BNB::BodyLength(msgSize));
    nos->Trailer()->add_field(FIX8::BNB::CheckSum::get_field_id(), 1, new FIX8::BNB::CheckSum(calculateFixChecksum(encodedMsg)));
 
-   // nos->encode(encodedMsg);
-   // std::cout << "Encoded payload :: " << encodedMsg << std::endl;
+   // msgSize = nos->encode(encodedMsg);
+   std::cout << "Serialized payload :: [" << encodedMsg <<"]"<< std::endl;
+   std::cout << "Size :: [" << msgSize <<"]"<< std::endl;
 
    std::stringstream stream;
    nos->print(stream,0);

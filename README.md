@@ -65,6 +65,9 @@ https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api#messag
 
 # TODO : 
 ## Make it work
+# perform unit tests on message construction to match bnb
+https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api#how-to-sign-logona-request.   
+
 
 ## Fix manual setup
 setting export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib64.   
