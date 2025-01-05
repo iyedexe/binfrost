@@ -4,8 +4,7 @@
             fix_version="4400"
             target_comp_id="SPOT"
             ssl_context="ssl1" 
-            load_default_cas="true"
-            heartbeat_interval="10"
+            heartbeat_interval="30"
             tcp_recv_buffer="425984"
             tcp_send_buffer="425984"
             tcp_nodelay="true"
@@ -20,8 +19,9 @@
             persist=""/>
 
     <ssl_context name="ssl1"
-        verification_mode="none" />
- 
+        verification_mode="relaxed" 
+        ca_location="${CA_CERT_PATH}"/>
+
    <session name="BROKER"
             ip="fix-oe.testnet.binance.vision"
             port="9000"
@@ -53,7 +53,7 @@
         filename="|/bin/cat"
         rotation="5"
         delimiter="|"
-        levels="info|warn|error|fatal"
+        levels="info|warn|error|fatal|debug"
         flags="sequence|append|direction"/>
 
 

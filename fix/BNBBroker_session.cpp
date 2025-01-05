@@ -122,14 +122,17 @@ std::string BNBBroker_session_client::getState()
    return get_session_state_string(get_session_state());
 }
 
+
 FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat_interval, const FIX8::f8String davi)
 {
    std::vector<unsigned char> privateKey = loadPrivateKeyFromString(readPemFile(std::getenv("PRIVATE_KEY_PATH")));
    std::vector<unsigned char> publicKey = derivePublicKeyFromPrivate(privateKey);
    std::string sendingTime = getCurrentTimestamp();
    const unsigned sequence_number = _next_send_seq;
+   std::cout << "sequence_number: " << sequence_number << std::endl;
    std::string senderCompID = "BROKER";
    std::string targetCompID = "SPOT"; 
+   std::string apiKey = std::getenv("API_KEY");
    
    std::string raw_data = logonRawData(
       privateKey,
@@ -140,22 +143,9 @@ FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat
       sendingTime
    );
 
-   FIX8::BNB::Logon* nos = new FIX8::BNB::Logon();
+   auto logonRequest = RequestBuilder::buildLogonRequest(raw_data, heartbeat_interval, apiKey);
 
-   *nos << new FIX8::BNB::RawDataLength(raw_data.size())
-        << new FIX8::BNB::RawData(raw_data)
-        << new FIX8::BNB::EncryptMethod(0)
-        << new FIX8::BNB::HeartBtInt(heartbeat_interval)
-        << new FIX8::BNB::ResetSeqNumFlag("Y")
-        << new FIX8::BNB::Username(std::getenv("API_KEY"))
-        << new FIX8::BNB::MessageHandling(2);
- 
-   // nos->Header()->add_field(new FIX8::BNB::MsgSeqNum(sequence_number));
-   nos->Header()->add_field(new FIX8::BNB::SenderCompID(senderCompID));
-   nos->Header()->add_field(new FIX8::BNB::SendingTime(sendingTime));
-   nos->Header()->add_field(new FIX8::BNB::TargetCompID(targetCompID));
-
-   return nos;
+   return logonRequest;
 }
 
 bool BNBBroker_session_client::handle_logout(const unsigned seqnum, const FIX8::Message *msg)
@@ -186,10 +176,12 @@ bool BNBBroker_session_client::handle_heartbeat(const unsigned seqnum, const FIX
 // {
 
 // }
-// bool BNBBroker_session_client::handle_sequence_reset(const unsigned seqnum, const FIX8::Message *msg)
-// {
+bool BNBBroker_session_client::handle_sequence_reset(const unsigned seqnum, const FIX8::Message *msg)
+{
+   std::cout << "BNBBroker_session_client::handle_sequence_reset" << std::endl;
+   return true;
 
-// }
+}
 // Message *BNBBroker_session_client::generate_sequence_reset(const unsigned newseqnum, const bool gapfillflag=false)
 // {
 
@@ -202,15 +194,12 @@ bool BNBBroker_session_client::handle_heartbeat(const unsigned seqnum, const FIX
 // {
 
 // }
-// bool BNBBroker_session_client::handle_reject(const unsigned seqnum, const FIX8::Message *msg)
-// {
-
-// }
+bool BNBBroker_session_client::handle_reject(const unsigned seqnum, const FIX8::Message *msg)
+{
+   std::cout << "BNBBroker_session_client::handle_reject" << std::endl;
+   return true;
+}
 // Message *BNBBroker_session_client::generate_reject(const unsigned seqnum, const char *what)
-// {
-
-// }
-// bool BNBBroker_session_client::handle_admin(const unsigned seqnum, const FIX8::Message *msg)
 // {
 
 // }

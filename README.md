@@ -39,12 +39,15 @@ sudo yum install poco-devel poco-foundation poco-net poco-netssl poco-crypto
 ```
 git clone git@github.com:fix8/fix8.git   
 ./bootstrap   
-./configure --enable-ssl
+./configure --enable-ssl --enable-debug
 make  
 sudo make install  
 ```
 ## Generate Fix code using xml:
 https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360487/3.+Using+f8c+-+the+Fix8+compiler.   
+```
+f8c -p BNBBroker -n BNB spot-fix-oe.xml
+```
 
 ## Configure and use generated Code.   
 https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360504/6.+Session+configuration.   

@@ -9,6 +9,25 @@
 #include "oe/BNBBroker_classes.hpp"
 #include "utils.hpp"
 
+
+class RequestBuilder {
+public:
+   static FIX8::BNB::Logon* buildLogonRequest(const std::string& rawData,const unsigned heartbeat_interval, const std::string& apiKey)
+   {
+      FIX8::BNB::Logon* nos = new FIX8::BNB::Logon();
+
+      *nos << new FIX8::BNB::RawDataLength(rawData.size())
+            << new FIX8::BNB::RawData(rawData)
+            << new FIX8::BNB::EncryptMethod(0)
+            << new FIX8::BNB::HeartBtInt(heartbeat_interval)
+            << new FIX8::BNB::ResetSeqNumFlag("Y")
+            << new FIX8::BNB::Username(apiKey)
+            << new FIX8::BNB::MessageHandling(2);
+
+      return nos;
+   }
+};
+
 //-------------------------------------------------------------------------------------------------
 // client session and router classes
 //-------------------------------------------------------------------------------------------------
@@ -60,11 +79,11 @@ public:
    // Message *generate_heartbeat(const f8String& testReqID);
    // bool handle_resend_request(const unsigned seqnum, const FIX8::Message *msg);
    // Message *generate_resend_request(const unsigned begin, const unsigned end=0);
-   // bool handle_sequence_reset(const unsigned seqnum, const FIX8::Message *msg);
+   bool handle_sequence_reset(const unsigned seqnum, const FIX8::Message *msg);
    // Message *generate_sequence_reset(const unsigned newseqnum, const bool gapfillflag=false);
    // bool handle_test_request(const unsigned seqnum, const FIX8::Message *msg);
    // Message *generate_test_request(const f8String& testReqID);
-   // bool handle_reject(const unsigned seqnum, const FIX8::Message *msg);
+   bool handle_reject(const unsigned seqnum, const FIX8::Message *msg);
    // Message *generate_reject(const unsigned seqnum, const char *what);
    // bool handle_admin(const unsigned seqnum, const FIX8::Message *msg);
    // void modify_outbound(FIX8::Message *msg);
