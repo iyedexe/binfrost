@@ -1,7 +1,7 @@
 #include <catch2/catch_all.hpp>
 #include <string>
 #include <algorithm>
-#include "BNBBroker_session.hpp"
+#include "BrokerSessionClient.hpp"
 
 
 std::vector<std::string> splitString(const std::string& str, char delimiter) {

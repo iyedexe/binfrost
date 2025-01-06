@@ -1,10 +1,10 @@
 build/*
 
-fix/oe/*
-!fix/oe/.gitkeep
+fix/bnb/oe/
+!fix/bnb/oe/.gitkeep
 
-fix/md/*
-!fix/md/.gitkeep
+fix/bnb/md/
+!fix/bnb/md/.gitkeep
 
 .vscode
 

@@ -7,7 +7,6 @@
 #include <vector>
 #include <sodium.h>
 
-
 inline std::vector<unsigned char> hexStringToVector(const std::string& hexStr) {
     std::vector<unsigned char> vec;
     for (size_t i = 0; i < hexStr.length(); i += 2) {

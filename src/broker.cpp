@@ -1,10 +1,11 @@
-#include "BNBBroker_session.hpp"
+// #include "BrokerRouterClient.hpp"
+#include "BrokerSessionClient.hpp"
 
 
 int main()
 {
-    FIX8::ClientSession<BNBBroker_session_client>::ClientSession_ptr mc(
-        new FIX8::ClientSession<BNBBroker_session_client>(
+    FIX8::ClientSession<FIX::BNB::BrokerSessionClient>::ClientSession_ptr mc(
+        new FIX8::ClientSession<FIX::BNB::BrokerSessionClient>(
             FIX8::BNB::ctx(),
             "../config/session.xml",
             "BROKER"
