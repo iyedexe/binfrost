@@ -70,11 +70,11 @@ https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api#how-to
 
 
 # TODO : 
-
-
-
-## Fix manual setup
-setting export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib64.   
-running source credentials.sh.   
-code generation manually add to cmake.   
-
+remove manual code generation.  
+git pull binance xml.   
+add start script with source creds and stunnel hooks.   
+separate client session and client router.  
+change namespaces for broker.  
+implement feeder example.   
+native ssl using fix8 pull request.   
+more unit tests.
