@@ -65,6 +65,7 @@ public:
 class BNBBroker_session_client : public FIX8::Session
 {
    BNBBroker_router_client _router; 
+   std::string lastSendingTime_;
 
 public:
    BNBBroker_session_client(const FIX8::F8MetaCntx& ctx, const FIX8::SessionID& sid, FIX8::Persister *persist=0,
@@ -93,4 +94,6 @@ public:
    bool handle_admin(const unsigned seqnum, const FIX8::Message *msg);
    bool handle_application(const unsigned seqnum, const FIX8::Message *&msg);   
    std::string getState();
+   int modify_header(FIX8::MessageBase *msg);
+
 };

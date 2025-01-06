@@ -112,9 +112,9 @@ bool BNBBroker_router_client::operator() (const FIX8::BNB::OrderMassCancelReport
 
 bool BNBBroker_session_client::handle_logon(const unsigned seqnum, const FIX8::Message *msg)
 {
-   std::string message_str;
-   msg->encode(message_str);
-   std::cout << "BNBBroker_session_client::handle_logon, seqnum={" << seqnum <<"}, content={"<< message_str << "}" << std::endl;
+   std::stringstream messageStream;
+   msg->print(messageStream);
+   std::cout << "BNBBroker_session_client::handle_logon, seqnum={" << seqnum <<"}, content={"<< messageStream.str() << "}" << std::endl;
    return true;
 }
 std::string BNBBroker_session_client::getState()
@@ -142,9 +142,9 @@ FIX8::Message *BNBBroker_session_client::generate_logon(const unsigned heartbeat
       std::to_string(sequence_number),
       sendingTime
    );
-
+   std::cout << "Used sending time" << sendingTime << std::endl;
+   lastSendingTime_ = sendingTime;
    auto logonRequest = RequestBuilder::buildLogonRequest(raw_data, heartbeat_interval, apiKey);
-
    return logonRequest;
 }
 
@@ -196,7 +196,9 @@ bool BNBBroker_session_client::handle_sequence_reset(const unsigned seqnum, cons
 // }
 bool BNBBroker_session_client::handle_reject(const unsigned seqnum, const FIX8::Message *msg)
 {
-   std::cout << "BNBBroker_session_client::handle_reject" << std::endl;
+   std::stringstream messageStream;
+   msg->print(messageStream);
+   std::cout << "BNBBroker_session_client::handle_reject, seqnum={" << seqnum <<"}, content={"<< messageStream.str() << "}" << std::endl;
    return true;
 }
 // Message *BNBBroker_session_client::generate_reject(const unsigned seqnum, const char *what)
@@ -220,6 +222,15 @@ bool BNBBroker_session_client::handle_application(const unsigned seqnum, const F
 
 bool BNBBroker_session_client::handle_admin(const unsigned seqnum, const FIX8::Message *msg)
 {
-   std::cout << "BNBBroker_session_client::handle_admin" << std::endl;
+   std::stringstream messageStream;
+   msg->print(messageStream);
+   std::cout << "BNBBroker_session_client::handle_admin, seqnum={" << seqnum <<"}, content={"<< messageStream.str() << "}" << std::endl;
    return enforce(seqnum, msg) || msg->process(_router);
+}
+
+
+int BNBBroker_session_client::modify_header(FIX8::MessageBase *msg)
+{
+   msg->add_field(new FIX8::BNB::SendingTime(lastSendingTime_));
+   return 0;
 }

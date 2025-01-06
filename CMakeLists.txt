@@ -1,15 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(fix_bnb)
-
-include_directories(${CMAKE_SOURCE_DIR}/fix)
-
-#   include_directories(${CMAKE_CURRENT_BINARY_DIR})
-#   FIX8_GENERATE_CPP(FIX8_SRCS FIX8_HDRS /usr/share/fix8/schema/FIX42.xml)
-#   add_executable(bar bar.cpp ${FIX8_SRCS} ${FIX8_HDRS})
-#   target_link_libraries(bar ${FIX8_LIBRARIES} ${POCO_LIBRARIES} ${BerkeleyDB_CXX_LIBRARIES})
-
 set(CMAKE_CXX_STANDARD 20)
-# set(CMAKE_MODULE_PATH )
+
 list(APPEND CMAKE_MODULE_PATH "/usr/local/share/fix8/contrib")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
@@ -17,6 +9,8 @@ find_package(Fix8 REQUIRED)
 find_package(Poco REQUIRED COMPONENTS Net Foundation)
 find_package(Sodium REQUIRED)
 find_package(Catch2 3 REQUIRED)
+
+include_directories(${CMAKE_SOURCE_DIR}/fix)
 
 file(GLOB_RECURSE BNBFIXCLIENTSOURCES "fix/*.cpp")
 

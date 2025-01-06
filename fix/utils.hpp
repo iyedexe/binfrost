@@ -37,34 +37,15 @@ inline std::vector<unsigned char> derivePublicKeyFromPrivate(const std::vector<u
     return pk;
 }
 
-
-inline std::string calculateFixChecksum(const std::string& message) {
-    // Calculate the sum of ASCII values of all characters in the message
-    int checksumValue = 0;
-    for (char ch : message) {
-        checksumValue += static_cast<unsigned char>(ch);
-    }
-
-    // Calculate the remainder when divided by 256
-    int checksumRemainder = checksumValue % 256;
-
-    // Format as a three-character, zero-padded string
-    std::ostringstream oss;
-    oss << std::setw(3) << std::setfill('0') << checksumRemainder;
-    return oss.str();
-}
-
 inline std::string getCurrentTimestamp() {
-
     auto now = std::chrono::system_clock::now();
     std::time_t now_time = std::chrono::system_clock::to_time_t(now);
 
     auto duration = now.time_since_epoch();
     auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count() % 1000;
 
-
     std::tm now_tm;
-    localtime_r(&now_time, &now_tm);
+    gmtime_r(&now_time, &now_tm); // Use gmtime_r for UTC time
 
     std::ostringstream oss;
     oss << std::put_time(&now_tm, "%Y%m%d-%H:%M:%S")
@@ -72,6 +53,7 @@ inline std::string getCurrentTimestamp() {
 
     return oss.str();
 }
+
 
 inline std::string stripPrivateKey(const std::string& pem_key) {
     std::string pemHeader = "-----BEGIN PRIVATE KEY-----";
