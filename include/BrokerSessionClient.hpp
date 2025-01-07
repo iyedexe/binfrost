@@ -41,7 +41,6 @@ namespace FIX
         BrokerSessionClient(const FIX8::F8MetaCntx& ctx, const FIX8::SessionID& sid, FIX8::Persister *persist=0,
             FIX8::Logger *logger=0, FIX8::Logger *plogger=0) : Session(ctx, sid, persist, logger, plogger), _router(*this) {} 
 
-        // Override these methods if required but remember to call the base class method first.
         bool handle_logon(const unsigned seqnum, const FIX8::Message *msg);
         FIX8::Message *generate_logon(const unsigned heartbeat_interval, const FIX8::f8String davi=FIX8::f8String());
         bool handle_logout(const unsigned seqnum, const FIX8::Message *msg);
@@ -63,7 +62,6 @@ namespace FIX
         // Override these methods to intercept admin and application methods.
         bool handle_admin(const unsigned seqnum, const FIX8::Message *msg);
         bool handle_application(const unsigned seqnum, const FIX8::Message *&msg);   
-        std::string getState();
         int modify_header(FIX8::MessageBase *msg);
 
         };

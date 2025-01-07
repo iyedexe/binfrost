@@ -70,7 +70,6 @@ https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api#how-to
 
 
 # TODO : 
-remove manual code generation.  
 git pull binance xml.   
 add start script with source creds and stunnel hooks.   
 separate client session and client router.  
