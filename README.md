@@ -77,3 +77,4 @@ change namespaces for broker.
 implement feeder example.   
 native ssl using fix8 pull request.   
 more unit tests.
+small edit.
