@@ -21,7 +21,8 @@ namespace BNB
             std::vector<RequestId> unSubscribeToStreams(const std::vector<std::string>& streamsNames);
             RequestId listSubscriptions();
             RequestId setProperty(const std::string& property, const std::string& value);
-        
+            void onUpdate(const std::string& payload);
+            
         protected:
             void onMessage(websocketpp::connection_hdl hdl, websocketpp::client<websocketpp::config::asio_client>::message_ptr msg) override;
             void onClose(websocketpp::connection_hdl hdl);

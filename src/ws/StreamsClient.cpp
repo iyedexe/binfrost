@@ -74,6 +74,12 @@ namespace BNB
             return request_id;
         }
         
+        void StreamsClient::onUpdate(const std::string& payload)
+        {
+            LOG_INFO("[STREAMS_CLIENT] onUpdate: {}", payload);
+        }
+
+
         void StreamsClient::onMessage(websocketpp::connection_hdl hdl, websocketpp::client<websocketpp::config::asio_client>::message_ptr msg)
         {
             try {
@@ -109,13 +115,8 @@ namespace BNB
                     }
                 }
 
-                // // If the message is not a response or an error, it's likely market data
-                // StreamType dataFrame = parseData(json_data);
-                // {
-                //     std::lock_guard<std::mutex> lock(queue_mutex_);
-                //     update_queue_.push(dataFrame);
-                // }
-                // queue_cv_.notify_one();
+                // If the message is not a response or an error, it's likely market data
+                onUpdate(payload);
             } catch (const std::exception& e) {
                 LOG_ERROR("[FEEDER] onMessage error: {}", e.what());
             }            
