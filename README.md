@@ -1,31 +1,25 @@
 # Description
-This repo aims to build a simple to use client library for Binance.   
-Client supports FIX, Websockets and Rest APIs.
-Order Entry, Market Data, Drop Copy (FIX) connections to be supported.
-Performance and ease of use are key. 
+This repo aims to build a simple to use client library for Binance.       
+Client supports FIX, Websockets and Rest APIs.   
+Order Entry, Market Data, Drop Copy (FIX) connections to be supported.   
+Performance and ease of use are key.    
 
 # Submodules :
 ## Websocketspp for websocket usage. 
 ```
-* https://github.com/zaphoyd/websocketpp  
+https://github.com/zaphoyd/websocketpp  
 ```
 
 ## Nlohmann Json for json parsing and build.
 ```
-* https://github.com/nlohmann/json  
+https://github.com/nlohmann/json  
 ```
 
 ## Quill for logging.
 ```
-* https://github.com/odygrd/quill  
+https://github.com/odygrd/quill  
 ```
 
-
-# DONE: 
-## Read Docs: 
-https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api.   
-https://fix8.org/howitworks.html.  
-https://fix8.org/fix8/html/index.html.   
 
 # HOW TO:
 # Install dependencies : 
@@ -62,16 +56,12 @@ sudo make install
 sudo dnf install stunnel
 ```
 
-## SSL configuration :
-https://fix8engine.atlassian.net/wiki/spaces/FX/pages/15368200/4.+Configuring+SSL+Clients+and+Servers.    
-## due to the tls issue with the POCO library stunnel is used
-
 # DONE :
-[FIX] Build basic client
-[FIX] Connect TLS to binance
-[FIX] Generate ED25519 signature
-[FIX] add unit tests
-[FIX] separate client session and client router.  
+[FIX] Build basic client.   
+[FIX] Connect TLS to binance.   
+[FIX] Generate ED25519 signature.   
+[FIX] add unit tests.   
+[FIX] separate client session and client router.     
 
 # TODO : 
 [WS_API] Implement.   
@@ -91,3 +81,14 @@ change namespaces for broker.
 implement feeder example.   
 native ssl using fix8 pull request.   
 more unit tests.
+
+# ISSUES:
+## SSL configuration :
+https://fix8engine.atlassian.net/wiki/spaces/FX/pages/15368200/4.+Configuring+SSL+Clients+and+Servers.   
+Due to the tls issue with the POCO library stunnel is used
+
+
+# Read Docs: 
+https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api.   
+https://fix8.org/howitworks.html.  
+https://fix8.org/fix8/html/index.html.   
