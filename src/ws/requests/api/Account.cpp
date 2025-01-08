@@ -8,10 +8,8 @@ namespace BNB
         {
             Information::Information() : method_("account.status") 
             {
-                id_ = RequestsHelper::generateRequestId();
                 params_ = {
                     {"omitZeroBalances", "true"},
-                    {"timestamp", RequestsHelper::getTimestamp()}
                 };
             }
 

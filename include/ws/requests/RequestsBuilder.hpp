@@ -24,11 +24,14 @@ private:
             signatureKey_ = new crypto::hmac(secretKey_);
         }  
     }
-
+    
     crypto::ikey* signatureKey_;
     std::string apiKey_;
     std::string secretKey_;
     bool loggedIn_{false};
+
+    static std::string generatePayload(const std::map<std::string, std::string>& params);
+    static std::string getTimestamp();
 
 public:
     RequestsBuilder(const RequestsBuilder&) = delete;

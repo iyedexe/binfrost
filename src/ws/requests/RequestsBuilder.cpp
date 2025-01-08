@@ -27,21 +27,32 @@ std::string RequestsBuilder::paramsSignedRequest(const std::string& requestId, c
         return "";
     }
 
-    std::string payload = RequestsHelper::generatePayload(params);
-    std::string signature = signatureKey_->sign(payload);
+    auto signedParams = params;
+    signedParams.insert({"apiKey", instance->apiKey_});
+    signedParams.insert({"timestamp", getTimestamp()});
+
+    std::string payload = generatePayload(params);
+    std::string signature = instance->signatureKey_->sign(payload);
+    signedParams.insert({"signature", signature});
 
     nlohmann::json requestBody = {
         {"id", requestId},
         {"method", method},
         {"params", params},
-        {"signature", signature}
     };
-    // std::string requestId = RequestsHelper::generateRequestId();
-    // nlohmann::json requestBody = {
-    //     {"id", requestId},
-    //     {"method", method},
-    //     {"params", params}
-    // };
+    return requestBody.dump();
+}
 
-    // return std::make_pair(requestId, requestBody.dump());
+std::string RequestsBuilder::generatePayload(const std::map<std::string, std::string>& params) {
+    std::vector<std::string> param_list;
+    for (const auto& param : params) {
+        param_list.push_back(fmt::format("{}={}", param.first, param.second));
+    }    
+    return fmt::format("{}", fmt::join(param_list, "&"));
+}
+
+std::string RequestsBuilder::getTimestamp(){
+    auto now = std::chrono::system_clock::now();
+    auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+    return std::to_string(milliseconds);
 }

@@ -1,6 +1,5 @@
 #include "ws/requests/Requests.hpp"
 #include "ws/requests/RequestsBuilder.hpp"
-#include "ws/requests/RequestsHelper.hpp"
 
 namespace BNB
 {
