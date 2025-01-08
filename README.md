@@ -1,6 +1,25 @@
 # Description
-This repo aims to build a simple fix client for Binance.   
-Order Entry, Market Data, Drop Copy sessions to be supported.
+This repo aims to build a simple to use client library for Binance.   
+Client supports FIX, Websockets and Rest APIs.
+Order Entry, Market Data, Drop Copy (FIX) connections to be supported.
+Performance and ease of use are key. 
+
+# Submodules :
+## Websocketspp for websocket usage. 
+```
+* https://github.com/zaphoyd/websocketpp  
+```
+
+## Nlohmann Json for json parsing and build.
+```
+* https://github.com/nlohmann/json  
+```
+
+## Quill for logging.
+```
+* https://github.com/odygrd/quill  
+```
+
 
 # DONE: 
 ## Read Docs: 
@@ -8,7 +27,8 @@ https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api.
 https://fix8.org/howitworks.html.  
 https://fix8.org/fix8/html/index.html.   
 
-## Install FIX8 dependencies:
+# HOW TO:
+# Install dependencies : 
 ### Install openssl
 ```
 sudo yum install openssl
@@ -16,6 +36,10 @@ sudo yum install openssl
 ### Install POCO
 ```
 sudo yum install poco-devel poco-foundation poco-net poco-netssl poco-crypto
+```
+### Install Boost
+```
+sudo yum install boost
 ```
 ## Install FIX8: 
 ```
@@ -25,7 +49,6 @@ git clone git@github.com:fix8/fix8.git
 make  
 sudo make install  
 ```
-
 ## Install libsodium
 ```
 wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.20-stable.tar.gz
@@ -42,10 +65,6 @@ sudo dnf install stunnel
 ## SSL configuration :
 https://fix8engine.atlassian.net/wiki/spaces/FX/pages/15368200/4.+Configuring+SSL+Clients+and+Servers.    
 ## due to the tls issue with the POCO library stunnel is used
-
-# PRESENTATION : 
-repo became a full on binance client,
-must support WS, REST, FIX for spot endpoints.
 
 # DONE :
 [FIX] Build basic client
