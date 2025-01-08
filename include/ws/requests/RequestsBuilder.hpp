@@ -2,6 +2,8 @@
 #include <string>
 #include <nlohmann/json.hpp>
 #include "logger.hpp"
+#include "crypto/ed25519.hpp"
+#include "crypto/hmac.hpp"
 
 class RequestsBuilder
 {
@@ -13,9 +15,17 @@ public:
 
 private:
     inline static RequestsBuilder* instance = nullptr;
-    RequestsBuilder(const std::string& apiKey, const std::string& secretKey)
-     : apiKey_(apiKey), secretKey_(secretKey) {}
+    RequestsBuilder(const std::string& apiKey, const std::string& secretKey, crypto::KeyType keyType)
+     : apiKey_(apiKey), secretKey_(secretKey) 
+    {
+        if (keyType == crypto::KeyType::ED25519) {
+            signatureKey_ = new crypto::ed25519(secretKey_);
+        } else if (keyType == crypto::KeyType::HMAC) {
+            signatureKey_ = new crypto::hmac(secretKey_);
+        }  
+    }
 
+    crypto::ikey* signatureKey_;
     std::string apiKey_;
     std::string secretKey_;
     bool loggedIn_{false};
@@ -25,8 +35,8 @@ public:
     RequestsBuilder& operator=(const RequestsBuilder&) = delete;
 
     // Static method to get the singleton instance
-    static RequestsBuilder* getInstance(const std::string& apiKey, const std::string& secretKey) {
-        instance = new RequestsBuilder(apiKey, secretKey);
+    static RequestsBuilder* getInstance(const std::string& apiKey, const std::string& secretKey, crypto::KeyType keyType) {
+        instance = new RequestsBuilder(apiKey, secretKey, keyType);
         return instance;
     }
 };

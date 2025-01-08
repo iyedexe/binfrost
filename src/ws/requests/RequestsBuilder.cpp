@@ -27,8 +27,15 @@ std::string RequestsBuilder::paramsSignedRequest(const std::string& requestId, c
         return "";
     }
 
-    // RequestsHelper::signRequestHMAC(params, instance->apiKey_, instance->secretKey_);
+    std::string payload = RequestsHelper::generatePayload(params);
+    std::string signature = signatureKey_->sign(payload);
 
+    nlohmann::json requestBody = {
+        {"id", requestId},
+        {"method", method},
+        {"params", params},
+        {"signature", signature}
+    };
     // std::string requestId = RequestsHelper::generateRequestId();
     // nlohmann::json requestBody = {
     //     {"id", requestId},
