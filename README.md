@@ -39,42 +39,36 @@ sudo make install
 sudo dnf install stunnel
 ```
 
-
-## Generate Fix code using xml:
-https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360487/3.+Using+f8c+-+the+Fix8+compiler.   
-```
-f8c -p BNBBroker -n BNB spot-fix-oe.xml
-```
-
-## Configure and use generated Code.   
-https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360504/6.+Session+configuration.   
-
-## Constructuing a message:    
-https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360493/4.+Using+the+generated+code.    
-https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360514/7.+Constructing+a+new+message.   
-
-## Sign ED25519 payload.  (VERY HARD)
-https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api#signaturecomputation.   
-https://doc.libsodium.org/public-key_cryptography/public-key_signatures#detached-mode.   
-
 ## SSL configuration :
 https://fix8engine.atlassian.net/wiki/spaces/FX/pages/15368200/4.+Configuring+SSL+Clients+and+Servers.    
 ## due to the tls issue with the POCO library stunnel is used
 
+# PRESENTATION : 
+repo became a full on binance client,
+must support WS, REST, FIX for spot endpoints.
 
-## Set header and footer on LogonMessage
-https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api#message-components.   
-
-# perform unit tests on message construction to match bnb
-https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api#how-to-sign-logona-request.   
-
+# DONE :
+[FIX] Build basic client
+[FIX] Connect TLS to binance
+[FIX] Generate ED25519 signature
+[FIX] add unit tests
+[FIX] separate client session and client router.  
 
 # TODO : 
+[WS_API] Implement.   
+[REST_CLIENT] Implement.   
+[WS_STREAMS] test user streams.   
+[UTILS] refactor utils and add hmac.   
+[ARCHITECTURE] Feeder and broker wrapper.   
+[WS] Impelemnt messages.   
+[FIX] Impeemt messages.  
+[WS] Feeder Broker Implement.   
+[FIX] Feeder Broker Implement.   
+
+make the lib more portable.  
 git pull binance xml.   
 add start script with source creds and stunnel hooks.   
-separate client session and client router.  
 change namespaces for broker.  
 implement feeder example.   
 native ssl using fix8 pull request.   
 more unit tests.
-small edit.
