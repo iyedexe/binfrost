@@ -1,8 +1,8 @@
-#include "BrokerSessionClient.hpp"
+#include "fix/BrokerSessionClient.hpp"
 
-namespace FIX
+namespace BNB
 {
-    namespace BNB
+    namespace FIX
     {
         bool BrokerSessionClient::handle_logon(const unsigned seqnum, const FIX8::Message *msg)
         {

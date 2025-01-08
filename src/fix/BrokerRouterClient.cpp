@@ -1,8 +1,8 @@
-#include "BrokerRouterClient.hpp"
+#include "fix/BrokerRouterClient.hpp"
 
-namespace FIX
+namespace BNB
 {
-    namespace BNB
+    namespace FIX
     {
         bool BrokerRouterClient::operator()(const FIX8::BNB::Heartbeat *msg) const
         {

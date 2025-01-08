@@ -28,9 +28,9 @@ public:
    }
 };
 
-namespace FIX
+namespace BNB
 {
-    namespace BNB
+    namespace FIX
     {
         class BrokerSessionClient : public FIX8::Session
         {

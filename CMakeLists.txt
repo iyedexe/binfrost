@@ -2,17 +2,26 @@ cmake_minimum_required(VERSION 3.10)
 project(fix_bnb)
 set(CMAKE_CXX_STANDARD 20)
 
+# warning for temolate class destructor c20 (webscoketpp)
+SET(C20_WARNING_TEMPLATE_CDTOR_MUTE "-Wno-template-id-cdtor")
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${C20_WARNING_TEMPLATE_CDTOR_MUTE}")
 
-
+# useful for unwanted casts in json
+set(JSON_ImplicitConversions OFF)
 
 list(APPEND CMAKE_MODULE_PATH "/usr/local/share/fix8/contrib")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+find_package(Boost REQUIRED)
 find_package(Fix8 REQUIRED)
 find_package(Poco REQUIRED COMPONENTS Net Foundation)
 find_package(Sodium REQUIRED)
 find_package(Catch2 3 REQUIRED)
+find_package(OpenSSL REQUIRED)
 
+add_subdirectory(${CMAKE_SOURCE_DIR}/libs/websocketpp)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libs/quill)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libs/json)
 
 function(GENERATE_SPOT_BNB_FIX SRCS HDRS)
   if(NOT ARGN)
@@ -61,22 +70,45 @@ GENERATE_SPOT_BNB_FIX(FIX8_SRCS FIX8_HDRS "${CMAKE_SOURCE_DIR}/fix/bnb/oe/broker
 
 include_directories(${CMAKE_SOURCE_DIR}/fix)
 include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/libs/websocketpp)
+include_directories(${CMAKE_SOURCE_DIR}/libs/websocketpp/asio)
+include_directories(${CMAKE_SOURCE_DIR}/libs/quill)
+include_directories(${CMAKE_SOURCE_DIR}/libs/json/single_include)
 
-set(COMMON_SOURCES
+set(FIX_COMMON_SOURCES
     ${FIX8_SRCS}
     ${FIX8_HDRS}
-    src/BrokerSessionClient.cpp
-    src/BrokerRouterClient.cpp
+    src/fix/BrokerSessionClient.cpp
+    src/fix/BrokerRouterClient.cpp
 )
-add_executable(broker src/broker.cpp ${COMMON_SOURCES})
-target_include_directories(broker PRIVATE ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(broker ${FIX8_LIBRARIES} ${Poco_LIBRARIES} sodium PocoNetSSL)
+add_executable(fixBroker examples/fix/broker.cpp ${FIX_COMMON_SOURCES})
+target_include_directories(fixBroker PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_link_libraries(fixBroker ${FIX8_LIBRARIES} ${Poco_LIBRARIES} sodium PocoNetSSL)
+
+
+set(WS_COMMON_SOURCES
+    src/ws/WebSocketListener.cpp
+    src/ws/StreamsClient.cpp
+    # src/ws/ApiClient.cpp
+    )
+set(WS_COMMON_LIBS
+    ${Boost_LIBRARIES}
+    OpenSSL::SSL
+    OpenSSL::Crypto
+    quill::quill
+)
+
+
+add_executable(wsFeeder examples/ws/feeder.cpp ${WS_COMMON_SOURCES})
+# target_include_directories(wsFeeder PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_link_libraries(wsFeeder ${WS_COMMON_LIBS})
+
 
 set(TEST_SOURCES
-    ${COMMON_SOURCES}
+    ${FIX_COMMON_SOURCES}
     tests/encodingTest.cpp
     tests/logonMessageTest.cpp
 )
 add_executable(tests ${TEST_SOURCES})
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain  ${FIX8_LIBRARIES} ${Poco_LIBRARIES} sodium PocoNetSSL)
-                                          
+                        

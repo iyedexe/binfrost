@@ -8,9 +8,9 @@
 #include "utils.hpp"
 
 
-namespace FIX
+namespace BNB
 {
-    namespace BNB
+    namespace FIX
     {
         class BrokerSessionClient;
 
