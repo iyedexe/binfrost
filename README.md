@@ -64,9 +64,9 @@ sudo dnf install stunnel
 [FIX] separate client session and client router.     
 [WS_API] Implement base.   
 [UTILS] refactor utils and add hmac.   
+[REST_CLIENT] Implement.   
 
 # TODO : 
-[REST_CLIENT] Implement.   
 [WS_STREAMS] test user streams.   
 [WS_STREAMS] Refactor streams client.   
 [ARCHITECTURE] Feeder and broker wrapper.   

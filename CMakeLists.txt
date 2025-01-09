@@ -108,21 +108,6 @@ set(WS_FEEDER_SOURCES
     ${WS_COMMON_SOURCES}
     src/ws/StreamsClient.cpp
 )
-add_executable(wsFeeder examples/ws/feeder.cpp ${WS_FEEDER_SOURCES})
-target_link_libraries(wsFeeder ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
-
-
-set(WS_BROKER_SOURCES
-    ${WS_COMMON_SOURCES}
-    ${CRYPTO_UTILS_SOURCES}
-    src/ws/ApiClient.cpp
-    src/ws/requests/api/Account.cpp
-    src/ws/requests/RequestsBuilder.cpp
-)
-add_executable(wsBroker examples/ws/broker.cpp ${WS_BROKER_SOURCES})
-target_link_libraries(wsBroker ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
-
-
 set(REST_CLIENT_SOURCES
     ${WS_COMMON_SOURCES}
     ${CRYPTO_UTILS_SOURCES}
@@ -130,15 +115,31 @@ set(REST_CLIENT_SOURCES
     src/rest/requests/UserStream.cpp
     src/rest/requests/RequestsBuilder.cpp
 )
-add_executable(restClient examples/rest/client.cpp ${REST_CLIENT_SOURCES})
-target_link_libraries(restClient ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
-
-
+set(WS_BROKER_SOURCES
+    ${WS_COMMON_SOURCES}
+    ${CRYPTO_UTILS_SOURCES}
+    src/ws/ApiClient.cpp
+    src/ws/requests/api/Account.cpp
+    src/ws/requests/RequestsBuilder.cpp
+)
 set(TEST_SOURCES
     ${FIX_COMMON_SOURCES}
     tests/encodingTest.cpp
     tests/logonMessageTest.cpp
 )
+
+add_executable(wsMarketFeeder examples/ws/market_data_feeder.cpp ${WS_FEEDER_SOURCES})
+target_link_libraries(wsFeeder ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
+
+add_executable(wsUserFeeder examples/ws/user_streams_feeder.cpp ${WS_FEEDER_SOURCES} ${REST_CLIENT_SOURCES})
+target_link_libraries(wsFeeder ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
+
+add_executable(wsBroker examples/ws/broker.cpp ${WS_BROKER_SOURCES})
+target_link_libraries(wsBroker ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
+
+add_executable(restClient examples/rest/client.cpp ${REST_CLIENT_SOURCES})
+target_link_libraries(restClient ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
+
 add_executable(tests ${TEST_SOURCES})
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain  ${FIX8_LIBRARIES} ${Poco_LIBRARIES} sodium PocoNetSSL)
                         
