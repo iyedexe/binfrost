@@ -6,12 +6,13 @@
 
 int main()
 {
-    BNB::REST::ApiClient apiClient("testnet.binance.vision");
     std::string apiKey = std::getenv("API_KEY");
     std::string secretKey = std::getenv("SECRET_KEY");
     crypto::KeyType keyType = crypto::KeyType::HMAC;
+    std::string endpoint = "testnet.binance.vision";
 
-    BNB::REST::RequestsBuilder::getInstance(apiKey, secretKey, keyType);
+    BNB::REST::ApiClient apiClient(endpoint);
+    BNB::REST::RequestsBuilder::getInstance(apiKey, secretKey, keyType, endpoint);
 
     auto response = apiClient.sendRequest(BNB::REST::UserStream::Start());
     LOG_INFO("Response: {}", response);

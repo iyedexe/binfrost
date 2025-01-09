@@ -12,10 +12,10 @@ namespace BNB::REST
         return req;
     }
 
-    http::request<http::dynamic_body> RequestsBuilder::buildApiKeyRequest(http::verb method, const std::string& target, const std::map<std::string, std::string>& params)
+    http::request<http::dynamic_body> RequestsBuilder::buildApiKeyRequest(http::verb method, const std::string& uri, const std::map<std::string, std::string>& params)
     {
-        http::request<http::dynamic_body> req{method, target, 11};
-        req.set(http::field::host, "api.binance.com");
+        http::request<http::dynamic_body> req{method, uri, 11};
+        req.set(http::field::host, instance->endpoint_);
         req.set(http::field::user_agent, "Binance Client");
         req.set("X-MBX-APIKEY", instance->apiKey_);
 

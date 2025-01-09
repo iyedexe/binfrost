@@ -13,8 +13,8 @@ namespace BNB::REST
         static http::request<http::dynamic_body> buildApiKeyRequest(http::verb method, const std::string& target, const std::map<std::string, std::string>& params);
     private:
         inline static RequestsBuilder* instance = nullptr;
-        RequestsBuilder(const std::string& apiKey, const std::string& secretKey, crypto::KeyType keyType)
-        : apiKey_(apiKey), secretKey_(secretKey) 
+        RequestsBuilder(const std::string& apiKey, const std::string& secretKey, crypto::KeyType keyType, const std::string& endpoint)
+        : apiKey_(apiKey), secretKey_(secretKey), endpoint_(endpoint) 
         {
             if (keyType == crypto::KeyType::ED25519) {
                 signatureKey_ = new crypto::ed25519(secretKey_);
@@ -26,6 +26,7 @@ namespace BNB::REST
         crypto::ikey* signatureKey_;
         std::string apiKey_;
         std::string secretKey_;
+        std::string endpoint_;
         bool loggedIn_{false};
 
         static std::string generatePayload(const std::map<std::string, std::string>& params);
@@ -36,8 +37,8 @@ namespace BNB::REST
         RequestsBuilder& operator=(const RequestsBuilder&) = delete;
 
         // Static method to get the singleton instance
-        static RequestsBuilder* getInstance(const std::string& apiKey, const std::string& secretKey, crypto::KeyType keyType) {
-            instance = new RequestsBuilder(apiKey, secretKey, keyType);
+        static RequestsBuilder* getInstance(const std::string& apiKey, const std::string& secretKey, crypto::KeyType keyType, const std::string& endpoint) {
+            instance = new RequestsBuilder(apiKey, secretKey, keyType, endpoint);
             return instance;
         }
 
