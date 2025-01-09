@@ -62,12 +62,13 @@ sudo dnf install stunnel
 [FIX] Generate ED25519 signature.   
 [FIX] add unit tests.   
 [FIX] separate client session and client router.     
+[WS_API] Implement base.   
+[UTILS] refactor utils and add hmac.   
 
 # TODO : 
-[WS_API] Implement.   
 [REST_CLIENT] Implement.   
 [WS_STREAMS] test user streams.   
-[UTILS] refactor utils and add hmac.   
+[WS_STREAMS] Refactor streams client.   
 [ARCHITECTURE] Feeder and broker wrapper.   
 [WS] Impelemnt messages.   
 [FIX] Impeemt messages.  
