@@ -28,6 +28,7 @@ namespace BNB
                 std::string requestId = boost::uuids::to_string(uuid);
                 return requestId;
             }
+            
             std::string id_;
             std::string method_;
             std::map<std::string, std::string> params_;

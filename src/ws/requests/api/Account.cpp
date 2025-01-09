@@ -10,7 +10,7 @@ namespace BNB
             {
                 method_= "account.status";
                 params_ = {
-                    {"omitZeroBalances", "true"},
+                    {"omitZeroBalances", "true"}
                 };
             }
 

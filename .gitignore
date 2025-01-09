@@ -9,4 +9,6 @@ fix/bnb/md/
 .vscode
 
 config/credentials.sh
+config/credentials_ed25519.sh
+config/credentials_hmac.sh
 scrap

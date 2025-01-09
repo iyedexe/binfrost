@@ -5,7 +5,7 @@
 
 int main()
 {
-    BNB::WS::ApiClient apiClient("wss://testnet.binance.vision/ws");
+    BNB::WS::ApiClient apiClient("wss://testnet.binance.vision/ws-api/v3");
     std::string apiKey = std::getenv("API_KEY");
     std::string secretKey = std::getenv("SECRET_KEY");
     crypto::KeyType keyType = crypto::KeyType::HMAC;
@@ -14,7 +14,9 @@ int main()
 
     apiClient.start();
 
-    apiClient.sendRequest(BNB::WS::Account::Information());
+    auto reqId = apiClient.sendRequest(BNB::WS::Account::Information());
+    std::cout << "Request ID: " << reqId << std::endl;
+
 
     while (true)
     {

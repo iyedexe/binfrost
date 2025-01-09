@@ -31,14 +31,14 @@ std::string RequestsBuilder::paramsSignedRequest(const std::string& requestId, c
     signedParams.insert({"apiKey", instance->apiKey_});
     signedParams.insert({"timestamp", getTimestamp()});
 
-    std::string payload = generatePayload(params);
+    std::string payload = generatePayload(signedParams);
     std::string signature = instance->signatureKey_->sign(payload);
     signedParams.insert({"signature", signature});
 
     nlohmann::json requestBody = {
         {"id", requestId},
         {"method", method},
-        {"params", params},
+        {"params", signedParams},
     };
     return requestBody.dump();
 }
