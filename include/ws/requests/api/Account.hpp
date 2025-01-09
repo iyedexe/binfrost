@@ -1,4 +1,4 @@
-#include "ws/requests/Requests.hpp"
+#include "ws/requests/IRequests.hpp"
 #include "ws/requests/RequestsBuilder.hpp"
 
 namespace BNB

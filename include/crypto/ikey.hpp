@@ -1,12 +1,13 @@
+#pragma once
 #include <string>
 
 namespace crypto {
     class ikey {
     public:
-        ikey();
-        virtual ~ikey();
+        ikey() =default;
+        virtual ~ikey() =default;
 
-        virtual std::string sign(const std::string& payload);
+        virtual std::string sign(const std::string& payload) = 0;
     };
   
     enum class KeyType : uint8_t {  

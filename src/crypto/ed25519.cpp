@@ -27,7 +27,7 @@ namespace crypto
         return pk;
     }
 
-    std::vector<unsigned char> loadPrivateKeyFromString(const std::string& barePemKey) {
+    std::vector<unsigned char> ed25519::loadPrivateKeyFromString(const std::string& barePemKey) {
         std::vector<unsigned char> privateKey(crypto_sign_ed25519_SECRETKEYBYTES);
         if (sodium_base642bin(privateKey.data(), privateKey.size(),
                             barePemKey.c_str(), barePemKey.size(),

@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <openssl/hmac.h>
 #include <openssl/sha.h>

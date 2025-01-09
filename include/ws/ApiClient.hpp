@@ -2,7 +2,7 @@
 #include <string>
 #include <set>
 #include "ws/WebSocketListener.hpp"
-#include "ws/requests/Requests.hpp"
+#include "ws/requests/IRequests.hpp"
 
 namespace BNB
 {

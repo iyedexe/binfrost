@@ -44,11 +44,15 @@ std::string RequestsBuilder::paramsSignedRequest(const std::string& requestId, c
 }
 
 std::string RequestsBuilder::generatePayload(const std::map<std::string, std::string>& params) {
-    std::vector<std::string> param_list;
-    for (const auto& param : params) {
-        param_list.push_back(fmt::format("{}={}", param.first, param.second));
-    }    
-    return fmt::format("{}", fmt::join(param_list, "&"));
+    return std::accumulate(
+        params.begin(),
+        params.end(),
+        std::string(),
+        [](const std::string& acc, const std::pair<std::string, std::string>& param) {
+            return acc.empty()
+                ? param.first + "=" + param.second
+                : acc + "&" + param.first + "=" + param.second;
+        });
 }
 
 std::string RequestsBuilder::getTimestamp(){

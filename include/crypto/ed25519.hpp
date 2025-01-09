@@ -1,3 +1,4 @@
+#pragma once
 #include<vector>
 #include <string>
 #include <stdexcept>
@@ -8,7 +9,6 @@ namespace crypto {
     class ed25519 : public ikey {
     public:
         ed25519(const std::string& privateKey);
-        ~ed25519();
 
         std::string sign(const std::string& message);
     private:

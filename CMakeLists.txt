@@ -86,22 +86,43 @@ target_include_directories(fixBroker PRIVATE ${CMAKE_SOURCE_DIR}/include)
 target_link_libraries(fixBroker ${FIX8_LIBRARIES} ${Poco_LIBRARIES} sodium PocoNetSSL)
 
 
-set(WS_COMMON_SOURCES
-    src/ws/WebSocketListener.cpp
-    src/ws/StreamsClient.cpp
-    # src/ws/ApiClient.cpp
-    )
 set(WS_COMMON_LIBS
     ${Boost_LIBRARIES}
-    OpenSSL::SSL
-    OpenSSL::Crypto
     quill::quill
 )
+set(CRYPTO_UTILS_LIBS
+    OpenSSL::SSL
+    OpenSSL::Crypto
+    sodium
+)
+
+set(CRYPTO_UTILS_SOURCES
+    src/crypto/ed25519.cpp
+    src/crypto/hmac.cpp
+    src/crypto/rsa.cpp
+)
+set(WS_COMMON_SOURCES
+    src/ws/WebSocketListener.cpp
+)
+set(WS_FEEDER_SOURCES
+    ${WS_COMMON_SOURCES}
+    src/ws/StreamsClient.cpp
+)
+add_executable(wsFeeder examples/ws/feeder.cpp ${WS_FEEDER_SOURCES})
+target_link_libraries(wsFeeder ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
 
 
-add_executable(wsFeeder examples/ws/feeder.cpp ${WS_COMMON_SOURCES})
+set(WS_BROKER_SOURCES
+    ${WS_COMMON_SOURCES}
+    ${CRYPTO_UTILS_SOURCES}
+    src/ws/ApiClient.cpp
+    src/ws/requests/api/Account.cpp
+    src/ws/requests/RequestsBuilder.cpp
+)
+add_executable(wsBroker examples/ws/broker.cpp ${WS_BROKER_SOURCES})
 # target_include_directories(wsFeeder PRIVATE ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(wsFeeder ${WS_COMMON_LIBS})
+target_link_libraries(wsBroker ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
+
 
 
 set(TEST_SOURCES

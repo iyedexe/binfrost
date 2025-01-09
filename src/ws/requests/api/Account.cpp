@@ -6,8 +6,9 @@ namespace BNB
     {
         namespace Account
         {
-            Information::Information() : method_("account.status") 
+            Information::Information() 
             {
+                method_= "account.status";
                 params_ = {
                     {"omitZeroBalances", "true"},
                 };
