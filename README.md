@@ -65,13 +65,16 @@ sudo dnf install stunnel
 [WS_API] Implement base.   
 [UTILS] refactor utils and add hmac.   
 [REST_CLIENT] Implement.   
+[WS_STREAMS] test user streams.   
 
 # TODO : 
-[WS_STREAMS] test user streams.   
 [WS_STREAMS] Refactor streams client.   
+[WS_API] Impelemnt critical messages.   
+[WS_STREAMS] Impelemnt critical messages.   
 [ARCHITECTURE] Feeder and broker wrapper.   
-[WS] Impelemnt messages.   
-[FIX] Impeemt messages.  
+[DEPENDECIES] User boost beast instead of websocketspp.   
+[LIBRARY] Export project as library and use in RTEX.   
+[FIX] Implement messages.  
 [WS] Feeder Broker Implement.   
 [FIX] Feeder Broker Implement.   
 
