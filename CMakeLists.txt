@@ -120,9 +120,18 @@ set(WS_BROKER_SOURCES
     src/ws/requests/RequestsBuilder.cpp
 )
 add_executable(wsBroker examples/ws/broker.cpp ${WS_BROKER_SOURCES})
-# target_include_directories(wsFeeder PRIVATE ${CMAKE_SOURCE_DIR}/include)
 target_link_libraries(wsBroker ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
 
+
+set(REST_CLIENT_SOURCES
+    ${WS_COMMON_SOURCES}
+    ${CRYPTO_UTILS_SOURCES}
+    src/rest/ApiClient.cpp
+    src/rest/requests/UserStream.cpp
+    src/rest/requests/RequestsBuilder.cpp
+)
+add_executable(restClient examples/rest/client.cpp ${REST_CLIENT_SOURCES})
+target_link_libraries(restClient ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
 
 
 set(TEST_SOURCES
