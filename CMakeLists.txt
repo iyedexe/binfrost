@@ -103,13 +103,14 @@ set(CRYPTO_UTILS_SOURCES
 )
 set(WS_COMMON_SOURCES
     src/ws/WebSocketListener.cpp
+    src/ws/ApiClient.cpp
+    src/ws/requests/RequestsBuilder.cpp
 )
 set(WS_FEEDER_SOURCES
     ${WS_COMMON_SOURCES}
-    src/ws/StreamsClient.cpp
+    src/ws/requests/streams/Streams.cpp
 )
 set(REST_CLIENT_SOURCES
-    ${WS_COMMON_SOURCES}
     ${CRYPTO_UTILS_SOURCES}
     src/rest/ApiClient.cpp
     src/rest/requests/UserStream.cpp
@@ -118,9 +119,7 @@ set(REST_CLIENT_SOURCES
 set(WS_BROKER_SOURCES
     ${WS_COMMON_SOURCES}
     ${CRYPTO_UTILS_SOURCES}
-    src/ws/ApiClient.cpp
     src/ws/requests/api/Account.cpp
-    src/ws/requests/RequestsBuilder.cpp
 )
 set(TEST_SOURCES
     ${FIX_COMMON_SOURCES}
@@ -129,10 +128,10 @@ set(TEST_SOURCES
 )
 
 add_executable(wsMarketFeeder examples/ws/market_data_feeder.cpp ${WS_FEEDER_SOURCES})
-target_link_libraries(wsFeeder ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
+target_link_libraries(wsMarketFeeder ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
 
 add_executable(wsUserFeeder examples/ws/user_streams_feeder.cpp ${WS_FEEDER_SOURCES} ${REST_CLIENT_SOURCES})
-target_link_libraries(wsFeeder ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
+target_link_libraries(wsUserFeeder ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
 
 add_executable(wsBroker examples/ws/broker.cpp ${WS_BROKER_SOURCES})
 target_link_libraries(wsBroker ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})

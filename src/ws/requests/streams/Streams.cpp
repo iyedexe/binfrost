@@ -37,7 +37,7 @@ namespace BNB::WS::Streams
     SetProperty::SetProperty(const std::string& property, const std::string& value) 
     {
         method_= "SET_PROPERTY";
-        params_ = {property, value};
+        params_ = {{property, value}};
     }
 
     std::string SetProperty::dump() const

@@ -66,9 +66,9 @@ sudo dnf install stunnel
 [UTILS] refactor utils and add hmac.   
 [REST_CLIENT] Implement.   
 [WS_STREAMS] test user streams.   
+[WS_STREAMS] Refactor streams client.   
 
 # TODO : 
-[WS_STREAMS] Refactor streams client.   
 [WS_API] Impelemnt critical messages.   
 [WS_STREAMS] Impelemnt critical messages.   
 [ARCHITECTURE] Feeder and broker wrapper.   

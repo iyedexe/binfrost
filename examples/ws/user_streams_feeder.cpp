@@ -1,11 +1,15 @@
 #include <nlohmann/json.hpp>
+
 #include "crypto/ikey.hpp"
-#include "ws/StreamsClient.hpp"
+
 #include "rest/ApiClient.hpp"
 #include "rest/requests/RequestsBuilder.hpp"
 #include "rest/requests/UserStream.hpp"
-#include "logger.hpp"
 
+#include "ws/ApiClient.hpp"
+#include "ws/requests/streams/Streams.hpp"
+
+#include "logger.hpp"
 
 int main()
 {
@@ -22,12 +26,14 @@ int main()
     auto jsonData = nlohmann::json::parse(response);
     std::string listenKey = jsonData["listenKey"];
 
-    BNB::WS::StreamsClient streamsClient("wss://testnet.binance.vision/ws");
+    BNB::WS::ApiClient streamsClient("wss://testnet.binance.vision/ws");
     streamsClient.start();
-    streamsClient.subscribeToStreams({listenKey});
+    std::map<std::string, std::string> subscriptionStreams = {{"listenKey",listenKey}};
+    streamsClient.sendRequest(BNB::WS::Streams::Subscribe(subscriptionStreams));
     while (true)
     {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        auto message = streamsClient.getLastUpdate();
+        LOG_INFO("Update : {}", message.dump());
     }
     return 0;
 }
