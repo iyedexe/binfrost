@@ -69,11 +69,11 @@ sudo dnf install stunnel
 [WS_STREAMS] Refactor streams client.   
 
 # TODO : 
-[WS_API] Impelemnt critical messages.   
-[WS_STREAMS] Impelemnt critical messages.   
-[ARCHITECTURE] Feeder and broker wrapper.   
-[DEPENDECIES] User boost beast instead of websocketspp.   
+[WS_API] Impelemnt critical messages : Exchange info, Place order, Test Order, Cancel All Orders.   
 [LIBRARY] Export project as library and use in RTEX.   
+[ARCHITECTURE] Feeder and broker wrapper.   
+[WS_STREAMS] Impelemnt critical messages maybe ?.      
+[DEPENDECIES] User boost beast instead of websocketspp.   
 [FIX] Implement messages.  
 [WS] Feeder Broker Implement.   
 [FIX] Feeder Broker Implement.   
