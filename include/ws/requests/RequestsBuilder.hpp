@@ -10,8 +10,10 @@ class RequestsBuilder
 public:
 
     static std::string basicRequest(const std::string& requestId, const std::string& method);
-    static std::string paramsUnsignedRequest(const std::string& requestId, const std::string& method, const nlohmann::json& params);
+    static std::string paramsUnsignedRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& params);
     static std::string paramsSignedRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& params);
+    static std::string streamsRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& params);
+
 
 private:
     inline static RequestsBuilder* instance = nullptr;

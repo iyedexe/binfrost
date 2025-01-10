@@ -28,6 +28,27 @@ namespace BNB
             return requestId;
         }
 
+        nlohmann::json ApiClient::getResponseForId(const RequestId& id)
+        {
+            // may wait indefinitely for invalid id
+            std::unique_lock<std::mutex> lock(responseMutex_);
+            responseCond_.wait(lock, [this, &id]() {
+                return requestResponses_.find(id) != requestResponses_.end();
+            });
+            return requestResponses_[id];
+        }
+        
+        nlohmann::json ApiClient::getLastUpdate()
+        {
+            // may wait indefinitely if not running
+            std::unique_lock<std::mutex> lock(updateMutex_);
+            updateCond_.wait(lock, [this] { return !updateQueue_.empty(); });
+
+            nlohmann::json update = updateQueue_.front();
+            updateQueue_.pop();
+            return update;
+        }
+
         void ApiClient::onMessage(websocketpp::connection_hdl hdl, websocketpp::client<websocketpp::config::asio_client>::message_ptr msg)
         {
             try {
@@ -43,25 +64,21 @@ namespace BNB
                     if (pendingRequests_.count(messageId)) {
                         pendingRequests_.erase(messageId);
                         LOG_INFO("[STREAMS_CLIENT] Response received for request ID: {}", messageId);
-
-                        if (jsonData.contains("error")) {
-                            auto error_data = jsonData["error"];
-                            int error_code = error_data.value("code", 0);
-                            std::string error_msg = error_data.value("msg", "Unknown error");
-
-                            LOG_ERROR("[STREAMS_CLIENT] Error received - Code: {}, Message: {}", error_code, error_msg);
-                        }
-
-                        // // Additional processing for the response if needed
-                        // if (json_data.contains("result") && json_data["result"].is_null()) {
-                        //     LOG_INFO("[FEEDER] Subscription to stream was successful.");
-                        // } else {
-                        //     LOG_WARNING("[FEEDER] Unexpected result in subscription response: {}", payload);
-                        // }
-
                         return;
                     }
+                    {
+                        std::lock_guard<std::mutex> lock(responseMutex_);
+                        requestResponses_[messageId] = std::move(jsonData);
+                    }
+                    responseCond_.notify_all();
+                    return;
                 }
+                // else response is an update
+                {
+                    std::lock_guard<std::mutex> lock(updateMutex_);
+                    updateQueue_.push(std::move(jsonData));
+                }
+                updateCond_.notify_one();
             } catch (const std::exception& e) {
                 LOG_ERROR("[FEEDER] onMessage error: {}", e.what());
             }            

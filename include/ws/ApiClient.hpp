@@ -20,6 +20,9 @@ namespace BNB
 
             // response is request IDs            
             RequestId sendRequest(const IRequest& request);
+            nlohmann::json getResponseForId(const RequestId& id);
+            nlohmann::json getLastUpdate();
+
             
         protected:
             void onMessage(websocketpp::connection_hdl hdl, websocketpp::client<websocketpp::config::asio_client>::message_ptr msg) override;
@@ -29,6 +32,15 @@ namespace BNB
         private:
             std::set<RequestId> pendingRequests_;
             std::string wsEndpoint_;  
+
+            std::queue<nlohmann::json> updateQueue_;
+            std::mutex updateMutex_;
+            std::condition_variable updateCond_;
+
+            std::map<RequestId, nlohmann::json> requestResponses_;
+            std::mutex responseMutex_;
+            std::condition_variable responseCond_;
+
         };
 
     }

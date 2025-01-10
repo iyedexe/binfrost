@@ -1,22 +1,14 @@
 #include "ws/requests/IRequests.hpp"
 #include "ws/requests/RequestsBuilder.hpp"
 
-namespace BNB
+namespace BNB::WS::Account
 {
-    namespace WS
+    class Information : public IRequest
     {
-        namespace Account
-        {
-            class Information : public IRequest
-            {
-            public:
-                Information();
-                std::string dump() const override;
-            };
-
-        }
-        
-    }
+    public:
+        Information();
+        std::string dump() const override;
+    };
 }
     
     // class Account

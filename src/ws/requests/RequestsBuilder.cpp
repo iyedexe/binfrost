@@ -10,7 +10,7 @@ std::string RequestsBuilder::basicRequest(const std::string& requestId, const st
     return requestBody.dump();
 }
 
-std::string RequestsBuilder::paramsUnsignedRequest(const std::string& requestId, const std::string& method, const nlohmann::json& params)
+std::string RequestsBuilder::paramsUnsignedRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& params)
 {
     nlohmann::json requestBody = {
         {"id", requestId},
@@ -19,6 +19,22 @@ std::string RequestsBuilder::paramsUnsignedRequest(const std::string& requestId,
     };
     return requestBody.dump();
 }
+
+std::string RequestsBuilder::streamsRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& streams)
+{
+    std::vector<std::string> params; 
+    std::transform(streams.begin(), streams.end(), std::back_inserter(params),
+                    [](const std::pair<std::string, std::string> stream) {
+                        return stream.first + "@" + stream.second;
+                    });
+    nlohmann::json requestBody = {
+        {"id", requestId},
+        {"method", method},
+        {"params", params}
+    };
+    return requestBody.dump();
+}
+
 
 std::string RequestsBuilder::paramsSignedRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& params)
 {
