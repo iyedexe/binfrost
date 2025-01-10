@@ -120,6 +120,7 @@ set(WS_BROKER_SOURCES
     ${WS_COMMON_SOURCES}
     ${CRYPTO_UTILS_SOURCES}
     src/ws/requests/api/Account.cpp
+    src/ws/requests/api/General.cpp
 )
 set(TEST_SOURCES
     ${FIX_COMMON_SOURCES}

@@ -1,7 +1,8 @@
 #include "ws/ApiClient.hpp"
 #include "crypto/ikey.hpp"
 #include "ws/requests/RequestsBuilder.hpp"
-#include "ws/requests/api/Account.hpp"
+#include "ws/requests/api/General.hpp"
+#include "logger.hpp"
 
 int main()
 {
@@ -14,12 +15,12 @@ int main()
 
     apiClient.start();
 
-    auto reqId = apiClient.sendRequest(BNB::WS::Account::Information());
-    std::cout << "Request ID: " << reqId << std::endl;
-
+    auto reqId = apiClient.sendRequest(BNB::WS::General::ExchangeInfo({}));
 
     while (true)
     {
+        auto response = apiClient.getResponseForId(reqId);
+        LOG_INFO("Response : {}", response.dump());
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     return 0;

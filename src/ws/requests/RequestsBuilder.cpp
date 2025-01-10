@@ -10,16 +10,6 @@ std::string RequestsBuilder::basicRequest(const std::string& requestId, const st
     return requestBody.dump();
 }
 
-std::string RequestsBuilder::paramsUnsignedRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& params)
-{
-    nlohmann::json requestBody = {
-        {"id", requestId},
-        {"method", method},
-        {"params", params}
-    };
-    return requestBody.dump();
-}
-
 std::string RequestsBuilder::streamsRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& streams)
 {
     std::vector<std::string> params; 

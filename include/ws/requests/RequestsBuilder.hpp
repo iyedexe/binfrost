@@ -10,9 +10,20 @@ class RequestsBuilder
 public:
 
     static std::string basicRequest(const std::string& requestId, const std::string& method);
-    static std::string paramsUnsignedRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& params);
     static std::string paramsSignedRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& params);
     static std::string streamsRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& params);
+
+
+    template <typename T>
+    static std::string paramsUnsignedRequest(const std::string& requestId, const std::string& method, const T& params)
+    {
+        nlohmann::json requestBody = {
+            {"id", requestId},
+            {"method", method},
+            {"params", params}
+        };
+        return requestBody.dump();
+    }
 
 
 private:

@@ -32,6 +32,10 @@ namespace BNB
         {
             // may wait indefinitely for invalid id
             std::unique_lock<std::mutex> lock(responseMutex_);
+            if (requestResponses_.find(id) != requestResponses_.end())
+            {
+                return requestResponses_[id];
+            }
             responseCond_.wait(lock, [this, &id]() {
                 return requestResponses_.find(id) != requestResponses_.end();
             });
