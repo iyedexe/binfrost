@@ -67,6 +67,7 @@ sudo dnf install stunnel
 [REST_CLIENT] Implement.   
 [WS_STREAMS] test user streams.   
 [WS_STREAMS] Refactor streams client.   
+[WS_API] Default constructor for all requests, parameter addition operator.  
 
 # TODO : 
 [WS_API] Impelemnt critical messages : Exchange info, Place order, Test Order, Cancel All Orders.   
