@@ -15,7 +15,10 @@ int main()
 
     apiClient.start();
 
-    auto reqId = apiClient.sendRequest(BNB::WS::General::ExchangeInfo({}));
+    auto reqId = apiClient.sendRequest(
+        BNB::WS::General::ExchangeInfo() 
+        << std::make_pair<std::string, std::vector<std::string>>("permissions", {"SPOT"})
+    );
 
     auto response = apiClient.getResponseForId(reqId);
     LOG_INFO("Response : {}", response.dump());
