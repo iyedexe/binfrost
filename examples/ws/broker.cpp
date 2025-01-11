@@ -17,10 +17,11 @@ int main()
 
     auto reqId = apiClient.sendRequest(BNB::WS::General::ExchangeInfo({}));
 
+    auto response = apiClient.getResponseForId(reqId);
+    LOG_INFO("Response : {}", response.dump());
+
     while (true)
     {
-        auto response = apiClient.getResponseForId(reqId);
-        LOG_INFO("Response : {}", response.dump());
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     return 0;

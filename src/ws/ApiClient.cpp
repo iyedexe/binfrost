@@ -19,17 +19,10 @@ namespace BNB
         {
             stopClient();
         }
-        
-        RequestId ApiClient::sendRequest(const IRequest& request)
-        {
-            writeWS(request.dump());
-            RequestId requestId = request.getId();
-            pendingRequests_.insert(requestId);
-            return requestId;
-        }
 
         nlohmann::json ApiClient::getResponseForId(const RequestId& id)
         {
+            LOG_DEBUG("[API_CLIENT] Waiting for message id: [{}]", id);
             // may wait indefinitely for invalid id
             std::unique_lock<std::mutex> lock(responseMutex_);
             if (requestResponses_.find(id) != requestResponses_.end())
@@ -57,8 +50,6 @@ namespace BNB
         {
             try {
                 std::string payload = msg->get_payload();
-                LOG_DEBUG("[STREAMS_CLIENT] onMessage: {}", payload);
-
                 auto jsonData = nlohmann::json::parse(payload);
 
                 // if response to a request
@@ -68,12 +59,11 @@ namespace BNB
                     if (pendingRequests_.count(messageId)) {
                         pendingRequests_.erase(messageId);
                         LOG_INFO("[STREAMS_CLIENT] Response received for request ID: {}", messageId);
-                        return;
                     }
                     {
                         std::lock_guard<std::mutex> lock(responseMutex_);
                         requestResponses_[messageId] = std::move(jsonData);
-                    }
+                    }                    
                     responseCond_.notify_all();
                     return;
                 }
@@ -87,7 +77,7 @@ namespace BNB
                 LOG_ERROR("[FEEDER] onMessage error: {}", e.what());
             }            
         }
-        
+
         void ApiClient::onClose(websocketpp::connection_hdl hdl)
         {
             WebSocketListener::onClose(hdl);

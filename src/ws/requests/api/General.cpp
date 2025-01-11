@@ -18,13 +18,9 @@ namespace BNB::WS::General
     {
         return RequestsBuilder::basicRequest(id_, method_);
     }
-    ExchangeInfo::ExchangeInfo(const std::vector<std::string>& symbols)
+    ExchangeInfo::ExchangeInfo()
     {
         method_ = "exchangeInfo";
-        params_ = {
-            {"symbols", symbols}
-        };
-
     }
     std::string ExchangeInfo::dump() const
     {

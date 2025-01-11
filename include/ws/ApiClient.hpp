@@ -18,8 +18,15 @@ namespace BNB
             void start();
             void stop();
 
-            // response is request IDs            
-            RequestId sendRequest(const IRequest& request);
+            // response is request IDs
+            template <typename T>   
+            RequestId sendRequest(const IRequest<T>& request)
+            {
+                writeWS(request.dump());
+                RequestId requestId = request.getId();
+                pendingRequests_.insert(requestId);
+                return requestId;
+            }
             nlohmann::json getResponseForId(const RequestId& id);
             nlohmann::json getLastUpdate();
 
