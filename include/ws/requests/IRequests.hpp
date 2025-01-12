@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <string>
 #include <map>
 #include <nlohmann/json.hpp>
@@ -33,7 +34,9 @@ namespace BNB::WS
 
         template <const std::string_view& Name, typename T>
         IRequest& operator<<(const RequestParam<Name, T>& p) {
-            params_[p.getName()] = p.getValue();
+            // params_[p.getName()] = p.getValue();
+            params_.emplace(p.getName(), p.getValue());
+
             return *this;
         }
 
@@ -46,6 +49,6 @@ namespace BNB::WS
         
         std::string id_;
         std::string method_;
-        nlohmann::json params_{nlohmann::json::object()};
+        nlohmann::json params_;
     };
 }
