@@ -1,12 +1,11 @@
 #pragma once
-#include <iostream>
 #include <string>
 #include <map>
 #include <nlohmann/json.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
-
+#include "logger.hpp"
 
 namespace BNB::WS
 {
@@ -34,7 +33,6 @@ namespace BNB::WS
 
         template <const std::string_view& Name, typename T>
         IRequest& operator<<(const RequestParam<Name, T>& p) {
-            // params_[p.getName()] = p.getValue();
             params_.emplace(p.getName(), p.getValue());
 
             return *this;

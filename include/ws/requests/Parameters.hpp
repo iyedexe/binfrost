@@ -13,6 +13,10 @@ namespace BNB::WS
         constexpr std::string_view permissions = "permissions";
         constexpr std::string_view showPermissionSets = "showPermissionSets";
         constexpr std::string_view symbolStatus = "symbolStatus";
+        constexpr std::string_view side = "side";
+        constexpr std::string_view type = "type";
+        constexpr std::string_view quantity = "quantity";
+
     }
 
     using Symbol = RequestParam<ParamNames::symbol, std::string>;
@@ -20,5 +24,8 @@ namespace BNB::WS
     using Permissions = RequestParam<ParamNames::permissions, std::vector<std::string>>;
     using ShowPermissionSets = RequestParam<ParamNames::showPermissionSets, bool>;
     using SymbolStatus = RequestParam<ParamNames::symbolStatus, std::string>;
+    using Side = RequestParam<ParamNames::side, std::string>;
+    using Type = RequestParam<ParamNames::type, std::string>;
+    using Quantity = RequestParam<ParamNames::quantity, double>;
 
 }

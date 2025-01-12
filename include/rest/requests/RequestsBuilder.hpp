@@ -1,4 +1,5 @@
 #pragma once
+#include <numeric>
 #include "rest/requests/IRequest.hpp"
 #include "crypto/ikey.hpp"
 #include "crypto/ed25519.hpp"

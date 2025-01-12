@@ -1,7 +1,8 @@
 #include "ws/requests/IRequests.hpp"
 #include "ws/requests/RequestsBuilder.hpp"
+#include "logger.hpp"
 
-namespace BNB::WS::Account
+namespace BNB::WS::Trading
 {
     class PlaceNewOrder : public IRequest
     {

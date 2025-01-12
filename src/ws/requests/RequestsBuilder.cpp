@@ -26,14 +26,23 @@ std::string RequestsBuilder::streamsRequest(const std::string& requestId, const 
 }
 
 
-std::string RequestsBuilder::paramsSignedRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& params)
+std::string RequestsBuilder::paramsSignedRequest(const std::string& requestId, const std::string& method, const nlohmann::json& jsonParams)
 {
     if (instance == nullptr) {
         LOG_ERROR("[REQUESTS_BUILDER] Singleton is not yet initialized.");
         return "";
     }
 
-    auto signedParams = params;
+    std::map<std::string, std::string> signedParams;
+    for (const auto& [key, value] : jsonParams.items()) {
+        // LOG_DEBUG("Dumping parameter {}, {}", key, value.dump());
+        if (value.is_string()) {
+            signedParams[key] = value.get<std::string>();
+        } else {
+            signedParams[key] = value.dump();
+        }
+    }
+
     signedParams.insert({"apiKey", instance->apiKey_});
     signedParams.insert({"timestamp", getTimestamp()});
 

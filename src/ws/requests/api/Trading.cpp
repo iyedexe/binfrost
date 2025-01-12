@@ -1,13 +1,13 @@
 #include "ws/requests/api/Trading.hpp"
 
-namespace BNB::WS::Account
+namespace BNB::WS::Trading
 {
     PlaceNewOrder::PlaceNewOrder()
     {
         method_ = "order.place";
     }
 
-    std::string PlaceNewOrder::dump() const {
+    std::string PlaceNewOrder::dump() const {        
         return RequestsBuilder::paramsSignedRequest(id_, method_, params_);
     }
 

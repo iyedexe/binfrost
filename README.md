@@ -68,10 +68,10 @@ sudo dnf install stunnel
 [WS_STREAMS] test user streams.   
 [WS_STREAMS] Refactor streams client.   
 [WS_API] Default constructor for all requests, parameter addition operator.  
-[WS_API] Impelemnt critical messages : Exchange info, Place order, Test Order, Cancel All Orders.   
+[WS_API] Implement critical messages : Exchange info.    
 
 # TODO : 
-[WS_API] Impelemnt critical messages : Exchange info, Place order, Test Order, Cancel All Orders.   
+[WS_API] Implement critical messages : Place order, Test Order, Cancel All Orders.   
 [LIBRARY] Export project as library and use in RTEX.   
 [ARCHITECTURE] Feeder and broker wrapper.   
 [WS_STREAMS] Impelemnt critical messages maybe ?.      

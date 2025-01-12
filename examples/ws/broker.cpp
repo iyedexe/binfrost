@@ -2,6 +2,7 @@
 #include "crypto/ikey.hpp"
 #include "ws/requests/RequestsBuilder.hpp"
 #include "ws/requests/api/General.hpp"
+#include "ws/requests/api/Trading.hpp"
 #include "ws/requests/Parameters.hpp"
 #include "logger.hpp"
 
@@ -16,8 +17,24 @@ int main()
 
     apiClient.start();
 
+    /*    
     auto reqId = apiClient.sendRequest(
         BNB::WS::General::ExchangeInfo() << BNB::WS::Permissions({"SPOT"})
+    );
+
+    auto response = apiClient.getResponseForId(reqId);
+    LOG_INFO("Response : {}", response.dump());
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    LOG_INFO("Testing order..");
+    */  
+
+    auto reqId = apiClient.sendRequest(
+        BNB::WS::Trading::TestNewOrder() 
+            << BNB::WS::Symbol("XRPUSDT") 
+            << BNB::WS::Side("BUY") 
+            << BNB::WS::Type("MARKET")
+            << BNB::WS::Quantity(1)
     );
 
     auto response = apiClient.getResponseForId(reqId);
