@@ -19,8 +19,7 @@ namespace BNB
             void stop();
 
             // response is request IDs
-            template <typename T>   
-            RequestId sendRequest(const IRequest<T>& request)
+            RequestId sendRequest(const IRequest& request)
             {
                 writeWS(request.dump());
                 RequestId requestId = request.getId();

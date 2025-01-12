@@ -9,7 +9,18 @@
 
 namespace BNB::WS
 {
-    template <typename T= std::string>
+    template <const std::string_view& Name, typename T>
+    class RequestParam {
+    public:
+        explicit RequestParam(const T& value) : value_(value) {}
+
+        const std::string_view getName() const { return Name; }
+        const T& getValue() const { return value_; }
+
+    private:
+        T value_;
+    };
+
     class IRequest {
     public:
         IRequest() {
@@ -18,11 +29,11 @@ namespace BNB::WS
         virtual ~IRequest() = default;
         virtual std::string getId() const { return id_; }
         virtual std::string getMethod() const { return method_; }
-        virtual std::map<std::string, T> getParams() const { return params_; }
         virtual std::string dump() const = 0;
 
-        IRequest& operator<<(const std::pair<std::string, T>& keyValuePair) {
-            params_[keyValuePair.first] = keyValuePair.second;
+        template <const std::string_view& Name, typename T>
+        IRequest& operator<<(const RequestParam<Name, T>& p) {
+            params_[p.getName()] = p.getValue();
             return *this;
         }
 
@@ -35,6 +46,6 @@ namespace BNB::WS
         
         std::string id_;
         std::string method_;
-        std::map<std::string, T> params_;
+        nlohmann::json params_{nlohmann::json::object()};
     };
 }

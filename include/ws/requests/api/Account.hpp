@@ -3,7 +3,7 @@
 
 namespace BNB::WS::Account
 {
-    class Information : public IRequest<>
+    class Information : public IRequest
     {
     public:
         Information();

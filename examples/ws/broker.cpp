@@ -2,6 +2,7 @@
 #include "crypto/ikey.hpp"
 #include "ws/requests/RequestsBuilder.hpp"
 #include "ws/requests/api/General.hpp"
+#include "ws/requests/Parameters.hpp"
 #include "logger.hpp"
 
 int main()
@@ -16,8 +17,7 @@ int main()
     apiClient.start();
 
     auto reqId = apiClient.sendRequest(
-        BNB::WS::General::ExchangeInfo() 
-        << std::make_pair<std::string, std::vector<std::string>>("permissions", {"SPOT"})
+        BNB::WS::General::ExchangeInfo() << BNB::WS::Permissions({"SPOT"})
     );
 
     auto response = apiClient.getResponseForId(reqId);

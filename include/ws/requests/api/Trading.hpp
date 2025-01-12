@@ -3,49 +3,49 @@
 
 namespace BNB::WS::Account
 {
-    class PlaceNewOrder : public IRequest<>
+    class PlaceNewOrder : public IRequest
     {
     public:
         PlaceNewOrder();
         std::string dump() const override;
     };
 
-    class TestNewOrder : public IRequest<>
+    class TestNewOrder : public IRequest
     {
     public:
         TestNewOrder();
         std::string dump() const override;
     };
 
-    class QueryOrder : public IRequest<>
+    class QueryOrder : public IRequest
     {
     public:
         QueryOrder();
         std::string dump() const override;
     };
 
-    class CancelOrder : public IRequest<>
+    class CancelOrder : public IRequest
     {
     public:
         CancelOrder();
         std::string dump() const override;
     };
 
-    class CancelAndReplaceOrder : public IRequest<>
+    class CancelAndReplaceOrder : public IRequest
     {
     public:
         CancelAndReplaceOrder();
         std::string dump() const override;
     };
 
-    class CurrentOpenOrders : public IRequest<>
+    class CurrentOpenOrders : public IRequest
     {
     public:
         CurrentOpenOrders();
         std::string dump() const override;
     };
 
-    class CancelOpenOrders : public IRequest<>
+    class CancelOpenOrders : public IRequest
     {
     public:
         CancelOpenOrders();

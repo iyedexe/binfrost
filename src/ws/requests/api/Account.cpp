@@ -5,9 +5,7 @@ namespace BNB::WS::Account
     Information::Information() 
     {
         method_= "account.status";
-        params_ = {
-            {"omitZeroBalances", "true"}
-        };
+        params_["omitZeroBalances"] = "true";    
     }
 
     std::string Information::dump() const

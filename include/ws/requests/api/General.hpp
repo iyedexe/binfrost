@@ -4,21 +4,21 @@
 
 namespace BNB::WS::General
 {
-    class Ping: public IRequest<>
+    class Ping: public IRequest
     {
     public:
         Ping();
         std::string dump() const override;
     };
 
-    class CheckServerTime: public IRequest<>
+    class CheckServerTime: public IRequest
     {
     public:
         CheckServerTime();
         std::string dump() const override;
     };
 
-    class ExchangeInfo: public IRequest<std::vector<std::string>>
+    class ExchangeInfo: public IRequest
     {
     public:
         ExchangeInfo();
