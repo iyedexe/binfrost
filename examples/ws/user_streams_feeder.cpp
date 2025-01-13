@@ -8,6 +8,7 @@
 
 #include "ws/ApiClient.hpp"
 #include "ws/requests/streams/Streams.hpp"
+#include "ws/requests/Parameters.hpp"
 
 #include "logger.hpp"
 
@@ -23,13 +24,13 @@ int main()
 
     auto response = apiClient.sendRequest(BNB::REST::UserStream::Start());
     LOG_INFO("Response: {}", response);
+
     auto jsonData = nlohmann::json::parse(response);
     std::string listenKey = jsonData["listenKey"];
 
     BNB::WS::ApiClient streamsClient("wss://testnet.binance.vision/ws");
     streamsClient.start();
-    std::map<std::string, std::string> subscriptionStreams = {{"listenKey",listenKey}};
-    streamsClient.sendRequest(BNB::WS::Streams::Subscribe(subscriptionStreams));
+    streamsClient.sendRequest(BNB::WS::Streams::Subscribe() << BNB::WS::UserStream(listenKey));
     while (true)
     {
         auto message = streamsClient.getLastUpdate();
