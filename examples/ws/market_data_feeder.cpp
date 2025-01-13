@@ -1,13 +1,17 @@
 #include "ws/ApiClient.hpp"
 #include "ws/requests/streams/Streams.hpp"
+#include "ws/requests/Parameters.hpp"
 #include "logger.hpp"
 
 int main()
 {
     BNB::WS::ApiClient streamsClient("wss://testnet.binance.vision/ws");
     streamsClient.start();
-    std::map<std::string, std::string> subscriptionStreams = {{"btcusdt","trade"}};
-    streamsClient.sendRequest(BNB::WS::Streams::Subscribe(subscriptionStreams));
+
+    streamsClient.sendRequest(
+        BNB::WS::Streams::Subscribe() 
+            << BNB::WS::TradeStream("btcusdt")
+    );
     while (true)
     {
         auto message = streamsClient.getLastUpdate();

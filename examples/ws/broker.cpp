@@ -17,7 +17,7 @@ int main()
 
     apiClient.start();
 
-    /*    
+    
     auto reqId = apiClient.sendRequest(
         BNB::WS::General::ExchangeInfo() << BNB::WS::Permissions({"SPOT"})
     );
@@ -25,19 +25,19 @@ int main()
     auto response = apiClient.getResponseForId(reqId);
     LOG_INFO("Response : {}", response.dump());
 
+    LOG_INFO("Sleeping for 2 secs..");  
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    LOG_INFO("Testing order..");
-    */  
+    LOG_INFO("Testing order..");  
 
-    auto reqId = apiClient.sendRequest(
+    reqId = apiClient.sendRequest(
         BNB::WS::Trading::TestNewOrder() 
-            << BNB::WS::Symbol("XRPUSDT") 
+            << BNB::WS::Symbol("XRPUSDC") 
             << BNB::WS::Side("BUY") 
             << BNB::WS::Type("MARKET")
             << BNB::WS::Quantity(1)
     );
 
-    auto response = apiClient.getResponseForId(reqId);
+    response = apiClient.getResponseForId(reqId);
     LOG_INFO("Response : {}", response.dump());
 
     while (true)

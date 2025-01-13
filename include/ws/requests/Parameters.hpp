@@ -16,6 +16,7 @@ namespace BNB::WS
         constexpr std::string_view side = "side";
         constexpr std::string_view type = "type";
         constexpr std::string_view quantity = "quantity";
+        constexpr std::string_view tradeStream = "trade";
 
     }
 
@@ -27,5 +28,6 @@ namespace BNB::WS
     using Side = RequestParam<ParamNames::side, std::string>;
     using Type = RequestParam<ParamNames::type, std::string>;
     using Quantity = RequestParam<ParamNames::quantity, double>;
+    using TradeStream = RequestParam<ParamNames::tradeStream, std::string>;
 
 }

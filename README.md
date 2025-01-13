@@ -69,10 +69,14 @@ sudo dnf install stunnel
 [WS_STREAMS] Refactor streams client.   
 [WS_API] Default constructor for all requests, parameter addition operator.  
 [WS_API] Implement critical messages : Exchange info.    
+[WS_API] Implement critical messages : Place order, Test Order, Cancel All Orders.   
 
 # TODO : 
-[WS_API] Implement critical messages : Place order, Test Order, Cancel All Orders.   
+[CRYPTO] Add support for ed25519 key loading.   
+[UTESTS] Unit tests for signatures, payload generation, Key loading.   
+[UTESTS] Unit tests for .   
 [LIBRARY] Export project as library and use in RTEX.   
+[WS_API] Implement critical messages : Logon and no signature on messages once logged in.   
 [ARCHITECTURE] Feeder and broker wrapper.   
 [WS_STREAMS] Impelemnt critical messages maybe ?.      
 [DEPENDECIES] User boost beast instead of websocketspp.   

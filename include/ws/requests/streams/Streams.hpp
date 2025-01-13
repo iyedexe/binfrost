@@ -6,14 +6,14 @@ namespace BNB::WS::Streams
     class Subscribe : public IRequest
     {
     public:
-        Subscribe(const std::map<std::string, std::string>& streams);
+        Subscribe();
         std::string dump() const override;
     };
 
     class Unsubscribe : public IRequest
     {
     public:
-        Unsubscribe(const std::map<std::string, std::string>& streams);
+        Unsubscribe();
         std::string dump() const override;
     };
 

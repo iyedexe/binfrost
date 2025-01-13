@@ -11,7 +11,7 @@ public:
 
     static std::string basicRequest(const std::string& requestId, const std::string& method);
     static std::string paramsSignedRequest(const std::string& requestId, const std::string& method, const nlohmann::json& jsonParams);
-    static std::string streamsRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& params);
+    static std::string streamsRequest(const std::string& requestId, const std::string& method, const nlohmann::json& jsonParams);
 
 
     template <typename T>

@@ -2,10 +2,9 @@
 
 namespace BNB::WS::Streams
 {
-    Subscribe::Subscribe(const std::map<std::string, std::string>& streams) 
+    Subscribe::Subscribe() 
     {
         method_= "SUBSCRIBE";
-        params_ = streams;
     }
 
     std::string Subscribe::dump() const
@@ -13,10 +12,9 @@ namespace BNB::WS::Streams
         return RequestsBuilder::streamsRequest(id_, method_, params_);
     }
     
-    Unsubscribe::Unsubscribe(const std::map<std::string, std::string>& streams) 
+    Unsubscribe::Unsubscribe() 
     {
         method_= "UNSUBSCRIBE";
-        params_ = streams;
     }
 
     std::string Unsubscribe::dump() const

@@ -10,13 +10,16 @@ std::string RequestsBuilder::basicRequest(const std::string& requestId, const st
     return requestBody.dump();
 }
 
-std::string RequestsBuilder::streamsRequest(const std::string& requestId, const std::string& method, const std::map<std::string, std::string>& streams)
+std::string RequestsBuilder::streamsRequest(const std::string& requestId, const std::string& method, const nlohmann::json& jsonParams)
 {
     std::vector<std::string> params; 
-    std::transform(streams.begin(), streams.end(), std::back_inserter(params),
-                    [](const std::pair<std::string, std::string> stream) {
-                        return stream.first + "@" + stream.second;
-                    });
+    for (const auto& [key, value] : jsonParams.items()) {
+        if (value.is_string()) {
+            params.push_back(value.get<std::string>() + "@" + key);
+        } else {
+            params.push_back(value.dump() + "@" + key);
+        }   
+    }
     nlohmann::json requestBody = {
         {"id", requestId},
         {"method", method},
