@@ -76,7 +76,10 @@ sudo dnf install stunnel
 [UTESTS] Unit tests for signatures, payload generation, Key loading.   
 [UTESTS] Unit tests for .   
 [LIBRARY] Export project as library and use in RTEX.   
+[LIBRARY] Make version 0.0 Beta.   
+[WS_ALL] Enforce parameters for request types.  
 [WS_API] Implement critical messages : Logon and no signature on messages once logged in.   
+[FIX] Clean up architecture and reorganize code gen.   
 [ARCHITECTURE] Feeder and broker wrapper.   
 [WS_STREAMS] Impelemnt critical messages maybe ?.      
 [DEPENDECIES] User boost beast instead of websocketspp.   
