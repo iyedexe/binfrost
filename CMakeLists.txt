@@ -2,6 +2,20 @@ cmake_minimum_required(VERSION 3.10)
 project(fix_bnb)
 set(CMAKE_CXX_STANDARD 20)
 
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/oe)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/md)
+
+file(DOWNLOAD 
+    https://raw.githubusercontent.com/binance/binance-spot-api-docs/master/fix/schemas/spot-fix-oe.xml 
+    ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/oe/broker.xml
+    EXPECTED_HASH SHA256=70fe982970197fb86f7864de53cc8368dbe058569393f8c52e152d9e5d14c2ec)
+
+file(DOWNLOAD 
+    https://raw.githubusercontent.com/binance/binance-spot-api-docs/master/fix/schemas/spot-fix-md.xml 
+    ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/md/feeder.xml
+    EXPECTED_HASH SHA256=35bcb54d3b1fb62d264fc2cf2c806b87b0ea60935cc3c3f13834b9cc1f98b429)
+
+
 # warning for temolate class destructor c20 (webscoketpp)
 SET(C20_WARNING_TEMPLATE_CDTOR_MUTE "-Wno-template-id-cdtor")
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${C20_WARNING_TEMPLATE_CDTOR_MUTE}")
@@ -28,6 +42,7 @@ function(GENERATE_SPOT_BNB_FIX SRCS HDRS)
     message(SEND_ERROR "Error: GENERATE_SPOT_BNB_FIX() called without any XML schema files")
     return()
   endif()
+  message("Generating source files for FIX xml")
 
   set(${SRCS})
   set(${HDRS})
@@ -66,9 +81,10 @@ function(GENERATE_SPOT_BNB_FIX SRCS HDRS)
 
 endfunction()
 
-GENERATE_SPOT_BNB_FIX(FIX8_SRCS FIX8_HDRS "${CMAKE_SOURCE_DIR}/fix/bnb/oe/broker.xml")
+GENERATE_SPOT_BNB_FIX(FIX8_SRCS FIX8_HDRS "${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/oe/broker.xml")
+GENERATE_SPOT_BNB_FIX(FIX8_SRCS FIX8_HDRS "${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/md/feeder.xml")
 
-include_directories(${CMAKE_SOURCE_DIR}/fix)
+include_directories(${CMAKE_SOURCE_DIR}/codegen)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/libs/websocketpp)
 include_directories(${CMAKE_SOURCE_DIR}/libs/websocketpp/asio)

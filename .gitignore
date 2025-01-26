@@ -1,10 +1,6 @@
 build/*
 
-fix/bnb/oe/
-!fix/bnb/oe/.gitkeep
-
-fix/bnb/md/
-!fix/bnb/md/.gitkeep
+codegen/
 
 .vscode
 
