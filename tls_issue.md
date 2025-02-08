@@ -8,6 +8,81 @@ This will never be returned unless explicitly set by an application callback.
 
 SecureStreamSocket->connect is called
 
+
+Connection with TLS to Binance endpoint unsuccessfull due to certificate checking.
+The adress checked against the host in the certificate is IP vs hostname in certificate which causes failure
+
+Fix ideas : 
+Secure socket method : 
+	void setPeerHostName(const std::string& hostName);
+		/// Sets the peer's host name used for certificate validation.
+
+can be called from the sessionwrapper.hpp
+_sock->setPeerHostName(from_or_default(_ses, "ip", ip));
+
+Or class derived from FIX8::ClientSession<BNB::FIX::BrokerSessionClient> that sets this value
+
+Detailed call stack :
+<fix8::connection.cpp:338>
+```
+bool ClientConnection::connect()
+{
+	unsigned attempts(0);
+	const LoginParameters& lparam(_session.get_login_parameters());
+	const Poco::Timespan timeout(lparam._connect_timeout, 0);
+
+	while (attempts < (lparam._reliable ? 1 : lparam._login_retries))
+	{
+		try
+		{
+			if (_addr == Poco::Net::SocketAddress())
+				throw Poco::Net::InvalidAddressException("empty address");
+
+			scout_info << "Trying to connect to: " << _addr.toString() << " (" << ++attempts << ')' << ( _secured ? " secured" : " not-secured");
+>>>			_sock->connect(_addr, timeout);
+			if (lparam._recv_buf_sz)
+				set_recv_buf_sz(lparam._recv_buf_sz);
+			if (lparam._send_buf_sz)
+				set_send_buf_sz(lparam._send_buf_sz);
+			_sock->setLinger(false, 0);
+			_sock->setNoDelay(_no_delay);
+			scout_info << "Connection successful";
+			return _connected = true;
+		}
+		catch (Poco::Exception& e)
+		{
+			if (lparam._reliable)
+			{
+				scout_debug << "rethrowing Poco::Exception: " << e.displayText();
+				throw;
+			}
+			scout_error << "exception: " << e.displayText();
+			hypersleep<h_milliseconds>(lparam._login_retry_interval);
+		}
+		catch (exception& e)
+		{
+			if (lparam._reliable)
+			{
+				scout_debug << "rethrowing exception: " << e.what();
+				throw;
+			}
+			scout_error << "exception: " << e.what();
+			hypersleep<h_milliseconds>(lparam._login_retry_interval);
+		}
+	}
+}
+```
+<POCO::SecureStreamSocketImpl.cpp:72>
+```
+void SecureStreamSocketImpl::connect(const SocketAddress& address, const Poco::Timespan& timeout)
+{
+	_impl.connect(address, timeout, !_lazyHandshake);
+	reset(_impl.sockfd());
+}
+```
+
+<POCO::SecureSocketImpl.cpp:128>
+```
 void SecureSocketImpl::connect(const SocketAddress& address, const Poco::Timespan& timeout, bool performHandshake)
 {
 	if (_pSSL) reset();
@@ -19,14 +94,25 @@ void SecureSocketImpl::connect(const SocketAddress& address, const Poco::Timespa
 	Poco::Timespan sendTimeout = _pSocket->getSendTimeout();
 	_pSocket->setReceiveTimeout(timeout);
 	_pSocket->setSendTimeout(timeout);
-
 	connectSSL(performHandshake);
-	
 	_pSocket->setReceiveTimeout(receiveTimeout);
 	_pSocket->setSendTimeout(sendTimeout);
 }
+```
 
-oid SecureSocketImpl::connectSSL(bool performHandshake)
+Socket is instanciated at : <fix8::sessionwrapper.hpp:232>
+```
+#ifdef FIX8_HAVE_OPENSSL
+			bool secured(_ssl.is_secure());
+			_sock = secured
+				? new Poco::Net::SecureStreamSocket(_ssl._context)
+				: new Poco::Net::StreamSocket;
+```
+
+
+<POCO::SecureSocketImpl.cpp:156>
+```
+void SecureSocketImpl::connectSSL(bool performHandshake)
 {
 	poco_assert (!_pSSL);
 	poco_assert (_pSocket->initialized());
@@ -84,6 +170,8 @@ oid SecureSocketImpl::connectSSL(bool performHandshake)
 		throw;
 	}
 }
+```
+
 
 void SecureSocketImpl::verifyPeerCertificate(const std::string& hostName)
 {

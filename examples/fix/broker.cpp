@@ -1,21 +1,14 @@
 // #include "BrokerRouterClient.hpp"
-#include "fix/BrokerSessionClient.hpp"
+#include "fix/Client.hpp"
 
 
-int main()
+int main() 
 {
-    FIX8::ClientSession<BNB::FIX::BrokerSessionClient>::ClientSession_ptr mc(
-        new FIX8::ClientSession<BNB::FIX::BrokerSessionClient>(
-            FIX8::BNB::ctx(),
-            "../config/session.xml",
-            "BROKER"
-        )
-    );
+    auto client = BNB::FIX::Client("../config/session.xml","BROKER");
+
     std::cout << "Broker client session created" << std::endl;
 
-    bool wait = true;
-    unsigned send_seqnum=0;
-    mc->start(wait, send_seqnum);
+    client.start();
     std::cout << "Broker client session started" << std::endl;
 
     while (true)
