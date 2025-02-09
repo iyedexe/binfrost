@@ -4,6 +4,14 @@ Client supports FIX, Websockets and Rest APIs.
 Order Entry, Market Data, Drop Copy (FIX) connections to be supported.   
 Performance and ease of use are key.    
 
+# Building on windows:
+```
+VCPKG_ROOT=C:\Users\Administrator\Desktop\workbench\vcpkg
+cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake
+cmake --build build
+```
+
+
 # Submodules :
 ## Websocketspp for websocket usage. 
 ```
@@ -21,19 +29,6 @@ https://github.com/odygrd/quill
 ```
 
 
-# HOW TO:
-# Install dependencies : 
-### Install openssl
-```
-sudo yum install openssl
-```
-### Install POCO
-```
-sudo yum install poco-devel poco-foundation poco-net poco-netssl poco-crypto
-```
-### Install Boost
-```
-sudo yum install boost
 ```
 ## Install FIX8: 
 ```
@@ -42,18 +37,6 @@ git clone git@github.com:fix8/fix8.git
 ./configure --enable-ssl --enable-debug
 make  
 sudo make install  
-```
-## Install libsodium
-```
-wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.20-stable.tar.gz
-./configure 
-make && make check
-sudo make install
-```
-
-## Install stunnel
-```
-sudo dnf install stunnel
 ```
 
 # DONE :
@@ -69,30 +52,32 @@ sudo dnf install stunnel
 [WS_STREAMS] Refactor streams client.   
 [WS_API] Default constructor for all requests, parameter addition operator.  
 [WS_API] Implement critical messages : Exchange info.    
-[WS_API] Implement critical messages : Place order, Test Order, Cancel All Orders.   
+[WS_API] Implement critical messages : Place order, Test Order, Cancel All Orders.  
+[BUILD] git pull binance xml.   
+[FIX] Clean up architecture and reorganize code gen.   
+[FIX] Set host name in the ssl certificate verification
+[BUILD] use vcpkg for dependencies
+[BUILD] build on windows
+[FIX] add start script with source creds and stunnel hooks. (CANCELED).    
+
+
 
 # TODO : 
+[BUILD] make the lib more portable.  
+[LIBRARY] Export project as library and use in RTEX.   
+[LIBRARY] Make version 0.0 Beta.   
 [CRYPTO] Add support for ed25519 key loading.   
 [UTESTS] Unit tests for signatures, payload generation, Key loading.   
 [UTESTS] Unit tests for .   
-[LIBRARY] Export project as library and use in RTEX.   
-[LIBRARY] Make version 0.0 Beta.   
 [WS_ALL] Enforce parameters for request types.  
 [WS_API] Implement critical messages : Logon and no signature on messages once logged in.   
-[FIX] Clean up architecture and reorganize code gen.   
 [ARCHITECTURE] Feeder and broker wrapper.   
 [WS_STREAMS] Impelemnt critical messages maybe ?.      
 [DEPENDECIES] User boost beast instead of websocketspp.   
 [FIX] Implement messages.  
 [WS] Feeder Broker Implement.   
 [FIX] Feeder Broker Implement.   
-
-make the lib more portable.  
-git pull binance xml.   
-add start script with source creds and stunnel hooks.   
-change namespaces for broker.  
-implement feeder example.   
-native ssl using fix8 pull request.   
+[FIX] native ssl using fix8 pull request.   
 more unit tests.
 
 # ISSUES:

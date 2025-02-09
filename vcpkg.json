@@ -1,0 +1,9 @@
+{
+  "dependencies": [
+    "boost",
+    "catch2",
+    "libsodium",
+    "poco",
+    "openssl"
+  ]
+}
