@@ -7,6 +7,7 @@ Performance and ease of use are key.
 # Building on windows:
 ```
 VCPKG_ROOT=C:\Users\Administrator\Desktop\workbench\vcpkg
+git submodule update --init --recursive
 cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake
 cmake --build build
 ```
@@ -59,7 +60,6 @@ sudo make install
 [BUILD] use vcpkg for dependencies
 [BUILD] build on windows
 [FIX] add start script with source creds and stunnel hooks. (CANCELED).    
-
 
 
 # TODO : 

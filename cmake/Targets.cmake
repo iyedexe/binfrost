@@ -1,3 +1,5 @@
+message(STATUS "Building targets ...")
+
 set(FIX_COMMON_SOURCES
     ${FIX8_SRCS}
     ${FIX8_HDRS}

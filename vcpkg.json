@@ -3,7 +3,10 @@
     "boost",
     "catch2",
     "libsodium",
+    "nlohmann-json",
+    "openssl",
     "poco",
-    "openssl"
+    "quill",
+    "websocketpp"
   ]
 }

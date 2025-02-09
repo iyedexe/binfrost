@@ -64,3 +64,15 @@ if(NUGET_RESULT AND NOT NUGET_RESULT EQUAL 0)
 endif()
 
 message(STATUS "Fix8 successfully installed via NuGet.")
+
+find_package(Boost REQUIRED)
+find_package(OpenSSL REQUIRED)
+find_package(Poco REQUIRED COMPONENTS Net Foundation)
+find_package(Fix8 REQUIRED)
+
+find_package(Sodium REQUIRED)
+find_package(Catch2 3 REQUIRED)
+
+find_package(websocketpp REQUIRED)
+find_package(quill REQUIRED)
+find_package(json REQUIRED)
