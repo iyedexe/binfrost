@@ -3,8 +3,8 @@ project(fix_bnb)
 set(CMAKE_CXX_STANDARD 20)
 
 # warning for temolate class destructor c20 (webscoketpp)
-SET(C20_WARNING_TEMPLATE_CDTOR_MUTE "-Wno-template-id-cdtor")
-SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${C20_WARNING_TEMPLATE_CDTOR_MUTE}")
+# SET(C20_WARNING_TEMPLATE_CDTOR_MUTE "-Wno-template-id-cdtor")
+# SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${C20_WARNING_TEMPLATE_CDTOR_MUTE}")
 
 # useful for unwanted casts in json
 set(JSON_ImplicitConversions OFF)
@@ -25,10 +25,6 @@ GENERATE_SPOT_BNB_FIX(FIX8_SRCS FIX8_HDRS "${CMAKE_CURRENT_SOURCE_DIR}/codegen/f
 # Include directories
 include_directories(${CMAKE_SOURCE_DIR}/codegen)
 include_directories(${CMAKE_SOURCE_DIR}/include)
-include_directories(${CMAKE_SOURCE_DIR}/libs/websocketpp)
-include_directories(${CMAKE_SOURCE_DIR}/libs/websocketpp/asio)
-include_directories(${CMAKE_SOURCE_DIR}/libs/quill)
-include_directories(${CMAKE_SOURCE_DIR}/libs/json/single_include)
 
 # Add source files and targets
 include(cmake/Targets.cmake)
