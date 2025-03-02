@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
+set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE PATH "toolchain file")
 project(fix_bnb)
 set(CMAKE_CXX_STANDARD 20)
 
@@ -14,6 +15,19 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Enable CMake's built-in dependency managers
 include(cmake/Dependencies.cmake)
+
+
+find_package(Boost REQUIRED)
+find_package(OpenSSL REQUIRED)
+find_package(Poco REQUIRED COMPONENTS Net Foundation)
+
+find_package(Sodium REQUIRED)
+find_package(Catch2 3 REQUIRED)
+
+find_package(websocketpp REQUIRED)
+find_package(quill REQUIRED)
+find_package(nlohmann_json REQUIRED)
+
 
 # Add FIX8 code generation logic
 include(cmake/GenerateFixCode.cmake)

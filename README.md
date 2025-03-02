@@ -4,14 +4,24 @@ Client supports FIX, Websockets and Rest APIs.
 Order Entry, Market Data, Drop Copy (FIX) connections to be supported.   
 Performance and ease of use are key.    
 
+# Dependencies : Install FIX8
+```
+https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360472/2.+Installation
+```
+
 # Building on windows:
 ```
 VCPKG_ROOT=C:\Users\Administrator\Desktop\workbench\vcpkg
-git submodule update --init --recursive
 cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake
 cmake --build build
 ```
 
+# Building on linux:
+```
+export VCPKG_ROOT=$HOME/workbench/vcpkg
+export PATH=$PATH:$VCPKG_ROOT
+cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
+```
 
 # Submodules :
 ## Websocketspp for websocket usage. 
