@@ -4,11 +4,6 @@ Client supports FIX, Websockets and Rest APIs.
 Order Entry, Market Data, Drop Copy (FIX) connections to be supported.   
 Performance and ease of use are key.    
 
-# Dependencies : Install FIX8
-```
-https://fix8engine.atlassian.net/wiki/spaces/FX/pages/360472/2.+Installation
-```
-
 # Building on windows:
 ```
 VCPKG_ROOT=C:\Users\Administrator\Desktop\workbench\vcpkg
@@ -21,33 +16,6 @@ cmake --build build
 export VCPKG_ROOT=$HOME/workbench/vcpkg
 export PATH=$PATH:$VCPKG_ROOT
 cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
-```
-
-# Submodules :
-## Websocketspp for websocket usage. 
-```
-https://github.com/zaphoyd/websocketpp  
-```
-
-## Nlohmann Json for json parsing and build.
-```
-https://github.com/nlohmann/json  
-```
-
-## Quill for logging.
-```
-https://github.com/odygrd/quill  
-```
-
-
-```
-## Install FIX8: 
-```
-git clone git@github.com:fix8/fix8.git   
-./bootstrap   
-./configure --enable-ssl --enable-debug
-make  
-sudo make install  
 ```
 
 # DONE :
@@ -70,9 +38,10 @@ sudo make install
 [BUILD] use vcpkg for dependencies
 [BUILD] build on windows
 [FIX] add start script with source creds and stunnel hooks. (CANCELED).    
-
+[FIX] clean fix8 reliquat and build on vpckg
 
 # TODO : 
+[FIX] migrate from fix8 to quick fix for better integrability
 [BUILD] make the lib more portable.  
 [LIBRARY] Export project as library and use in RTEX.   
 [LIBRARY] Make version 0.0 Beta.   
@@ -90,10 +59,24 @@ sudo make install
 [FIX] native ssl using fix8 pull request.   
 more unit tests.
 
+
+# Submodules :
+## Websocketspp for websocket usage. 
+```
+https://github.com/zaphoyd/websocketpp  
+```
+
+## Nlohmann Json for json parsing and build.
+```
+https://github.com/nlohmann/json  
+```
+
+## Quill for logging.
+```
+https://github.com/odygrd/quill  
+```
+
 # ISSUES:
-## SSL configuration :
-https://fix8engine.atlassian.net/wiki/spaces/FX/pages/15368200/4.+Configuring+SSL+Clients+and+Servers.   
-Due to the tls issue with the POCO library stunnel is used
 
 
 # Read Docs: 

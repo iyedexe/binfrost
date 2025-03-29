@@ -28,4 +28,3 @@ endif()
 # Install dependencies with vcpkg (reads from vcpkg.json)
 message(STATUS "Using vcpkg for dependency management...")
 
-include(cmake/InstallFix8.cmake)

@@ -1,16 +1,5 @@
 message(STATUS "Building targets ...")
 
-set(FIX_COMMON_SOURCES
-    ${FIX8_SRCS}
-    ${FIX8_HDRS}
-    src/fix/BrokerSessionClient.cpp
-    src/fix/BrokerRouterClient.cpp
-)
-
-add_executable(fixBroker examples/fix/broker.cpp ${FIX_COMMON_SOURCES})
-target_include_directories(fixBroker PRIVATE ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(fixBroker ${FIX8_LIBRARIES} ${Poco_LIBRARIES} sodium PocoNetSSL)
-
 set(WS_COMMON_LIBS
     ${Boost_LIBRARIES}
     quill::quill
@@ -19,7 +8,7 @@ set(WS_COMMON_LIBS
 set(CRYPTO_UTILS_LIBS
     OpenSSL::SSL
     OpenSSL::Crypto
-    sodium
+    unofficial-sodium::sodium
 )
 
 set(CRYPTO_UTILS_SOURCES
@@ -73,4 +62,4 @@ add_executable(restClient examples/rest/client.cpp ${REST_CLIENT_SOURCES})
 target_link_libraries(restClient ${WS_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
 
 add_executable(tests ${TEST_SOURCES})
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain ${FIX8_LIBRARIES} ${Poco_LIBRARIES} sodium PocoNetSSL)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain ${FIX8_LIBRARIES} ${CRYPTO_UTILS_LIBS})

@@ -1,8 +1,7 @@
 #include <catch2/catch_all.hpp>
 #include <string>
 #include <algorithm>
-#include "fix/BrokerSessionClient.hpp"
-
+#include <utils.hpp>
 
 std::vector<std::string> splitString(const std::string& str, char delimiter) {
     std::vector<std::string> tokens;
@@ -49,7 +48,7 @@ TEST_CASE("Generate logon message", "[generateLogon]") {
       sendingTime
    );
 
-   auto logonRequest = RequestBuilder::buildLogonRequest(raw_data, 30, apiKey);
+    //auto logonRequest = RequestBuilder::buildLogonRequest(raw_data, 30, apiKey);
     
     
     // std::replace(encodedMsg.begin(), encodedMsg.end(), static_cast<char>(1), '|');

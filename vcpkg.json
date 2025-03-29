@@ -5,8 +5,8 @@
     "libsodium",
     "nlohmann-json",
     "openssl",
-    "poco",
     "quill",
-    "websocketpp"
+    "websocketpp",
+    "quickfix"
   ]
 }
