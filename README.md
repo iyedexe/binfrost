@@ -80,6 +80,7 @@ https://github.com/odygrd/quill
 
 
 # Read Docs: 
+https://www.codeproject.com/Articles/429147/The-FIX-client-and-server-implementation-using-Qui
 https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api.   
 https://fix8.org/howitworks.html.  
 https://fix8.org/fix8/html/index.html.   
