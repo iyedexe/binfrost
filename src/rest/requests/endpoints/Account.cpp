@@ -21,4 +21,27 @@ namespace BNB::REST::Endpoints::Account
         return RequestsBuilder::buildSignedRequest(method_, uri_, params_);
     }
 
+    QueryOrder::QueryOrder()
+    {
+        method_ = http::verb::get;
+        uri_ = "/api/v3/order";
+
+    }
+    http::request<http::dynamic_body> QueryOrder::dump()
+    {
+        params_.emplace("symbol", symbol_);
+        if (orderId_) {
+            params_.emplace("recvWindow", std::to_string(*orderId_));
+        }
+        if (origClientOrderId_) {
+            params_.emplace("recvWindow", *origClientOrderId_);
+        }
+        if (recvWindow_) {
+            params_.emplace("recvWindow", std::to_string(*recvWindow_));
+        }
+        params_.emplace("timestamp", getTimestamp());
+
+        return RequestsBuilder::buildSignedRequest(method_, uri_, params_);
+    }
+
 }
