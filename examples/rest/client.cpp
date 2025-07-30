@@ -4,6 +4,7 @@
 #include "rest/requests/UserStream.hpp"
 #include "rest/requests/endpoints/MarketData.hpp"
 #include "rest/requests/endpoints/General.hpp"
+#include "rest/requests/endpoints/Account.hpp"
 #include "logger.hpp"
 
 #ifndef OPENSSL_CONF_PATH
@@ -57,10 +58,15 @@ int main()
     LOG_INFO("Response: {}", response);
 
 
-    LOG_INFO("Send Request MarketData::Trades");
-    response = apiClient.sendRequest(BNB::REST::Endpoints::MarketData::Trades().symbol("MASKUSDC"));
+    LOG_INFO("Send Request MarketData::OrderBook");
+    response = apiClient.sendRequest(BNB::REST::Endpoints::MarketData::OrderBook().symbol("MASKUSDC"));
     LOG_INFO("Response: {}", response);
 
+    LOG_INFO("Send Request Account::AccountInformation");
+    response = apiClient.sendRequest(BNB::REST::Endpoints::Account::AccountInformation());
+    LOG_INFO("Response: {}", response);
+
+    
     while (true)
     {
         std::this_thread::sleep_for(std::chrono::seconds(1));

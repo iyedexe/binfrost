@@ -13,6 +13,7 @@ set(REST_CLIENT_SOURCES
     src/rest/requests/UserStream.cpp
     src/rest/requests/endpoints/General.cpp
     src/rest/requests/endpoints/MarketData.cpp
+    src/rest/requests/endpoints/Account.cpp
     src/rest/requests/RequestsBuilder.cpp
 )
 

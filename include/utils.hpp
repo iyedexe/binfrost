@@ -170,3 +170,9 @@ inline std::string json_array(const std::vector<std::string>& xs) {
     os << "]";
     return os.str();
 }
+
+inline std::string getTimestamp(){
+    auto now = std::chrono::system_clock::now();
+    auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+    return std::to_string(milliseconds);
+}

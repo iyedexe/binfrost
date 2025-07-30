@@ -73,8 +73,3 @@ std::string RequestsBuilder::generatePayload(const std::map<std::string, std::st
         });
 }
 
-std::string RequestsBuilder::getTimestamp(){
-    auto now = std::chrono::system_clock::now();
-    auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
-    return std::to_string(milliseconds);
-}
