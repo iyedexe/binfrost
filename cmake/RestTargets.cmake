@@ -11,7 +11,8 @@ set(REST_CLIENT_SOURCES
     ${CRYPTO_UTILS_SOURCES}
     src/rest/ApiClient.cpp
     src/rest/requests/UserStream.cpp
-    src/rest/requests/GeneralEndpoints.cpp
+    src/rest/requests/endpoints/General.cpp
+    src/rest/requests/endpoints/MarketData.cpp
     src/rest/requests/RequestsBuilder.cpp
 )
 

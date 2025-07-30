@@ -2,7 +2,8 @@
 #include "crypto/ikey.hpp"
 #include "rest/requests/RequestsBuilder.hpp"
 #include "rest/requests/UserStream.hpp"
-#include "rest/requests/GeneralEndpoints.hpp"
+#include "rest/requests/endpoints/MarketData.hpp"
+#include "rest/requests/endpoints/General.hpp"
 #include "logger.hpp"
 
 #ifndef OPENSSL_CONF_PATH
@@ -51,8 +52,13 @@ int main()
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 */
-    LOG_INFO("Send Request GeneralEndpoint::ExchangeInfo");
-    auto response = apiClient.sendRequest(BNB::REST::GeneralEndpoints::ExchangeInfo().symbol("MASKUSDC"));
+    LOG_INFO("Send Request General::ExchangeInfo");
+    auto response = apiClient.sendRequest(BNB::REST::Endpoints::General::ExchangeInfo().symbol("MASKUSDC"));
+    LOG_INFO("Response: {}", response);
+
+
+    LOG_INFO("Send Request MarketData::Trades");
+    response = apiClient.sendRequest(BNB::REST::Endpoints::MarketData::Trades().symbol("MASKUSDC"));
     LOG_INFO("Response: {}", response);
 
     while (true)

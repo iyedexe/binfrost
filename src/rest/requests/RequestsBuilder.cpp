@@ -20,7 +20,6 @@ namespace BNB::REST
         req.set(http::field::user_agent, "Binance Client");
         req.set(http::field::host, instance->endpoint_);
         return req;
-        return req;
     }
 
 

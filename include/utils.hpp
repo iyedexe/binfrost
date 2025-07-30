@@ -152,3 +152,21 @@ inline std::string logonRawData(
 
     return std::string(b64_signature.data());
 }
+
+
+inline std::string json_array(const std::vector<std::string>& xs) {
+    std::ostringstream os;
+    os << "[";
+    for (size_t i = 0; i < xs.size(); ++i) {
+        os << '"' ;
+        // minimal JSON escape for quotes/backslashes
+        for (char c : xs[i]) {
+            if (c == '\\' || c == '"') os << '\\';
+            os << c;
+        }
+        os << '"';
+        if (i + 1 < xs.size()) os << ',';
+    }
+    os << "]";
+    return os.str();
+}

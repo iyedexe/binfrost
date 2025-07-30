@@ -1,24 +1,7 @@
-#include "rest/requests/GeneralEndpoints.hpp"
+#include "rest/requests/endpoints/General.hpp"
+#include "utils.hpp"
 
-
-std::string json_array(const std::vector<std::string>& xs) {
-    std::ostringstream os;
-    os << "[";
-    for (size_t i = 0; i < xs.size(); ++i) {
-        os << '"' ;
-        // minimal JSON escape for quotes/backslashes
-        for (char c : xs[i]) {
-            if (c == '\\' || c == '"') os << '\\';
-            os << c;
-        }
-        os << '"';
-        if (i + 1 < xs.size()) os << ',';
-    }
-    os << "]";
-    return os.str();
-}
-
-namespace BNB::REST::GeneralEndpoints
+namespace BNB::REST::Endpoints::General
 {
     Ping::Ping()
     {
@@ -64,7 +47,7 @@ namespace BNB::REST::GeneralEndpoints
             qp.append(urls::param_view{"symbol", urls::string_view(*symbol_)});
         }
         if (symbols_) {
-            const std::string j = json_array(*symbols_);           // e.g. ["BTCUSDT","BNBBTC"]
+            const std::string j = json_array(*symbols_);
             qp.append(urls::param_view{"symbols", urls::string_view(j)});
         }
         if (permissions_) {

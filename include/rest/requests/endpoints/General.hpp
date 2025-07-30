@@ -2,7 +2,7 @@
 #include "rest/requests/IRequest.hpp"
 #include "rest/requests/RequestsBuilder.hpp"
 
-namespace BNB::REST::GeneralEndpoints // Deprecated
+namespace BNB::REST::Endpoints::General
 {
     class Ping : public IRequest
     {
