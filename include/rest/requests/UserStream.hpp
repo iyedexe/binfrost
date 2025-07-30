@@ -2,7 +2,7 @@
 #include "rest/requests/IRequest.hpp"
 #include "rest/requests/RequestsBuilder.hpp"
 
-namespace BNB::REST::UserStream
+namespace BNB::REST::UserStream // Deprecated
 {
     class Start : public IRequest
     {

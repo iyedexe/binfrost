@@ -2,8 +2,10 @@
 #include <string>
 #include <map>
 #include <boost/beast.hpp>
+#include <boost/url.hpp>
 
 namespace http = boost::beast::http;
+namespace urls  = boost::urls;
 
 namespace BNB::REST
 {

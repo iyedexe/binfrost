@@ -2,6 +2,7 @@
 #include "crypto/ikey.hpp"
 #include "rest/requests/RequestsBuilder.hpp"
 #include "rest/requests/UserStream.hpp"
+#include "rest/requests/GeneralEndpoints.hpp"
 #include "logger.hpp"
 
 #ifndef OPENSSL_CONF_PATH
@@ -33,11 +34,26 @@ int main()
 
     BNB::REST::ApiClient apiClient(endpoint);
     BNB::REST::RequestsBuilder::getInstance(apiKey, secretKey, keyType, endpoint);
-
+/*
     LOG_INFO("Send Request UserStream::Start");
     auto response = apiClient.sendRequest(BNB::REST::UserStream::Start());
     LOG_INFO("Response: {}", response);
 
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    LOG_INFO("Send Request GeneralEndpoint::Ping");
+    response = apiClient.sendRequest(BNB::REST::GeneralEndpoints::Ping());
+    LOG_INFO("Response: {}", response);
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    LOG_INFO("Send Request GeneralEndpoint::Time");
+    response = apiClient.sendRequest(BNB::REST::GeneralEndpoints::Time());
+    LOG_INFO("Response: {}", response);
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+*/
+    LOG_INFO("Send Request GeneralEndpoint::ExchangeInfo");
+    auto response = apiClient.sendRequest(BNB::REST::GeneralEndpoints::ExchangeInfo().symbol("MASKUSDC"));
+    LOG_INFO("Response: {}", response);
 
     while (true)
     {

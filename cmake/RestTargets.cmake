@@ -3,6 +3,7 @@ set(REST_COMMON_LIBS
     Boost::beast
     Boost::asio
     Boost::uuid
+    Boost::url
     quill::quill
 )
 
@@ -10,6 +11,7 @@ set(REST_CLIENT_SOURCES
     ${CRYPTO_UTILS_SOURCES}
     src/rest/ApiClient.cpp
     src/rest/requests/UserStream.cpp
+    src/rest/requests/GeneralEndpoints.cpp
     src/rest/requests/RequestsBuilder.cpp
 )
 
