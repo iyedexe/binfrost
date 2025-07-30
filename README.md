@@ -18,10 +18,10 @@ export VCPKG_ROOT=$HOME/workbench/vcpkg
 export PATH=$PATH:$VCPKG_ROOT
 
 ```
-Build the project
+Build the project, from build folder
 ```
-make .. -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
-cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
+cmake .. -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
+make
 ```
 
 # DONE :
@@ -44,13 +44,19 @@ cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpk
 [BUILD] use vcpkg for dependencies
 [BUILD] build on windows
 [FIX] add start script with source creds and stunnel hooks. (CANCELED).    
-[FIX] clean fix8 reliquat and build on vpckg
+[FIX] clean fix8 reliquat
+[REST] Build and run examples on vcpkg 
 
 # TODO : 
+[OPENSSL] Fix static link lib vs run lib 
+[WS] Build and run examples on vcpkg 
 [FIX] migrate from fix8 to quick fix for better integrability
+[FIX] Build and run examples on vcpkg 
 [BUILD] make the lib more portable.  
 [LIBRARY] Export project as library and use in RTEX.   
 [LIBRARY] Make version 0.0 Beta.   
+
+
 [CRYPTO] Add support for ed25519 key loading.   
 [UTESTS] Unit tests for signatures, payload generation, Key loading.   
 [UTESTS] Unit tests for .   

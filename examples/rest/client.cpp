@@ -4,6 +4,10 @@
 #include "rest/requests/UserStream.hpp"
 #include "logger.hpp"
 
+#ifndef OPENSSL_CONF_PATH
+#define OPENSSL_CONF_PATH ""
+#endif
+
 std::string getEnvVar(const char* varName) {
     const char* val = std::getenv(varName);
     return val ? std::string(val) : std::string();
@@ -11,6 +15,10 @@ std::string getEnvVar(const char* varName) {
 
 int main()
 {
+    if ((!std::getenv("OPENSSL_CONF")) && OPENSSL_CONF_PATH[0] != '\0') {
+        setenv("OPENSSL_CONF", OPENSSL_CONF_PATH, /*overwrite=*/0);
+    }
+
     LOG_INFO("Starting Binance REST Client ...");
     std::string apiKey = getEnvVar("API_KEY");
     std::string secretKey = getEnvVar("SECRET_KEY");
