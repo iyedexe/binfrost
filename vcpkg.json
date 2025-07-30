@@ -1,12 +1,14 @@
 {
+  "name": "arthemis",
+  "version-string": "0.0.1",
   "dependencies": [
-    "boost",
+    "boost-asio",
+    "boost-beast",
+    "boost-uuid",
     "catch2",
     "libsodium",
-    "nlohmann-json",
     "openssl",
     "quill",
-    "websocketpp",
-    "quickfix"
+    "nlohmann-json"
   ]
 }

@@ -1,18 +1,23 @@
 #include "rest/ApiClient.hpp"
-#include <iostream>
+#include "logger.hpp"
 
 namespace BNB::REST
 {
     ApiClient::ApiClient(const std::string& restEndpoint):
         host_(restEndpoint), ioc_(), resolver_(ioc_), ctx_{boost::asio::ssl::context::tls_client}
     {
-        // ctx_.set_verify_mode(boost::asio::ssl::verify_peer); // Verify the certificate does not work same issue as websockets
-        ctx_.set_default_verify_paths();
-        ctx_.set_verify_mode(boost::asio::ssl::verify_none);
-        ctx_.set_options(boost::asio::ssl::context::default_workarounds |
-                        boost::asio::ssl::context::no_sslv2 |
-                        boost::asio::ssl::context::no_sslv3 |
-                        boost::asio::ssl::context::single_dh_use);
+        try
+        {
+            ctx_.set_default_verify_paths();
+            // ctx_.set_verify_mode(boost::asio::ssl::verify_peer); // Verify the certificate does not work same issue as websockets
+            ctx_.set_verify_mode(boost::asio::ssl::verify_none);
+            ctx_.set_options(boost::asio::ssl::context::default_workarounds |
+                            boost::asio::ssl::context::no_sslv2 |
+                            boost::asio::ssl::context::no_sslv3 |
+                            boost::asio::ssl::context::single_dh_use);    
+        }catch (const std::exception& e) {
+            LOG_ERROR("[APIClient][INIT] Error initializing Rest API Client :[{}]", e.what());
+        }
 
     }
 

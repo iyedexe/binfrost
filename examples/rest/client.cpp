@@ -4,16 +4,29 @@
 #include "rest/requests/UserStream.hpp"
 #include "logger.hpp"
 
+std::string getEnvVar(const char* varName) {
+    const char* val = std::getenv(varName);
+    return val ? std::string(val) : std::string();
+}
+
 int main()
 {
-    std::string apiKey = std::getenv("API_KEY");
-    std::string secretKey = std::getenv("SECRET_KEY");
+    LOG_INFO("Starting Binance REST Client ...");
+    std::string apiKey = getEnvVar("API_KEY");
+    std::string secretKey = getEnvVar("SECRET_KEY");
+
+    if (apiKey.empty() || secretKey.empty())
+    {
+        LOG_ERROR("Missing BNB Credentials, please set the variables API_KEY and SECRET_KEY");
+        return 1;
+    }
     crypto::KeyType keyType = crypto::KeyType::HMAC;
     std::string endpoint = "testnet.binance.vision";
 
     BNB::REST::ApiClient apiClient(endpoint);
     BNB::REST::RequestsBuilder::getInstance(apiKey, secretKey, keyType, endpoint);
 
+    LOG_INFO("Send Request UserStream::Start");
     auto response = apiClient.sendRequest(BNB::REST::UserStream::Start());
     LOG_INFO("Response: {}", response);
 

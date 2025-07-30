@@ -12,9 +12,15 @@ cmake --build build
 ```
 
 # Building on linux:
+Make sure VCPKG is installed and VCPKG_ROOT and PATH are configured
 ```
 export VCPKG_ROOT=$HOME/workbench/vcpkg
 export PATH=$PATH:$VCPKG_ROOT
+
+```
+Build the project
+```
+make .. -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
 cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
 ```
 
