@@ -10,11 +10,8 @@ namespace BNB::REST
     class RequestsBuilder
     {
     public:
-        static http::request<http::dynamic_body> buildBasicRequest(http::verb method, const std::string& uri);
-        static http::request<http::dynamic_body> buildApiKeyRequest(http::verb method, const std::string& target, const std::map<std::string, std::string>& params);
-
-        static http::request<http::dynamic_body> buildRequest(http::verb method, const urls::url& url);
-        static http::request<http::dynamic_body> buildSignedRequest(http::verb method, urls::url& url);
+        static http::request<http::dynamic_body> buildUnsignedRequest(http::verb method, const std::string& uri, const std::map<std::string, std::string>& params = {});
+        static http::request<http::dynamic_body> buildSignedRequest(http::verb method, const std::string& uri, const std::map<std::string, std::string>& params = {});
     private:
         inline static RequestsBuilder* instance = nullptr;
         RequestsBuilder(const std::string& apiKey, const std::string& secretKey, crypto::KeyType keyType, const std::string& endpoint)

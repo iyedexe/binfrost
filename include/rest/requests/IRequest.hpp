@@ -19,7 +19,7 @@ namespace BNB::REST
         // virtual std::string getId() const { return "id_"; }
         virtual http::verb getMethod() const { return method_; }
         virtual std::map<std::string, std::string> getParams() const { return params_; }
-        virtual http::request<http::dynamic_body> dump() const = 0;
+        virtual http::request<http::dynamic_body> dump() = 0;
     protected:
         http::verb method_;
         std::string uri_;

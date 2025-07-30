@@ -22,7 +22,7 @@ namespace BNB::REST
         ApiClient(const std::string& restEndpoint);
         ~ApiClient() = default;
 
-        std::string sendRequest(const IRequest& request);
+        std::string sendRequest(IRequest&& request);
     private:
         std::string host_;
         net::io_context ioc_;

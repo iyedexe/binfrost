@@ -8,17 +8,13 @@ namespace BNB::REST::Endpoints::MarketData
         method_ = http::verb::get;
         uri_ = "/api/v3/depth";
     }
-    http::request<http::dynamic_body> OrderBook::dump() const
+    http::request<http::dynamic_body> OrderBook::dump()
     {
-        urls::url url;
-        url.set_path(uri_);
-        auto qp = url.params();
-
-        qp.append(urls::param_view{"symbol", urls::string_view(symbol_)});
+        params_.emplace("symbol", symbol_);
         if (limit_) {
-            qp.append(urls::param_view{"limit", urls::string_view(std::to_string(*limit_))});
+            params_.emplace("limit", std::to_string(*limit_));
         }
-        return RequestsBuilder::buildRequest(method_, url);
+        return RequestsBuilder::buildUnsignedRequest(method_, uri_, params_);
     }
 
     Trades::Trades()
@@ -26,17 +22,13 @@ namespace BNB::REST::Endpoints::MarketData
         method_ = http::verb::get;
         uri_ = "/api/v3/trades";
     }
-    http::request<http::dynamic_body> Trades::dump() const
+    http::request<http::dynamic_body> Trades::dump()
     {
-        urls::url url;
-        url.set_path(uri_);
-        auto qp = url.params();
-
-        qp.append(urls::param_view{"symbol", urls::string_view(symbol_)});
+        params_.emplace("symbol", symbol_);
         if (limit_) {
-            qp.append(urls::param_view{"limit", urls::string_view(std::to_string(*limit_))});
+            params_.emplace("limit", std::to_string(*limit_));
         }
-        return RequestsBuilder::buildRequest(method_, url);
+        return RequestsBuilder::buildUnsignedRequest(method_, uri_, params_);
     }
 
     HistoricalTrades::HistoricalTrades()
@@ -44,20 +36,16 @@ namespace BNB::REST::Endpoints::MarketData
         method_ = http::verb::get;
         uri_ = "/api/v3/historicalTrades";
     }
-    http::request<http::dynamic_body> HistoricalTrades::dump() const
+    http::request<http::dynamic_body> HistoricalTrades::dump()
     {
-        urls::url url;
-        url.set_path(uri_);
-        auto qp = url.params();
-
-        qp.append(urls::param_view{"symbol", urls::string_view(symbol_)});
+        params_.emplace("symbol", symbol_);
         if (limit_) {
-            qp.append(urls::param_view{"limit", urls::string_view(std::to_string(*limit_))});
+            params_.emplace("limit", std::to_string(*limit_));
         }
         if (fromId_) {
-            qp.append(urls::param_view{"fromId", urls::string_view(std::to_string(*fromId_))});
+            params_.emplace("fromId", std::to_string(*fromId_));
         }
-        return RequestsBuilder::buildRequest(method_, url);
+        return RequestsBuilder::buildUnsignedRequest(method_, uri_, params_);
     }
 
 }

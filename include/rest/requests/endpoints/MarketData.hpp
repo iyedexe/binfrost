@@ -9,10 +9,10 @@ namespace BNB::REST::Endpoints::MarketData
     public:
         OrderBook();
 
-        OrderBook& symbol(std::string s) { symbol_ = std::move(s); return *this; }
-        OrderBook& limit(int l) { limit_ = l; return *this; }
+        OrderBook&& symbol(std::string s) { symbol_ = std::move(s); return std::move(*this); }
+        OrderBook&& limit(int l) { limit_ = l; return std::move(*this); }
 
-        http::request<http::dynamic_body> dump() const;
+        http::request<http::dynamic_body> dump();
     private:
         std::string symbol_;
         std::optional<int> limit_;
@@ -24,10 +24,10 @@ namespace BNB::REST::Endpoints::MarketData
     public:
         Trades();
 
-        Trades& symbol(std::string s) { symbol_ = std::move(s); return *this; }
-        Trades& limit(int l) { limit_ = l; return *this; }
+        Trades&& symbol(std::string s) { symbol_ = std::move(s); return std::move(*this); }
+        Trades&& limit(int l) { limit_ = l; return std::move(*this); }
 
-        http::request<http::dynamic_body> dump() const;
+        http::request<http::dynamic_body> dump();
     private:
         std::string symbol_;
         std::optional<int> limit_;
@@ -39,11 +39,11 @@ namespace BNB::REST::Endpoints::MarketData
     public:
         HistoricalTrades();
 
-        HistoricalTrades& symbol(std::string s) { symbol_ = std::move(s); return *this; }
-        HistoricalTrades& limit(int l) { limit_ = l; return *this; }
-        HistoricalTrades& fromId(long l) { fromId_ = l; return *this; }
+        HistoricalTrades&& symbol(std::string s) { symbol_ = std::move(s); return std::move(*this); }
+        HistoricalTrades&& limit(int l) { limit_ = l; return std::move(*this); }
+        HistoricalTrades&& fromId(long l) { fromId_ = l; return std::move(*this); }
         
-        http::request<http::dynamic_body> dump() const;
+        http::request<http::dynamic_body> dump();
     private:
         std::string symbol_;
         std::optional<int> limit_;

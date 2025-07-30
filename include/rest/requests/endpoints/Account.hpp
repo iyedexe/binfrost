@@ -9,11 +9,11 @@ namespace BNB::REST::Endpoints::Account
     public:
         AccountInformation();
 
-        AccountInformation& omitZeroBalances(bool b) { omitZeroBalances_ = b; return *this; }
-        AccountInformation& recvWindow(long l) { recvWindow_ = l; return *this; }
-        AccountInformation& timestamp(long l) { timestamp_ = l; return *this; }
+        AccountInformation&& omitZeroBalances(bool b) { omitZeroBalances_ = b; return std::move(*this); }
+        AccountInformation&& recvWindow(long l) { recvWindow_ = l; return std::move(*this); }
+        AccountInformation&& timestamp(long l) { timestamp_ = l; return std::move(*this); }
 
-        http::request<http::dynamic_body> dump() const;
+        http::request<http::dynamic_body> dump();
     private:
         long timestamp_;
         std::optional<int> omitZeroBalances_;

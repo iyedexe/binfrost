@@ -8,9 +8,9 @@ namespace BNB::REST::UserStream
         uri_ = "/api/v3/userDataStream";
         params_ = {};
     }
-    http::request<http::dynamic_body> Start::dump() const
+    http::request<http::dynamic_body> Start::dump()
     {
-        return RequestsBuilder::buildApiKeyRequest(method_, uri_, params_);
+        return RequestsBuilder::buildUnsignedRequest(method_, uri_, params_);
     }
 
     KeepAlive::KeepAlive(const std::string& ListenKey)
@@ -19,9 +19,9 @@ namespace BNB::REST::UserStream
         uri_ = "/api/v3/userDataStream";
         params_ = {{"listenKey", ListenKey}};
     }
-    http::request<http::dynamic_body> KeepAlive::dump() const
+    http::request<http::dynamic_body> KeepAlive::dump()
     {
-        return RequestsBuilder::buildApiKeyRequest(method_, uri_, params_);
+        return RequestsBuilder::buildUnsignedRequest(method_, uri_, params_);
     }
 
     Close::Close(const std::string& ListenKey)
@@ -31,9 +31,9 @@ namespace BNB::REST::UserStream
         params_ = {{"listenKey", ListenKey}};
 
     }
-    http::request<http::dynamic_body> Close::dump() const
+    http::request<http::dynamic_body> Close::dump()
     {
-        return RequestsBuilder::buildApiKeyRequest(method_, uri_, params_);
+        return RequestsBuilder::buildUnsignedRequest(method_, uri_, params_);
     }
 
 }

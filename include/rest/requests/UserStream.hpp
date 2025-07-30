@@ -8,19 +8,19 @@ namespace BNB::REST::UserStream // Deprecated
     {
     public:
         Start();
-        http::request<http::dynamic_body> dump() const;
+        http::request<http::dynamic_body> dump();
     };
     class KeepAlive : public IRequest
     {
     public:
         KeepAlive(const std::string& ListenKey);
-        http::request<http::dynamic_body> dump() const;
+        http::request<http::dynamic_body> dump();
     };
     class Close : public IRequest
     {
     public:
         Close(const std::string& ListenKey);
-        http::request<http::dynamic_body> dump() const;
+        http::request<http::dynamic_body> dump();
     };
 
 }

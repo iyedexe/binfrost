@@ -21,7 +21,7 @@ namespace BNB::REST
 
     }
 
-    std::string ApiClient::sendRequest(const IRequest& request)
+    std::string ApiClient::sendRequest(IRequest&& request)
     {
         auto const results = resolver_.resolve(host_, "443");
         boost::beast::ssl_stream<boost::beast::tcp_stream> tls_stream{ioc_, ctx_};

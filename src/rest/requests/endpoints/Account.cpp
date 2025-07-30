@@ -9,20 +9,16 @@ namespace BNB::REST::Endpoints::Account
         uri_ = "/api/v3/account";
 
     }
-    http::request<http::dynamic_body> AccountInformation::dump() const
+    http::request<http::dynamic_body> AccountInformation::dump()
     {
-        urls::url url;
-        url.set_path(uri_);
-        auto qp = url.params();
-
-        qp.append(urls::param_view{"timestamp", urls::string_view(getTimestamp())});
+        params_.emplace("timestamp", getTimestamp());
         if (omitZeroBalances_) {
-            qp.append(urls::param_view{"omitZeroBalances", urls::string_view(urls::string_view(*omitZeroBalances_ ? "true" : "false"))});
+            params_.emplace("omitZeroBalances", *omitZeroBalances_ ? "true" : "false");
         }
         if (recvWindow_) {
-            qp.append(urls::param_view{"recvWindow", urls::string_view(std::to_string(*recvWindow_))});
+            params_.emplace("recvWindow", std::to_string(*recvWindow_));
         }
-        return RequestsBuilder::buildSignedRequest(method_, url);
+        return RequestsBuilder::buildSignedRequest(method_, uri_, params_);
     }
 
 }
