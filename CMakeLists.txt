@@ -7,11 +7,10 @@ project(
 )
 
 set(CMAKE_CXX_STANDARD 20)
-#list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(JSON_ImplicitConversions OFF)
 
 
-#include(cmake/Dependencies.cmake)
+include(cmake/Dependencies.cmake)
 
 
 find_package(Boost REQUIRED COMPONENTS asio beast uuid url)
@@ -22,10 +21,9 @@ find_package(quill CONFIG REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
 #find_package(Catch2 REQUIRED)
-
 #find_package(websocketpp REQUIRED)
 
-#find_package(quickfix REQUIRED)
+find_package(quickfix REQUIRED)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 

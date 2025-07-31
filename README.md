@@ -44,14 +44,14 @@ make
 [BUILD] use vcpkg for dependencies
 [BUILD] build on windows
 [FIX] add start script with source creds and stunnel hooks. (CANCELED).    
-[FIX] clean fix8 reliquat
-[REST] Build and run examples on vcpkg 
+[FIX] clean fix8 reliquat.  
+[REST] Build and run examples on vcpkg.  
 
 # TODO : 
-[OPENSSL] Fix static link lib vs run lib 
-[WS] Build and run examples on vcpkg 
-[FIX] migrate from fix8 to quick fix for better integrability
-[FIX] Build and run examples on vcpkg 
+[OPENSSL] Fix static link lib vs run lib.   
+[WS] Build and run examples on vcpkg .  
+[FIX] migrate from fix8 to quick fix for better integrability.  
+[FIX] Build and run examples on vcpkg .  
 [BUILD] make the lib more portable.  
 [LIBRARY] Export project as library and use in RTEX.   
 [LIBRARY] Make version 0.0 Beta.   

@@ -10,15 +10,3 @@ file(DOWNLOAD
     https://raw.githubusercontent.com/binance/binance-spot-api-docs/master/fix/schemas/spot-fix-md.xml 
     ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/md/feeder.xml
 )
-
-if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-    message(FATAL_ERROR "Error: CMAKE_TOOLCHAIN_FILE not set, please do so by passing it to cmake.")
-endif()
-
-find_program(VCPKG_EXEC vcpkg)
-if(NOT VCPKG_EXEC)
-    message(FATAL_ERROR "Error: vcpkg not found! Please install vcpkg before proceeding.")
-endif()
-
-message(STATUS "Using vcpkg for dependency management...")
-

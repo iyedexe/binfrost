@@ -13,6 +13,7 @@ set(CRYPTO_UTILS_SOURCES
 )
 
 include(cmake/RestTargets.cmake)
+include(cmake/FixTargets.cmake)
 
 #[[
 

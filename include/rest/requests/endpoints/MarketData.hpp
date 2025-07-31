@@ -9,14 +9,22 @@ namespace BNB::REST::Endpoints::MarketData
     public:
         OrderBook();
 
-        OrderBook&& symbol(std::string s) { symbol_ = std::move(s); return std::move(*this); }
-        OrderBook&& limit(int l) { limit_ = l; return std::move(*this); }
+        OrderBook &&symbol(std::string s)
+        {
+            symbol_ = std::move(s);
+            return std::move(*this);
+        }
+        OrderBook &&limit(int l)
+        {
+            limit_ = l;
+            return std::move(*this);
+        }
 
         http::request<http::dynamic_body> dump();
+
     private:
         std::string symbol_;
         std::optional<int> limit_;
-        
     };
 
     class Trades : public IRequest
@@ -24,14 +32,22 @@ namespace BNB::REST::Endpoints::MarketData
     public:
         Trades();
 
-        Trades&& symbol(std::string s) { symbol_ = std::move(s); return std::move(*this); }
-        Trades&& limit(int l) { limit_ = l; return std::move(*this); }
+        Trades &&symbol(std::string s)
+        {
+            symbol_ = std::move(s);
+            return std::move(*this);
+        }
+        Trades &&limit(int l)
+        {
+            limit_ = l;
+            return std::move(*this);
+        }
 
         http::request<http::dynamic_body> dump();
+
     private:
         std::string symbol_;
         std::optional<int> limit_;
-        
     };
 
     class HistoricalTrades : public IRequest
@@ -39,16 +55,28 @@ namespace BNB::REST::Endpoints::MarketData
     public:
         HistoricalTrades();
 
-        HistoricalTrades&& symbol(std::string s) { symbol_ = std::move(s); return std::move(*this); }
-        HistoricalTrades&& limit(int l) { limit_ = l; return std::move(*this); }
-        HistoricalTrades&& fromId(long l) { fromId_ = l; return std::move(*this); }
-        
+        HistoricalTrades &&symbol(std::string s)
+        {
+            symbol_ = std::move(s);
+            return std::move(*this);
+        }
+        HistoricalTrades &&limit(int l)
+        {
+            limit_ = l;
+            return std::move(*this);
+        }
+        HistoricalTrades &&fromId(long l)
+        {
+            fromId_ = l;
+            return std::move(*this);
+        }
+
         http::request<http::dynamic_body> dump();
+
     private:
         std::string symbol_;
         std::optional<int> limit_;
         std::optional<long> fromId_;
-        
     };
 
 }
