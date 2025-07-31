@@ -21,13 +21,34 @@ namespace BNB::REST::Endpoints::General
     public:
         ExchangeInfo();
 
-        ExchangeInfo&& symbol(std::string s) { symbol_ = std::move(s); return std::move(*this); }
-        ExchangeInfo&& symbols(std::vector<std::string> v) { symbols_ = std::move(v); return std::move(*this); }
-        ExchangeInfo&& permissions(std::vector<std::string> v) { permissions_ = std::move(v); return std::move(*this); }
-        ExchangeInfo&& showPermissionSets(bool v) { showPermissionSets_ = v; return std::move(*this); }
-        ExchangeInfo&& symbolStatus(std::string v) { symbolStatus_ = std::move(v); return std::move(*this); }
+        ExchangeInfo &&symbol(std::string s)
+        {
+            symbol_ = std::move(s);
+            return std::move(*this);
+        }
+        ExchangeInfo &&symbols(std::vector<std::string> v)
+        {
+            symbols_ = std::move(v);
+            return std::move(*this);
+        }
+        ExchangeInfo &&permissions(std::vector<std::string> v)
+        {
+            permissions_ = std::move(v);
+            return std::move(*this);
+        }
+        ExchangeInfo &&showPermissionSets(bool v)
+        {
+            showPermissionSets_ = v;
+            return std::move(*this);
+        }
+        ExchangeInfo &&symbolStatus(std::string v)
+        {
+            symbolStatus_ = std::move(v);
+            return std::move(*this);
+        }
 
         http::request<http::dynamic_body> dump();
+
     private:
         std::optional<std::string> symbol_;
         std::optional<std::vector<std::string>> symbols_;
