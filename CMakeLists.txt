@@ -8,6 +8,7 @@ project(
 
 set(CMAKE_CXX_STANDARD 20)
 set(JSON_ImplicitConversions OFF)
+set(HAVE_SSL ON)
 
 
 include(cmake/Dependencies.cmake)

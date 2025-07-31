@@ -7,4 +7,5 @@ codegen/
 config/credentials.sh
 config/credentials_ed25519.sh
 config/credentials_hmac.sh
+config/keys
 scrap

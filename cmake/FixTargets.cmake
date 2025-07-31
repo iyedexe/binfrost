@@ -4,5 +4,9 @@ set(FIX_COMMON_LIBS
     quill::quill
 )
 
-add_executable(fixClient examples/fix/broker.cpp)
-target_link_libraries(restClient ${FIX_COMMON_LIBS})
+set(FIX_CLIENT_SOURCES
+    ${CRYPTO_UTILS_SOURCES}
+)
+
+add_executable(fixClient examples/fix/broker.cpp ${FIX_CLIENT_SOURCES})
+target_link_libraries(fixClient ${FIX_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
