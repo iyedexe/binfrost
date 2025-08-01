@@ -5,6 +5,8 @@ set(FIX_COMMON_LIBS
 )
 
 set(FIX_CLIENT_SOURCES
+    src/fix/FixApplication.cpp
+    src/fix/FixClient.cpp
     ${CRYPTO_UTILS_SOURCES}
 )
 

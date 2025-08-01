@@ -20,11 +20,11 @@ find_package(OpenSSL REQUIRED)
 find_package(unofficial-sodium CONFIG REQUIRED)
 find_package(quill CONFIG REQUIRED)
 find_package(nlohmann_json REQUIRED)
+find_package(quickfix REQUIRED)
 
 #find_package(Catch2 REQUIRED)
 #find_package(websocketpp REQUIRED)
 
-find_package(quickfix REQUIRED)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
