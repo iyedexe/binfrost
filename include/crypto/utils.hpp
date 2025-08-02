@@ -1,7 +1,9 @@
+#pragma once
 #include <string>
 #include <algorithm>
 #include <stdexcept>
-// load PEM KEY and clean it
+#include <fstream>
+#include <iomanip>
 
 inline std::string stripPrivateKey(const std::string &pem_key)
 {
@@ -25,4 +27,18 @@ inline std::string stripPrivateKey(const std::string &pem_key)
                      .base(),
                  result.end());
     return result;
+}
+
+inline std::string readPemFile(const std::string &filepath)
+{
+    std::ifstream file(filepath, std::ios::binary);
+    if (!file)
+    {
+        throw std::runtime_error("Failed to open private key file: " + filepath);
+    }
+
+    std::ostringstream oss;
+    oss << file.rdbuf();
+    std::string pem_key = oss.str();
+    return pem_key;
 }

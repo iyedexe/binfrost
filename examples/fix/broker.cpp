@@ -4,6 +4,7 @@
 #include <sstream>
 #include "crypto/ed25519.hpp"
 #include "logger.hpp"
+#include "crypto/utils.hpp"
 #include "utils.hpp"
 #include "fix/MessageBuilder.hpp"
 
