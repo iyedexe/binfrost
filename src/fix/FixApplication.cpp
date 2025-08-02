@@ -2,6 +2,10 @@
 #include "utils.hpp"
 #include "logger.hpp"
 
+FixApplication::FixApplication(const std::string &apiKey, crypto::ed25519 &key) : msgBuilder_(apiKey, key)
+{
+}
+
 void FixApplication::onCreate(const FIX::SessionID &sessionID)
 {
     LOG_INFO("Session created: {}", sessionID.toString());
@@ -24,27 +28,7 @@ void FixApplication::toAdmin(FIX::Message &message, const FIX::SessionID &sessio
     if (msgType == "A")
     {
         LOG_INFO("Building logon message");
-        std::vector<unsigned char> privateKey = loadPrivateKeyFromString(readPemFile(std::getenv("PRIVATE_KEY_PATH")));
-        std::vector<unsigned char> publicKey = derivePublicKeyFromPrivate(privateKey);
-        std::string apiKey = std::getenv("API_KEY");
-        auto const &clSenderCompID = message.getHeader().getField(FIX::FIELD::SenderCompID);
-        auto const &clTargetCompID = message.getHeader().getField(FIX::FIELD::TargetCompID);
-        auto const &clSendingTime = message.getHeader().getField(FIX::FIELD::SendingTime);
-        auto const &clMsgSeqNum = message.getHeader().getField(FIX::FIELD::MsgSeqNum);
-
-        std::string raw_data = logonRawData(
-            privateKey,
-            publicKey,
-            clSenderCompID,
-            clTargetCompID,
-            clMsgSeqNum,
-            clSendingTime);
-
-        message.setField(96, raw_data);                        // RawData
-        message.setField(95, std::to_string(raw_data.size())); // RawDataLength
-        message.setField(141, "Y");                            // ResetSeqNumFlag
-        message.setField(553, apiKey);                         // Username
-        message.setField(25035, "2");                          // MessageHandling
+        msgBuilder_.fillLogon(message);
         LOG_INFO("Sending Admin: {}", message.toString());
     }
 }

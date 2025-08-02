@@ -12,7 +12,7 @@
 class FixClient
 {
 public:
-    FixClient();
+    FixClient(const std::string &apiKey, crypto::ed25519 &key);
     void connect();
     void disconnect();
 

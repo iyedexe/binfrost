@@ -4,8 +4,9 @@
 #include <sstream>
 #include <iostream>
 
-FixClient::FixClient()
-    : settings(buildSettings()),
+FixClient::FixClient(const std::string &apiKey, crypto::ed25519 &key)
+    : application(apiKey, key),
+      settings(buildSettings()),
       storeFactory(settings),
       logFactory(settings),
       initiator(application, storeFactory, settings, logFactory)

@@ -120,58 +120,6 @@ inline std::string readPemFile(const std::string &filepath)
     return pem_key;
 }
 
-inline std::string logonRawData(
-    std::vector<unsigned char> &private_key,
-    std::vector<unsigned char> &public_key,
-    const std::string &sender_comp_id,
-    const std::string &target_comp_id,
-    const std::string &msg_seq_num,
-    const std::string &sending_time)
-{
-
-    std::vector<unsigned char> full_secret_key;
-    full_secret_key.insert(full_secret_key.end(), private_key.begin(), private_key.end());
-    full_secret_key.insert(full_secret_key.end(), public_key.begin(), public_key.end());
-
-    // Initialize the vector with the first element "A" and separator '\x01'
-    std::vector<unsigned char> payload{'A', 1};
-
-    // Helper lambda to append a string and separator to the result vector
-    auto appendWithSeparator = [&payload](const std::string &value)
-    {
-        payload.insert(payload.end(), value.begin(), value.end());
-        payload.push_back(1);
-    };
-
-    // Append each element with the separator
-    appendWithSeparator(sender_comp_id);
-    appendWithSeparator(target_comp_id);
-    appendWithSeparator(msg_seq_num);
-    appendWithSeparator(sending_time);
-    payload.pop_back();
-
-    // Sign payload
-    std::vector<unsigned char> signature(crypto_sign_ed25519_BYTES);
-    if (crypto_sign_detached(signature.data(),
-                             nullptr,
-                             payload.data(),
-                             payload.size(),
-                             full_secret_key.data()) != 0)
-    {
-        throw std::runtime_error("Signing failed.");
-    }
-
-    // Encode signature in Base64
-    std::vector<char> b64_signature(sodium_base64_encoded_len(signature.size(), sodium_base64_VARIANT_ORIGINAL));
-    sodium_bin2base64(b64_signature.data(),
-                      b64_signature.size(),
-                      signature.data(),
-                      signature.size(),
-                      sodium_base64_VARIANT_ORIGINAL);
-
-    return std::string(b64_signature.data());
-}
-
 inline std::string json_array(const std::vector<std::string> &xs)
 {
     std::ostringstream os;
@@ -199,4 +147,10 @@ inline std::string getTimestamp()
     auto now = std::chrono::system_clock::now();
     auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
     return std::to_string(milliseconds);
+}
+
+inline std::string getEnvVar(const char *varName)
+{
+    const char *val = std::getenv(varName);
+    return val ? std::string(val) : std::string();
 }
