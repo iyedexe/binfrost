@@ -1,12 +1,14 @@
-#include "fix/FixClient.hpp"
 
 #include <iostream>
 #include <sstream>
+
 #include "crypto/ed25519.hpp"
-#include "logger.hpp"
 #include "crypto/utils.hpp"
-#include "utils.hpp"
 #include "fix/MessageBuilder.hpp"
+#include "fix/messages/NewSingleOrder.hpp"
+#include "fix/FixClient.hpp"
+#include "utils.hpp"
+#include "logger.hpp"
 
 int main()
 {
@@ -25,9 +27,14 @@ int main()
     {
         auto client = FixClient(apiKey, key);
         client.connect();
-        std::cout
-            << "Press <ENTER> to quit" << std::endl;
+        client.waitUntilConnected();
+        LOG_WARNING("Press <ENTER> to continue");
         std::cin.get();
+        auto order = NewSingleOrder("111", '1', '1', "BTCUSDT");
+        order.orderQty(0.2);
+        client.sendMessage(order);
+        std::cin.get();
+
         client.disconnect();
     }
     catch (std::exception &e)

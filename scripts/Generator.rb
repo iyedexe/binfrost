@@ -19,7 +19,7 @@ end
 def generateVersion(type, major, minor, sp, verid, aggregator)
   dir = "../codegen/fix"
   xml = versionXML(type, major, minor, sp)
-  cpp = GeneratorCPP.new(type, major.to_s, minor.to_s, sp.to_s, verid.to_s, "#{dir}/oe")
+  cpp = GeneratorCPP.new(type, major.to_s, minor.to_s, sp.to_s, verid.to_s, "#{dir}/oe/quickfix")
   processor = Processor.new(xml, [cpp]).process(aggregator)
 end
 
