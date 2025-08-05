@@ -22,22 +22,20 @@ public:
     void waitForLogon();
 
     void onCreate(const FIX::SessionID &sessionID) override;
-
     void onLogon(const FIX::SessionID &sessionID) override;
-
     void onLogout(const FIX::SessionID &sessionID) override;
 
     void toAdmin(FIX::Message &message, const FIX::SessionID &sessionID) override;
-
     void fromAdmin(const FIX::Message &message, const FIX::SessionID &sessionID)
         QUICKFIX_THROW(FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX::RejectLogon) override;
-
     void toApp(FIX::Message &message, const FIX::SessionID &sessionID)
         QUICKFIX_THROW(FIX::DoNotSend) override;
-
     void fromApp(const FIX::Message &message, const FIX::SessionID &sessionID)
         QUICKFIX_THROW(FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX::UnsupportedMessageType) override;
 
+    void onMessage(const FIX44::ExecutionReport&, const FIX::SessionID&) override;
+    void onMessage(const FIX44::OrderCancelReject&, const FIX::SessionID&) override;
+        
 private:
     MessageBuilder msgBuilder_;
     FixClient* client_ = nullptr;  // <-- store pointer

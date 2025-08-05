@@ -2,6 +2,8 @@
 #include "utils.hpp"
 #include "logger.hpp"
 #include "fix/FixClient.hpp"
+#include <quickfix/fix44/ExecutionReport.h>
+#include <quickfix/fix44/OrderCancelReject.h>
 
 FixApplication::FixApplication(const std::string &apiKey, crypto::ed25519 &key) : msgBuilder_(apiKey, key)
 {
@@ -84,4 +86,16 @@ void FixApplication::fromApp(const FIX::Message &message, const FIX::SessionID &
     if (client_) {
         client_->onMessage();
     }
+}
+
+
+void FixApplication::onMessage(const FIX44::ExecutionReport& message, const FIX::SessionID& sessionID)
+{
+    LOG_WARNING("EXEC {}", message.toString());
+
+}
+void FixApplication::onMessage(const FIX44::OrderCancelReject& message, const FIX::SessionID& sessionID)
+{
+    LOG_WARNING("REJECT: {}", message.toString());
+
 }

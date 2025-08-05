@@ -34,7 +34,6 @@ void FixClient::sendMessage(IMessage &message)
     auto order = message.build();
     order.getHeader().setField(FIX::SenderCompID("CLIENT1"));
     order.getHeader().setField(FIX::TargetCompID("SPOT"));
-    LOG_INFO("SENDING MESSAGE {}", order.toString());
     FIX::Session::sendToTarget(order);
 }
 
@@ -68,7 +67,9 @@ FIX::SessionSettings FixClient::buildSettings()
                 {"DataDictionary", "spec/FIX44.xml"},
                 {"SocketConnectHost", "fix-oe.testnet.binance.vision"},
                 {"SocketConnectPort", "9000"},
-                {"ResetOnDisconnect", "Y"}
+                {"ResetOnDisconnect", "Y"},
+                {"ResetOnLogon", "Y"},
+                {"ResetOnLogout", "Y"}
             }
         },
         {
