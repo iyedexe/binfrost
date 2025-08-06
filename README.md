@@ -46,11 +46,19 @@ make
 [FIX] add start script with source creds and stunnel hooks. (CANCELED).    
 [FIX] clean fix8 reliquat.  
 [REST] Build and run examples on vcpkg.  
+[OPENSSL] Fix static link lib vs run lib.   
+[FIX] migrate from fix8 to quick fix for better integrability.  
 
 # TODO : 
-[OPENSSL] Fix static link lib vs run lib.   
+[FIX] Implement place order.  
+[FIX] Implement getFeed.  
+[FIX] Integrate classes from codegen.  
+[FIX] Build costum message cracker.  
+[FIX] Use two sessions in config for feeder and broker.  
+[FIX] Implement Get Market Info.  
+[FIX] add response type with code ,type and data.  
+[FIX] Implement onMessage for user.  
 [WS] Build and run examples on vcpkg .  
-[FIX] migrate from fix8 to quick fix for better integrability.  
 [FIX] Build and run examples on vcpkg .  
 [BUILD] make the lib more portable.  
 [LIBRARY] Export project as library and use in RTEX.   
