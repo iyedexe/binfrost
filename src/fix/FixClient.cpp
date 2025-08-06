@@ -32,9 +32,7 @@ void FixClient::waitUntilConnected()
 void FixClient::sendMessage(IMessage &message)
 {
     auto order = message.build();
-    order.getHeader().setField(FIX::SenderCompID("CLIENT1"));
-    order.getHeader().setField(FIX::TargetCompID("SPOT"));
-    FIX::Session::sendToTarget(order);
+    FIX::Session::sendToTarget(order, application.getSessionId());
 }
 
 void FixClient::onMessage()
@@ -47,10 +45,10 @@ FIX::SessionSettings FixClient::buildSettings()
     std::map<std::string, std::map<std::string, std::string>> config = {
         {
             "DEFAULT", {
+                {"BeginString", "FIX.4.4"},
                 {"SSLProtocol", "+SSLv3 +TLSv1 -SSLv2"},
                 {"ConnectionType", "initiator"},
                 {"ReconnectInterval", "60"},
-                {"SenderCompID", "CLIENT1"},
                 {"TargetCompID", "SPOT"},
                 {"FileStorePath", "store"},
                 {"FileLogPath", "log"},
@@ -63,10 +61,7 @@ FIX::SessionSettings FixClient::buildSettings()
                 {"LogonTime", "00:00:00"},
                 {"LogoutTime", "23:59:59"},
                 {"HeartBtInt", "30"},
-                {"UseDataDictionary", "N"},
-                {"DataDictionary", "spec/FIX44.xml"},
-                {"SocketConnectHost", "fix-oe.testnet.binance.vision"},
-                {"SocketConnectPort", "9000"},
+                {"UseDataDictionary", "Y"},
                 {"ResetOnDisconnect", "Y"},
                 {"ResetOnLogon", "Y"},
                 {"ResetOnLogout", "Y"}
@@ -74,10 +69,21 @@ FIX::SessionSettings FixClient::buildSettings()
         },
         {
             "SESSION", {
-                {"BeginString", "FIX.4.4"}
+                {"SocketConnectHost", "fix-md.testnet.binance.vision"},
+                {"SocketConnectPort", "9000"},
+                {"SenderCompID", "FEEDER"},
+                {"DataDictionary", "../codegen/fix/md/feeder.xml"}
             }
-        }
-        };
+        }/*,
+        {
+            "BROKER", {
+                {"SocketConnectHost", "fix-oe.testnet.binance.vision"},
+                {"SocketConnectPort", "9000"},
+                {"SenderCompID", "BROKER"},
+                {"DataDictionary", "../codegen/fix/oe/feeder.xml"}
+            }
+        },*/
+    };
 
     std::stringstream cfg;
 

@@ -20,6 +20,8 @@ public:
     void setClient(FixClient* client);
     bool isLoggedOn();
     void waitForLogon();
+    FIX::SessionID getSessionId() {return sessionId_;}
+    
 
     void onCreate(const FIX::SessionID &sessionID) override;
     void onLogon(const FIX::SessionID &sessionID) override;
@@ -39,6 +41,7 @@ public:
 private:
     MessageBuilder msgBuilder_;
     FixClient* client_ = nullptr;  // <-- store pointer
+    FIX::SessionID sessionId_;
 
     mutable std::mutex mtx_;
     std::condition_variable cv_;

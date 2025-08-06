@@ -16,7 +16,6 @@ void FixApplication::setClient(FixClient* client) {
 void FixApplication::onCreate(const FIX::SessionID& sessionID)
 {
     LOG_INFO("Session created: {}", sessionID.toString());
-    // Optional: store sessionID if needed
 }
 
 void FixApplication::onLogon(const FIX::SessionID &sessionID)
@@ -27,6 +26,7 @@ void FixApplication::onLogon(const FIX::SessionID &sessionID)
     }
     cv_.notify_all();
     LOG_INFO("Logon: {}", sessionID.toString());
+    sessionId_ = sessionID;
 }
 
 void FixApplication::onLogout(const FIX::SessionID &sessionID)
@@ -57,7 +57,7 @@ void FixApplication::toAdmin(FIX::Message &message, const FIX::SessionID &sessio
     {
         LOG_INFO("Building logon message");
         msgBuilder_.fillLogon(message);
-        LOG_INFO("Sending Admin: {}", message.toString());
+        LOG_INFO("Sending Admin: {}", replaceSOHWithPipe(message.toString()));
     }
 }
 
@@ -65,26 +65,41 @@ void FixApplication::toAdmin(FIX::Message &message, const FIX::SessionID &sessio
 void FixApplication::fromAdmin(const FIX::Message &message, const FIX::SessionID &sessionID)
     QUICKFIX_THROW(FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX::RejectLogon)
 {
-    LOG_INFO("Received Admin: {}", message.toString());
-    if (client_) {
-        client_->onMessage();
+    try
+    {
+        LOG_INFO("Received Admin: {}", replaceSOHWithPipe(message.toString()));
+        if (client_) {
+            client_->onMessage();
+        }
     }
+    catch(const std::exception& e)
+    {
+        LOG_INFO("Exception fromAdmin : {}", e.what());
+    }
+    
 
 }
 
 void FixApplication::toApp(FIX::Message &message, const FIX::SessionID &sessionID)
     QUICKFIX_THROW(FIX::DoNotSend)
 {
-    LOG_INFO("Sending App: {}", message.toString());
+    LOG_INFO("Sending App: {}", replaceSOHWithPipe(message.toString()));
 }
 void FixApplication::fromApp(const FIX::Message &message, const FIX::SessionID &sessionID)
     QUICKFIX_THROW(FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX::UnsupportedMessageType)
 {
-    crack(message, sessionID);
-    LOG_INFO("Received App: {}", message.toString());
-
-    if (client_) {
-        client_->onMessage();
+    try
+    {
+        LOG_INFO("Received App: {}", replaceSOHWithPipe(message.toString()));
+        crack(message, sessionID);
+    
+        if (client_) {
+            client_->onMessage();
+        }
+    }
+    catch(const std::exception& e)
+    {
+        LOG_WARNING("Exception fromApp : {}", e.what());
     }
 }
 

@@ -6,6 +6,12 @@
 #include <vector>
 #include <algorithm>
 
+inline std::string replaceSOHWithPipe(const std::string& message) {
+    std::string result = message;
+    std::replace(result.begin(), result.end(), '\x01', '|');
+    return result;
+}
+
 inline std::vector<unsigned char> hexStringToVector(const std::string &hexStr)
 {
     std::vector<unsigned char> vec;
