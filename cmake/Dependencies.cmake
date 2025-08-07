@@ -18,15 +18,38 @@ if(NOT UV_EXECUTABLE)
     message(FATAL_ERROR "uv executable not found. Please ensure uv is installed and in your PATH.")
 endif()
 
-add_custom_target(codegen ALL
-    COMMAND ${UV_EXECUTABLE} run python ${CMAKE_CURRENT_SOURCE_DIR}/scripts/codegen.py
-        --xml ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/feeder/FIX44.xml
-        --output ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/
-        --name feeder
-    COMMAND ${UV_EXECUTABLE} run python ${CMAKE_CURRENT_SOURCE_DIR}/scripts/codegen.py
-        --xml ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/broker/FIX44.xml
-        --output ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/
-        --name broker
-    COMMENT "Running cracker.py on FIX XML files using uv + Python..."
-    VERBATIM
-)
+# Define output files to check if they already exist
+set(FEEDER_OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/feeder/MessageCracker.hpp")
+set(BROKER_OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/broker/MessageCracker.hpp")
+
+# Generate Feeder FIX classes during configuration
+if(NOT EXISTS ${FEEDER_OUTPUT})
+    message(STATUS "Generating Feeder FIX classes...")
+    execute_process(
+        COMMAND ${UV_EXECUTABLE} run python ${CMAKE_CURRENT_SOURCE_DIR}/scripts/codegen.py
+            --xml ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/feeder/FIX44.xml
+            --output ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/
+            --name feeder
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        RESULT_VARIABLE feeder_result
+    )
+    if(NOT feeder_result EQUAL 0)
+        message(FATAL_ERROR "Feeder FIX code generation failed!")
+    endif()
+endif()
+
+# Generate Broker FIX classes during configuration
+if(NOT EXISTS ${BROKER_OUTPUT})
+    message(STATUS "Generating Broker FIX classes...")
+    execute_process(
+        COMMAND ${UV_EXECUTABLE} run python ${CMAKE_CURRENT_SOURCE_DIR}/scripts/codegen.py
+            --xml ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/broker/FIX44.xml
+            --output ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/
+            --name broker
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        RESULT_VARIABLE broker_result
+    )
+    if(NOT broker_result EQUAL 0)
+        message(FATAL_ERROR "Broker FIX code generation failed!")
+    endif()
+endif()
