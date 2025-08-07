@@ -23,7 +23,7 @@ namespace BNB::FIX
         Client(const std::string &apiKey, crypto::ed25519 &key);
         void init();
         void sendMessage(IMessage &message);
-        void onMessage(const Message &message, const SessionID &sessionID);
+        virtual void onMessage(const Message &message, const SessionID &sessionID);
         void connect();
         void disconnect();
         void waitUntilConnected();
@@ -34,7 +34,6 @@ namespace BNB::FIX
         virtual std::string getPort() = 0;
         virtual std::string getSenderCompID() = 0;
         virtual std::string getDictionnaryPath() = 0;
-
 
         FixApplication application;
         SessionSettings settings;

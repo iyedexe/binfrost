@@ -1,16 +1,16 @@
 message(STATUS "Dependencies handling ...")
 
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/feeder)
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/broker)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/OE)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/MD)
 
 file(DOWNLOAD 
     https://raw.githubusercontent.com/binance/binance-spot-api-docs/master/fix/schemas/spot-fix-oe.xml 
-    ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/broker/FIX44.xml
+    ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/OE/FIX44.xml
 )
 
 file(DOWNLOAD 
     https://raw.githubusercontent.com/binance/binance-spot-api-docs/master/fix/schemas/spot-fix-md.xml 
-    ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/feeder/FIX44.xml
+    ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/MD/FIX44.xml
 )
 
 find_program(UV_EXECUTABLE uv)
@@ -27,9 +27,9 @@ if(NOT EXISTS ${FEEDER_OUTPUT})
     message(STATUS "Generating Feeder FIX classes...")
     execute_process(
         COMMAND ${UV_EXECUTABLE} run python ${CMAKE_CURRENT_SOURCE_DIR}/scripts/codegen.py
-            --xml ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/feeder/FIX44.xml
+            --xml ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/MD/FIX44.xml
             --output ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/
-            --name feeder
+            --name MD
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         RESULT_VARIABLE feeder_result
     )
@@ -43,9 +43,9 @@ if(NOT EXISTS ${BROKER_OUTPUT})
     message(STATUS "Generating Broker FIX classes...")
     execute_process(
         COMMAND ${UV_EXECUTABLE} run python ${CMAKE_CURRENT_SOURCE_DIR}/scripts/codegen.py
-            --xml ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/broker/FIX44.xml
+            --xml ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/OE/FIX44.xml
             --output ${CMAKE_CURRENT_SOURCE_DIR}/codegen/fix/
-            --name broker
+            --name OE
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         RESULT_VARIABLE broker_result
     )

@@ -19,6 +19,7 @@ target_link_libraries(fixBroker ${FIX_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
 set(FIX_FEEDER_SOURCES
     src/fix/FixApplication.cpp
     src/fix/Client.cpp
+    src/fix/Feeder.cpp
     src/fix/MessageBuilder.cpp
     src/fix/messages/MarketDataRequest.cpp
     ${CRYPTO_UTILS_SOURCES}

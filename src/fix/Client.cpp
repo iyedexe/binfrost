@@ -41,7 +41,7 @@ namespace BNB::FIX
 
     void Client::onMessage(const Message &message, const SessionID &sessionID)
     {
-        LOG_INFO("GOT A MESSAGE MOFOK");
+//        crack(message, sessionID);
     }
 
     SessionSettings Client::buildSettings()
