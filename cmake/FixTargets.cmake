@@ -25,4 +25,5 @@ set(FIX_FEEDER_SOURCES
 )
 
 add_executable(fixFeeder examples/fix/feeder.cpp ${FIX_FEEDER_SOURCES})
+add_dependencies(fixFeeder codegen)
 target_link_libraries(fixFeeder ${FIX_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})

@@ -72,7 +72,7 @@ FIX::SessionSettings FixClient::buildSettings()
                 {"SocketConnectHost", "fix-md.testnet.binance.vision"},
                 {"SocketConnectPort", "9000"},
                 {"SenderCompID", "FEEDER"},
-                {"DataDictionary", "../codegen/fix/md/feeder.xml"}
+                {"DataDictionary", "../codegen/fix/feeder/FIX44.xml"}
             }
         }/*,
         {
@@ -80,7 +80,7 @@ FIX::SessionSettings FixClient::buildSettings()
                 {"SocketConnectHost", "fix-oe.testnet.binance.vision"},
                 {"SocketConnectPort", "9000"},
                 {"SenderCompID", "BROKER"},
-                {"DataDictionary", "../codegen/fix/oe/feeder.xml"}
+                {"DataDictionary", "../codegen/fix/broker/FIX44.xml"}
             }
         },*/
     };
