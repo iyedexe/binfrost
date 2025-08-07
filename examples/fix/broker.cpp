@@ -6,7 +6,7 @@
 #include "crypto/utils.hpp"
 #include "fix/MessageBuilder.hpp"
 #include "fix/messages/NewSingleOrder.hpp"
-#include "fix/FixClient.hpp"
+#include "fix/Broker.hpp"
 #include "utils.hpp"
 #include "logger.hpp"
 
@@ -25,7 +25,7 @@ int main()
 
     try
     {
-        auto client = FixClient(apiKey, key);
+        auto client = BNB::FIX::Broker(apiKey, key);
         client.connect();
         client.waitUntilConnected();
         LOG_WARNING("Press <ENTER> to continue");

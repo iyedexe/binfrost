@@ -6,7 +6,7 @@ set(FIX_COMMON_LIBS
 
 set(FIX_BROKER_SOURCES
     src/fix/FixApplication.cpp
-    src/fix/FixClient.cpp
+    src/fix/Client.cpp
     src/fix/MessageBuilder.cpp
     src/fix/messages/NewSingleOrder.cpp
     ${CRYPTO_UTILS_SOURCES}
@@ -18,12 +18,11 @@ target_link_libraries(fixBroker ${FIX_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})
 
 set(FIX_FEEDER_SOURCES
     src/fix/FixApplication.cpp
-    src/fix/FixClient.cpp
+    src/fix/Client.cpp
     src/fix/MessageBuilder.cpp
     src/fix/messages/MarketDataRequest.cpp
     ${CRYPTO_UTILS_SOURCES}
 )
 
 add_executable(fixFeeder examples/fix/feeder.cpp ${FIX_FEEDER_SOURCES})
-add_dependencies(fixFeeder codegen)
 target_link_libraries(fixFeeder ${FIX_COMMON_LIBS} ${CRYPTO_UTILS_LIBS})

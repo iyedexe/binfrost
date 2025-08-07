@@ -1,7 +1,7 @@
 #include "fix/FixApplication.hpp"
 #include "utils.hpp"
 #include "logger.hpp"
-#include "fix/FixClient.hpp"
+#include "fix/Client.hpp"
 #include <quickfix/fix44/ExecutionReport.h>
 #include <quickfix/fix44/OrderCancelReject.h>
 
@@ -9,7 +9,7 @@ FixApplication::FixApplication(const std::string &apiKey, crypto::ed25519 &key) 
 {
 }
 
-void FixApplication::setClient(FixClient* client) {
+void FixApplication::setClient(BNB::FIX::Client* client) {
     client_ = client;
 }
 
@@ -69,7 +69,7 @@ void FixApplication::fromAdmin(const FIX::Message &message, const FIX::SessionID
     {
         LOG_INFO("Received Admin: {}", replaceSOHWithPipe(message.toString()));
         if (client_) {
-            client_->onMessage();
+            client_->onMessage(message, sessionID);
         }
     }
     catch(const std::exception& e)
@@ -91,26 +91,13 @@ void FixApplication::fromApp(const FIX::Message &message, const FIX::SessionID &
     try
     {
         LOG_INFO("Received App: {}", replaceSOHWithPipe(message.toString()));
-        crack(message, sessionID);
     
         if (client_) {
-            client_->onMessage();
+            client_->onMessage(message, sessionID);
         }
     }
     catch(const std::exception& e)
     {
         LOG_WARNING("Exception fromApp : {}", e.what());
     }
-}
-
-
-void FixApplication::onMessage(const FIX44::ExecutionReport& message, const FIX::SessionID& sessionID)
-{
-    LOG_WARNING("EXEC {}", message.toString());
-
-}
-void FixApplication::onMessage(const FIX44::OrderCancelReject& message, const FIX::SessionID& sessionID)
-{
-    LOG_WARNING("REJECT: {}", message.toString());
-
 }
