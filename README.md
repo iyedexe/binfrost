@@ -1,18 +1,24 @@
-<div align="center" style="width: 300px; height: 300px; overflow: hidden;">
-  <img 
-    src="https://github.com/user-attachments/assets/621b8250-6fef-4a25-946c-3e2ff20de9f8" 
-    alt="BINFROSTLOGO" 
-    width="300" 
-    height="300" 
-    style="object-fit: cover;"
-  />
-</div>
-
-<div align="center">
-  **A blazing-fast, multi-protocol Binance client library — bridging your code to the Binance universe.**
-  
-  _"Like the mythical Bifrost bridge, Binfrost connects you instantly and securely — only here, it’s crypto, not Asgard."_
-</div>
+<table align="center" style="width: 100%; max-width: 700px;">
+  <tr>
+    <td style="width: 300px; vertical-align: middle; padding-right: 20px;">
+      <img 
+        src="https://github.com/user-attachments/assets/621b8250-6fef-4a25-946c-3e2ff20de9f8" 
+        alt="BINFROSTLOGO" 
+        width="300" 
+        height="300" 
+        style="object-fit: cover;"
+      />
+    </td>
+    <td style="vertical-align: middle; color: #bfa14d; font-family: Papyrus, Copperplate, fantasy, cursive, serif; letter-spacing: 1.5px;">
+      <h2 style="margin: 0;">
+        <strong>A blazing-fast, multi-protocol Binance client library — bridging your code to the Binance universe.</strong>
+      </h2>
+      <p style="font-style: italic; font-size: 1.1em; margin-top: 10px; color: #d4c270;">
+        "Like the mythical Bifrost bridge, Binfrost connects you instantly and securely — only here, it’s crypto, not Asgard."
+      </p>
+    </td>
+  </tr>
+</table>
 
 ---
 
