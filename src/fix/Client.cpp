@@ -39,11 +39,6 @@ namespace BNB::FIX
         Session::sendToTarget(order, application.getSessionId());
     }
 
-    void Client::onMessage(const Message &message, const SessionID &sessionID)
-    {
-//        crack(message, sessionID);
-    }
-
     SessionSettings Client::buildSettings()
     {
         std::map<std::string, std::map<std::string, std::string>> config = {

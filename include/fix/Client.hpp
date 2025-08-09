@@ -23,10 +23,10 @@ namespace BNB::FIX
         Client(const std::string &apiKey, crypto::ed25519 &key);
         void init();
         void sendMessage(IMessage &message);
-        virtual void onMessage(const Message &message, const SessionID &sessionID);
         void connect();
         void disconnect();
         void waitUntilConnected();
+        virtual void onMessage(const Message &message, const SessionID &sessionID) = 0;
 
     private:
         SessionSettings buildSettings();

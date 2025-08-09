@@ -1,6 +1,7 @@
 #pragma once
 
-#include <quickfix/fix44/MarketDataRequest.h>
+#include "codegen/fix/MD/fix44/MarketDataRequest.hpp"
+#include "codegen/fix/MD/FixValues.h"
 #include "IMessage.hpp"
 #include <string>
 #include <memory>

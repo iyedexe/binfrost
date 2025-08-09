@@ -7,6 +7,7 @@ set(FIX_COMMON_LIBS
 set(FIX_BROKER_SOURCES
     src/fix/FixApplication.cpp
     src/fix/Client.cpp
+    src/fix/Broker.cpp
     src/fix/MessageBuilder.cpp
     src/fix/messages/NewSingleOrder.cpp
     ${CRYPTO_UTILS_SOURCES}

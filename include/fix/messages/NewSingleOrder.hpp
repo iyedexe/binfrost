@@ -2,8 +2,7 @@
 
 #include <string>
 
-#include <quickfix/fix44/NewOrderSingle.h>
-
+#include "codegen/fix/OE/fix44/NewOrderSingle.hpp"
 #include "IMessage.hpp"
 
 class NewSingleOrder : public IMessage
@@ -12,7 +11,7 @@ public:
     NewSingleOrder(const std::string &clOrdID, char ordType, char side, const std::string &symbol);
 
     NewSingleOrder &&orderQty(double qty);
-    NewSingleOrder &&execInst(std::string val);
+    NewSingleOrder &&execInst(char val);
     NewSingleOrder &&price(double val);
     NewSingleOrder &&timeInForce(char val);
     NewSingleOrder &&maxFloor(double val);

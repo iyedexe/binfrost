@@ -155,24 +155,35 @@ def generate_field_numbers(root: ET, output_dir: str, name: str):
     print(f"✅ FixFieldNumbers.h generated at: {output_path}")
 
 
-
 def generate_fix_values(root: ET.Element, output_dir: str, name: str):
-
     # FIX version, e.g. FIX.4.4
     fix_version_str = f"FIX.{root.attrib['major']}.{root.attrib['minor']}"
 
     lines = []
+    written_constants = set()  # Track already-defined variable names
+
     lines.append("#pragma once\n")
     lines.append('#include <string>')
     lines.append(f"namespace FIX::{name}\n"+"{")
-    lines.append(f'  const char BeginString_FIX44[] = "{fix_version_str}";')
+
+    # Add FIX version
+    const_name = f"BeginString_{fix_version_str.replace('.', '')}"
+    if const_name not in written_constants:
+        lines.append(f'  const char BeginString_FIX{root.attrib["major"]}{root.attrib["minor"]}[] = "{fix_version_str}";')
+        written_constants.add(const_name)
 
     # Message types
     for message in root.findall(".//messages/message"):
         msgName = message.attrib.get("name")
         msgtype = message.attrib.get("msgtype")
         if msgName and msgtype:
-            lines.append(f'  const char MsgType_{msgName}[] = "{msgtype}";')
+            const_name = f"MsgType_{msgName}"
+            if const_name not in written_constants:
+                if len(msgtype) == 1:
+                    lines.append(f'  const char {const_name} = \'{msgtype}\';')
+                else:
+                    lines.append(f'  const char {const_name}[] = "{msgtype}";')
+                written_constants.add(const_name)
 
     # Enumerated values
     for field in root.findall(".//fields/field"):
@@ -182,22 +193,24 @@ def generate_fix_values(root: ET.Element, output_dir: str, name: str):
             enum_desc = value.attrib.get("description")
             if enum_val and enum_desc:
                 safe_enum_desc = enum_desc.upper().replace(" ", "_").replace("-", "_").replace("/", "_")
-                # If enum_val is a single char, use single quotes
-                if len(enum_val) == 1:
-                    lines.append(f'  const char {field_name}_{safe_enum_desc} = \'{enum_val}\';')
-                else:
-                    lines.append(f'  const char {field_name}_{safe_enum_desc}[] = "{enum_val}";')
+                const_name = f"{field_name}_{safe_enum_desc}"
+                if const_name not in written_constants:
+                    if len(enum_val) == 1:
+                        lines.append(f'  const char {const_name} = \'{enum_val}\';')
+                    else:
+                        lines.append(f'  const char {const_name}[] = "{enum_val}";')
+                    written_constants.add(const_name)
 
     lines.append("}")
 
-    namespace = name
-    ns_path = os.path.join(output_dir, namespace)
+    # Output directory for namespace
+    ns_path = os.path.join(output_dir, name)
     os.makedirs(ns_path, exist_ok=True)
 
     output_path = os.path.join(ns_path, "FixValues.h")
-
     with open(output_path, "w") as f:
         f.write("\n".join(lines))
+
     print(f"✅ FixValues.h generated at: {output_path}")
 
 
@@ -214,19 +227,123 @@ def generate_fix_messages(root: ET.Element, output_dir: str, name: str):
     if fields is None:
         raise ValueError("No <fields> section found in the XML.")
 
+    # Map field name → number
+    field_numbers = {f.attrib["name"]: int(f.attrib["number"]) for f in fields.findall("field")}
+
+    # Map component name -> component element
+    comps_root = root.find("components")
+    components = {}
+    if comps_root is not None:
+        for c in comps_root.findall("component"):
+            components[c.attrib["name"]] = c
+
     namespace_path = os.path.join(output_dir, name)
     fix_version_path = os.path.join(namespace_path, fix_version_lower)
     os.makedirs(fix_version_path, exist_ok=True)
 
+    # Expand children of a message/group/component into a flat ordered list of items.
+    # Each item is either ('field', field_name) or ('group', group_name, group_element).
+    def expand_children(elem: ET.Element, seen_components: set | None = None):
+        if seen_components is None:
+            seen_components = set()
+
+        items = []
+        for child in list(elem):
+            if child.tag == "field":
+                items.append(("field", child.attrib["name"]))
+            elif child.tag == "group":
+                # keep the group element so we can recurse later
+                items.append(("group", child.attrib["name"], child))
+            elif child.tag == "component":
+                comp_name = child.attrib["name"]
+                if comp_name in seen_components:
+                    raise ValueError(f"Circular component include detected: {comp_name}")
+                comp_elem = components.get(comp_name)
+                if comp_elem is None:
+                    raise ValueError(f"Component '{comp_name}' referenced but not found in <components>.")
+                # expand the component's children in-place, passing updated seen_components
+                items.extend(expand_children(comp_elem, seen_components | {comp_name}))
+            else:
+                # ignore unknown tags (or optionally raise)
+                continue
+        return items
+
+    # helper: get the first field number inside a group (digging into components / nested groups)
+    def get_first_field_number_of_group_elem(g_elem: ET.Element):
+        items = expand_children(g_elem)
+        for it in items:
+            if it[0] == "field":
+                fname = it[1]
+                if fname not in field_numbers:
+                    raise KeyError(f"Field '{fname}' not found in <fields>.")
+                return field_numbers[fname]
+            elif it[0] == "group":
+                # recursion for nested groups
+                return get_first_field_number_of_group_elem(it[2])
+        raise ValueError(f"Group '{g_elem.attrib.get('name')}' contains no fields (cannot determine first field).")
+
+    # Recursively generate a group class from a <group> element
+    def generate_group_class(group_elem: ET.Element, indent: int = 4):
+        lines = []
+        spaces = " " * indent
+        group_name = group_elem.attrib["name"]
+        if group_name not in field_numbers:
+            raise KeyError(f"Group/NumInGroup '{group_name}' not found in <fields> section.")
+        group_tag = field_numbers[group_name]
+
+        # expand this group's children (fields / nested groups / components)
+        items = expand_children(group_elem)
+
+        # compute first field number (for delimiter)
+        first_field_num = get_first_field_number_of_group_elem(group_elem)
+
+        # build message_order: for each item, include either field number (field) or
+        # the nested group's first-field-number (delim) (group)
+        msg_order_nums = []
+        for it in items:
+            if it[0] == "field":
+                fname = it[1]
+                if fname not in field_numbers:
+                    raise KeyError(f"Field '{fname}' not found in <fields>.")
+                msg_order_nums.append(field_numbers[fname])
+            elif it[0] == "group":
+                # include nested group's delimiter (first field num) in parent's message_order
+                nested_first = get_first_field_number_of_group_elem(it[2])
+                msg_order_nums.append(nested_first)
+
+        # prepare message_order string
+        if msg_order_nums:
+            msg_order_list = ", ".join(str(n) for n in msg_order_nums) + ", 0"
+        else:
+            msg_order_list = "0"
+
+        # Add FIELD_SET for the group's count tag at the parent level (indented)
+        lines.append(f"{spaces}FIELD_SET(*this, FIX::{name}::{group_name});")
+        # Group class header
+        lines.append(f"{spaces}class {group_name} : public FIX::Group {{")
+        lines.append(f"{spaces}public:")
+        lines.append(f"{spaces}    {group_name}() : FIX::Group({group_tag}, {first_field_num}, FIX::message_order({msg_order_list})) {{}}")
+
+        # inside the group class: add FIELD_SET for each field and nested group classes
+        for it in items:
+            if it[0] == "field":
+                fname = it[1]
+                lines.append(f"{spaces}    FIELD_SET(*this, FIX::{name}::{fname});")
+            elif it[0] == "group":
+                # recursively generate nested group class (this will also add the FIELD_SET for the nested group's count tag)
+                lines.extend(generate_group_class(it[2], indent + 4))
+
+        lines.append(f"{spaces}}};")
+        return lines
+
     # Generate each message class
     for message in messages.findall("message"):
         msg_name = message.attrib["name"]
-        msg_type = message.attrib["msgtype"]
+        msg_type = message.attrib.get("msgtype", "")
 
         lines = []
         lines.append("#pragma once")
-        lines.append("#include \"Message.h\"\n")
-        #lines.append("#include \"../FixFields.hpp\"\n")
+        lines.append('#include "Message.h"\n')
         lines.append(f"namespace {namespace} {{")
         lines.append(f"class {msg_name} : public Message {{")
         lines.append("public:")
@@ -238,38 +355,39 @@ def generate_fix_messages(root: ET.Element, output_dir: str, name: str):
         lines.append(f"    {msg_name}& operator=(const {msg_name}&) = default;")
         lines.append(f"    {msg_name}& operator=({msg_name}&&) = default;")
         lines.append(f"    static FIX::MsgType MsgType() {{ return FIX::MsgType(\"{msg_type}\"); }}")
+        lines.append("")
 
-        constructor_fields = []
-        for field in message.findall("field"):
-            field_name = field.attrib["name"]
-            constructor_fields.append(field_name)
-            lines.append(f"    FIELD_SET(*this, FIX::{name}::{field_name});")
+        # expand message children (fields / groups / components) in order
+        items = expand_children(message)
 
-        for group in message.findall("group"):
-            group_name = group.attrib["name"]
-            lines.append(f"    FIELD_SET(*this, FIX::{name}::{group_name});")
-            lines.append(f"    class {group_name} : public FIX::Group {{")
-            lines.append("    public:")
-            group_fields = []
-            for field in group.findall("field"):
-                field_name = field.attrib["name"]
-                group_fields.append(field_name)
-                lines.append(f"        FIELD_SET(*this, FIX::{field_name});")
-            lines.append("    };")
+        # top-level fields (after component expansion) — used for generating the convenience constructor
+        constructor_fields = [it[1] for it in items if it[0] == "field"]
 
+        # emit FIELD_SET lines and nested group classes in the original order
+        for it in items:
+            if it[0] == "field":
+                fname = it[1]
+                lines.append(f"    FIELD_SET(*this, FIX::{name}::{fname});")
+            elif it[0] == "group":
+                # generate the nested group class (which also emits the FIELD_SET for the group's count tag)
+                lines.extend(generate_group_class(it[2], indent=4))
+
+        # convenience constructor for top-level fields (if any)
         if constructor_fields:
-            constructor_params = ", ".join([f"const FIX::{name}::{field}& a{field}" for field in constructor_fields])
+            constructor_params = ", ".join([f"const FIX::{name}::{f}& a{f}" for f in constructor_fields])
             lines.append(f"    {msg_name}({constructor_params}) : Message(MsgType()) {{")
-            for field in constructor_fields:
-                lines.append(f"        set(a{field});")
+            for f in constructor_fields:
+                lines.append(f"        set(a{f});")
             lines.append("    }")
 
         lines.append("};\n")
         lines.append("} // namespace\n")
+
         output_path = os.path.join(fix_version_path, f"{msg_name}.hpp")
         with open(output_path, "w") as f:
             f.write("\n".join(lines))
-            print(f"✅ {msg_name}.hpp generated at: {output_path}")
+        print(f"✅ {msg_name}.hpp generated at: {output_path}")
+
 
 def generate_messages_h(root: ET.Element, output_dir: str, name: str):
     """Generate a single Messages.h file containing Header, Trailer, and Message classes."""
