@@ -17,7 +17,7 @@ class MarketDataRequest : public IMessage {
 public:
     explicit MarketDataRequest(const std::string& requestId);
 
-    MarketDataRequest&& forSymbol(const std::string& symbol);
-    MarketDataRequest&& subscribeToStream(StreamType stream);
-    MarketDataRequest&& setMarketDepth(int depth);
+    MarketDataRequest& forSymbol(const std::string& symbol);
+    MarketDataRequest& subscribeToStream(StreamType stream);
+    MarketDataRequest& setMarketDepth(int depth);
 };

@@ -154,19 +154,17 @@ def generate_field_numbers(root: ET, output_dir: str, name: str):
 
     print(f"✅ FixFieldNumbers.h generated at: {output_path}")
 
-
 def generate_fix_values(root: ET.Element, output_dir: str, name: str):
-    # FIX version, e.g. FIX.4.4
     fix_version_str = f"FIX.{root.attrib['major']}.{root.attrib['minor']}"
 
     lines = []
-    written_constants = set()  # Track already-defined variable names
+    written_constants = set()
 
     lines.append("#pragma once\n")
     lines.append('#include <string>')
     lines.append(f"namespace FIX::{name}\n"+"{")
 
-    # Add FIX version
+    # FIX version constant
     const_name = f"BeginString_{fix_version_str.replace('.', '')}"
     if const_name not in written_constants:
         lines.append(f'  const char BeginString_FIX{root.attrib["major"]}{root.attrib["minor"]}[] = "{fix_version_str}";')
@@ -188,22 +186,42 @@ def generate_fix_values(root: ET.Element, output_dir: str, name: str):
     # Enumerated values
     for field in root.findall(".//fields/field"):
         field_name = field.attrib.get("name")
+        field_type = field.attrib.get("type", "").upper()
+
         for value in field.findall("value"):
             enum_val = value.attrib.get("enum")
             enum_desc = value.attrib.get("description")
+
             if enum_val and enum_desc:
                 safe_enum_desc = enum_desc.upper().replace(" ", "_").replace("-", "_").replace("/", "_")
                 const_name = f"{field_name}_{safe_enum_desc}"
+
                 if const_name not in written_constants:
-                    if len(enum_val) == 1:
-                        lines.append(f'  const char {const_name} = \'{enum_val}\';')
+                    # Decide C++ type based on FIX field type
+                    if field_type in ("INT", "NUMINGROUP", "SEQNUM", "LENGTH", "DAYOFMONTH"):
+                        cpp_type = "int"
+                        lines.append(f'  const {cpp_type} {const_name} = {enum_val};')
+
+                    elif field_type in ("FLOAT", "PRICE", "PRICEOFFSET", "QTY", "AMT", "PERCENTAGE"):
+                        cpp_type = "double"
+                        lines.append(f'  const {cpp_type} {const_name} = {enum_val};')
+
+                    elif field_type in ("CHAR",):
+                        cpp_type = "char"
+                        lines.append(f'  const {cpp_type} {const_name} = \'{enum_val}\';')
+
                     else:
-                        lines.append(f'  const char {const_name}[] = "{enum_val}";')
+                        # Default to string for any other type (e.g., STRING, CURRENCY, EXCHANGE, LOCALMKTDATE, etc.)
+                        cpp_type = "char"
+                        if len(enum_val) == 1:
+                            lines.append(f'  const char {const_name} = \'{enum_val}\';')
+                        else:
+                            lines.append(f'  const char {const_name}[] = "{enum_val}";')
+
                     written_constants.add(const_name)
 
     lines.append("}")
 
-    # Output directory for namespace
     ns_path = os.path.join(output_dir, name)
     os.makedirs(ns_path, exist_ok=True)
 

@@ -10,100 +10,100 @@ NewSingleOrder::NewSingleOrder(const std::string &clOrdID, char ordType, char si
     order_->setField(FIX::OE::Symbol(symbol));
 }
 
-NewSingleOrder &&NewSingleOrder::orderQty(double qty)
+NewSingleOrder &NewSingleOrder::orderQty(double qty)
 {
     order_->setField(FIX::OE::OrderQty(qty));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::execInst(char val)
+NewSingleOrder &NewSingleOrder::execInst(char val)
 {
     order_->setField(FIX::OE::ExecInst(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::price(double val)
+NewSingleOrder &NewSingleOrder::price(double val)
 {
     order_->setField(FIX::OE::Price(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::timeInForce(char val)
+NewSingleOrder &NewSingleOrder::timeInForce(char val)
 {
     order_->setField(FIX::OE::TimeInForce(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::maxFloor(double val)
+NewSingleOrder &NewSingleOrder::maxFloor(double val)
 {
     order_->setField(FIX::OE::MaxFloor(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::cashOrderQty(double val)
+NewSingleOrder &NewSingleOrder::cashOrderQty(double val)
 {
     order_->setField(FIX::OE::CashOrderQty(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::targetStrategy(int val)
+NewSingleOrder &NewSingleOrder::targetStrategy(int val)
 {
     if (val < 1000000)
         throw std::runtime_error("TargetStrategy must be >= 1000000");
     order_->setField(FIX::OE::TargetStrategy(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::strategyID(int val)
+NewSingleOrder &NewSingleOrder::strategyID(int val)
 {
     order_->setField(FIX::OE::StrategyID(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::selfTradePreventionMode(char val)
+NewSingleOrder &NewSingleOrder::selfTradePreventionMode(char val)
 {
     order_->setField(FIX::OE::SelfTradePreventionMode(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::triggerType(char val)
+NewSingleOrder &NewSingleOrder::triggerType(char val)
 {
     order_->setField(FIX::OE::TriggerType(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::triggerAction(char val)
+NewSingleOrder &NewSingleOrder::triggerAction(char val)
 {
     order_->setField(FIX::OE::TriggerAction(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::triggerPrice(double val)
+NewSingleOrder &NewSingleOrder::triggerPrice(double val)
 {
     order_->setField(FIX::OE::TriggerPrice(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::triggerPriceType(char val)
+NewSingleOrder &NewSingleOrder::triggerPriceType(char val)
 {
     order_->setField(FIX::OE::TriggerPriceType(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::triggerPriceDirection(char val)
+NewSingleOrder &NewSingleOrder::triggerPriceDirection(char val)
 {
     order_->setField(FIX::OE::TriggerPriceDirection(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::triggerTrailingDeltaBips(int val)
+NewSingleOrder &NewSingleOrder::triggerTrailingDeltaBips(int val)
 {
     order_->setField(FIX::OE::TriggerTrailingDeltaBips(val));
-    return std::move(*this);
+    return *this;
 }
 
-NewSingleOrder &&NewSingleOrder::sor(bool val)
+NewSingleOrder &NewSingleOrder::sor(bool val)
 {
     order_->setField(FIX::OE::SOR(val));
-    return std::move(*this);
+    return *this;
 }

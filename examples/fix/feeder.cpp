@@ -6,6 +6,7 @@
 #include "crypto/utils.hpp"
 #include "fix/MessageBuilder.hpp"
 #include "fix/messages/MarketDataRequest.hpp"
+#include "fix/messages/InstrumentList.hpp"
 #include "fix/Feeder.hpp"
 #include "utils.hpp"
 #include "logger.hpp"
@@ -30,9 +31,14 @@ int main()
         client.waitUntilConnected();
         LOG_WARNING("Press <ENTER> to continue");
         std::cin.get();
+
+        auto instruments_list = InstrumentList("GET_ALL_INSTRUMENTS");
+        client.sendMessage(instruments_list);
+        LOG_WARNING("Press <ENTER> to continue");
+        std::cin.get();
+
         auto subscription = MarketDataRequest("BOOK_TICKER_STREAM");
-        subscription.forSymbol("BTCUSDT");
-        subscription.subscribeToStream(StreamType::BookTicker);
+        subscription.forSymbol("BTCUSDT").subscribeToStream(StreamType::BookTicker);
         client.sendMessage(subscription);
         std::cin.get();
 

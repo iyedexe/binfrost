@@ -7,14 +7,14 @@ MarketDataRequest::MarketDataRequest(const std::string& requestId) {
     order_->setField(FIX::MD::SubscriptionRequestType('1'));
 }
 
-MarketDataRequest&& MarketDataRequest::forSymbol(const std::string& symbol) {
+MarketDataRequest& MarketDataRequest::forSymbol(const std::string& symbol) {
     FIX44::MD::MarketDataRequest::NoRelatedSym group;
     group.setField(FIX::MD::Symbol(symbol));
     order_->addGroup(group);
-    return std::move(*this);
+    return *this;
 }
 
-MarketDataRequest&& MarketDataRequest::subscribeToStream(StreamType stream) {
+MarketDataRequest& MarketDataRequest::subscribeToStream(StreamType stream) {
 
     switch (stream) {
         case StreamType::Trade: {
@@ -47,10 +47,10 @@ MarketDataRequest&& MarketDataRequest::subscribeToStream(StreamType stream) {
         }
     }
 
-    return std::move(*this);
+    return *this;
 }
 
-MarketDataRequest&& MarketDataRequest::setMarketDepth(int depth) {
+MarketDataRequest& MarketDataRequest::setMarketDepth(int depth) {
     order_->setField(FIX::MD::MarketDepth(depth));
-    return std::move(*this);
+    return *this;
 }

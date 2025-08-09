@@ -74,9 +74,12 @@ make
 - ✅ **WS_API** Exchange info, Place/Test/Cancel Orders  
 - ✅ **BUILD** vcpkg dependencies, cross-platform builds  
 - ✅ **FIX** Migrated from **fix8** → **QuickFIX**  
-- ✅ **FIX** Implemented `placeOrder` & `getFeed`  
+- ✅ **FIX** Implemented `placeOrder` & `subscribeToFeed`  
 - ✅ **FIX** Integrated codegen classes & custom message cracker  
 - ✅ **FIX** Dual session config for feeder/broker  
+- ✅ **FIX** `onMessage` handler for user  
+- ✅ **CRYPTO** ED25519 key loading  
+- ✅ **FIX** Feeder & broker wrapper  
 
 ---
 
@@ -84,19 +87,18 @@ make
 
 - ✅ **FIX** Get Market Info implementation  
 - ✅ **FIX** Add response type with code, type, and data  
-- ✅ **FIX** `onMessage` handler for user  
 - ✅ **WS** Example builds via vcpkg  
 - ✅ **LIBRARY** Export as library for RTEX integration  
 - ✅ **LIBRARY** Version 0.0 Beta  
-- ✅ **CRYPTO** ED25519 key loading  
+- ✅ **WS_API** Rework WS to use beast instead of wspp
+- ✅ **WS_API** Logon without signature after authentication  
+- ✅ **REST** Remove singleton request builder and aggregate to client  
+- ✅ **WS** Remove singleton request builder and aggregate to client  
 - ✅ **UTESTS** More coverage for signatures, payloads, key loading  
 - ✅ **WS_ALL** Parameter enforcement for request types  
-- ✅ **WS_API** Logon without signature after authentication  
-- ✅ **ARCHITECTURE** Feeder & broker wrapper  
-- ✅ **DEPENDENCIES** Switch from WebSocket++ → Boost.Beast  
 - ✅ **FIX** Implement FIX messages fully  
-- ✅ **FIX/WS** Feeder-Broker implementation  
-- ✅ **FIX** Native SSL using fix8 PR  
+- ✅ **WS** Feeder-Broker implementation  
+- ✅ **CRYPTO** RSA key loading and sign  
 
 
 ## ⚡ Inspiration

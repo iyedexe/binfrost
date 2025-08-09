@@ -23,6 +23,7 @@ set(FIX_FEEDER_SOURCES
     src/fix/Feeder.cpp
     src/fix/MessageBuilder.cpp
     src/fix/messages/MarketDataRequest.cpp
+    src/fix/messages/InstrumentList.cpp
     ${CRYPTO_UTILS_SOURCES}
 )
 
