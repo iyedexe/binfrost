@@ -1,6 +1,6 @@
 <div align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Bifrost_artwork.jpg/640px-Bifrost_artwork.jpg" width="400" alt="Binfrost - Binance Client Library" />
-  
+  <img width="1024" height="1024" alt="ChatGPT Image Aug 9, 2025, 03_35_17 PM" src="https://github.com/user-attachments/assets/621b8250-6fef-4a25-946c-3e2ff20de9f8" />
+
   # 🌈 **Binfrost**
   **A blazing-fast, multi-protocol Binance client library — bridging your code to the Binance universe.**
   
