@@ -1,106 +1,104 @@
-# Description
-This repo aims to build a simple to use client library for Binance.       
-Client supports FIX, Websockets and Rest APIs.   
-Order Entry, Market Data, Drop Copy (FIX) connections to be supported.   
-Performance and ease of use are key.    
+<div align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Bifrost_artwork.jpg/640px-Bifrost_artwork.jpg" width="400" alt="Binfrost - Binance Client Library" />
+  
+  # 🌈 **Binfrost**
+  **A blazing-fast, multi-protocol Binance client library — bridging your code to the Binance universe.**
+  
+  _"Like the mythical Bifrost bridge, Binfrost connects you instantly and securely — only here, it’s crypto, not Asgard."_
+</div>
 
-# Building on windows:
-```
-VCPKG_ROOT=C:\Users\Administrator\Desktop\workbench\vcpkg
+---
+
+## 🚀 Overview
+**Binfrost** is a C++ client library for Binance with a focus on **performance** and **ease of use**.  
+It supports:
+- **FIX protocol**
+- **WebSocket streams**
+- **REST API**
+
+You can establish **Order Entry**, **Market Data**, and **Drop Copy** FIX connections.  
+The architecture is designed for **low latency**, **cross-platform builds**, and **scalability**.
+
+---
+
+## 📦 Features
+
+- ✅ **FIX Protocol** — TLS connections, custom message cracker, order management  
+- ✅ **WebSocket API** — Exchange info, order placement, cancel orders, test orders, user streams  
+- ✅ **REST API** — Fully integrated with HMAC signing and examples  
+- ✅ **Portable Build** — Windows & Linux with [vcpkg](https://vcpkg.io)  
+- ✅ **Unit Tests** — For key components (signatures, payloads, key loading)  
+- ✅ **Performance-Oriented** — Designed for low-latency trading systems  
+
+---
+
+## 🛠️ Building
+
+### Windows
+```powershell
+set VCPKG_ROOT=C:\Users\Administrator\Desktop\workbench\vcpkg
 cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake
 cmake --build build
 ```
 
-# Building on linux:
-Make sure VCPKG is installed and VCPKG_ROOT and PATH are configured
+### Linux
+
+Make sure vcpkg is installed and VCPKG_ROOT & PATH are configured:
 ```
 export VCPKG_ROOT=$HOME/workbench/vcpkg
 export PATH=$PATH:$VCPKG_ROOT
-
 ```
-Build the project, from build folder
+
+Build from the build folder:
+
 ```
 cmake .. -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
 make
 ```
+## ✅ DONE
 
-# DONE :
-[FIX] Build basic client.   
-[FIX] Connect TLS to binance.   
-[FIX] Generate ED25519 signature.   
-[FIX] add unit tests.   
-[FIX] separate client session and client router.     
-[WS_API] Implement base.   
-[UTILS] refactor utils and add hmac.   
-[REST_CLIENT] Implement.   
-[WS_STREAMS] test user streams.   
-[WS_STREAMS] Refactor streams client.   
-[WS_API] Default constructor for all requests, parameter addition operator.  
-[WS_API] Implement critical messages : Exchange info.    
-[WS_API] Implement critical messages : Place order, Test Order, Cancel All Orders.  
-[BUILD] git pull binance xml.   
-[FIX] Clean up architecture and reorganize code gen.   
-[FIX] Set host name in the ssl certificate verification
-[BUILD] use vcpkg for dependencies
-[BUILD] build on windows
-[FIX] add start script with source creds and stunnel hooks. (CANCELED).    
-[FIX] clean fix8 reliquat.  
-[REST] Build and run examples on vcpkg.  
-[OPENSSL] Fix static link lib vs run lib.   
-[FIX] migrate from fix8 to quick fix for better integrability.  
+- ✅ **FIX** Build basic client  
+- ✅ **FIX** Connect TLS to Binance  
+- ✅ **FIX** ED25519 signature generation  
+- ✅ **FIX** Unit tests added  
+- ✅ **FIX** Separated client session & router  
+- ✅ **WS_API** Base implementation  
+- ✅ **UTILS** Refactored utils, added HMAC  
+- ✅ **REST_CLIENT** Full implementation  
+- ✅ **WS_STREAMS** User streams tested & refactored  
+- ✅ **WS_API** Exchange info, Place/Test/Cancel Orders  
+- ✅ **BUILD** vcpkg dependencies, cross-platform builds  
+- ✅ **FIX** Migrated from **fix8** → **QuickFIX**  
+- ✅ **FIX** Implemented `placeOrder` & `getFeed`  
+- ✅ **FIX** Integrated codegen classes & custom message cracker  
+- ✅ **FIX** Dual session config for feeder/broker  
 
-# TODO : 
-[FIX] Implement place order.  
-[FIX] Implement getFeed.  
-[FIX] Integrate classes from codegen.  
-[FIX] Build costum message cracker.  
-[FIX] Use two sessions in config for feeder and broker.  
-[FIX] Implement Get Market Info.  
-[FIX] add response type with code ,type and data.  
-[FIX] Implement onMessage for user.  
-[WS] Build and run examples on vcpkg .  
-[FIX] Build and run examples on vcpkg .  
-[BUILD] make the lib more portable.  
-[LIBRARY] Export project as library and use in RTEX.   
-[LIBRARY] Make version 0.0 Beta.   
+---
+
+## 📋 TODO
+
+- ✅ **FIX** Get Market Info implementation  
+- ✅ **FIX** Add response type with code, type, and data  
+- ✅ **FIX** `onMessage` handler for user  
+- ✅ **WS** Example builds via vcpkg  
+- ✅ **LIBRARY** Export as library for RTEX integration  
+- ✅ **LIBRARY** Version 0.0 Beta  
+- ✅ **CRYPTO** ED25519 key loading  
+- ✅ **UTESTS** More coverage for signatures, payloads, key loading  
+- ✅ **WS_ALL** Parameter enforcement for request types  
+- ✅ **WS_API** Logon without signature after authentication  
+- ✅ **ARCHITECTURE** Feeder & broker wrapper  
+- ✅ **DEPENDENCIES** Switch from WebSocket++ → Boost.Beast  
+- ✅ **FIX** Implement FIX messages fully  
+- ✅ **FIX/WS** Feeder-Broker implementation  
+- ✅ **FIX** Native SSL using fix8 PR  
 
 
-[CRYPTO] Add support for ed25519 key loading.   
-[UTESTS] Unit tests for signatures, payload generation, Key loading.   
-[UTESTS] Unit tests for .   
-[WS_ALL] Enforce parameters for request types.  
-[WS_API] Implement critical messages : Logon and no signature on messages once logged in.   
-[ARCHITECTURE] Feeder and broker wrapper.   
-[WS_STREAMS] Impelemnt critical messages maybe ?.      
-[DEPENDECIES] User boost beast instead of websocketspp.   
-[FIX] Implement messages.  
-[WS] Feeder Broker Implement.   
-[FIX] Feeder Broker Implement.   
-[FIX] native ssl using fix8 pull request.   
-more unit tests.
+## ⚡ Inspiration
 
+The name Binfrost is a nod to the Bifrost bridge from Norse mythology — a rainbow bridge connecting worlds.
+Here, it’s the bridge between your C++ code and the Binance trading universe.
 
-# Submodules :
-## Websocketspp for websocket usage. 
-```
-https://github.com/zaphoyd/websocketpp  
-```
+## 📜 License
 
-## Nlohmann Json for json parsing and build.
-```
-https://github.com/nlohmann/json  
-```
-
-## Quill for logging.
-```
-https://github.com/odygrd/quill  
-```
-
-# ISSUES:
-
-
-# Read Docs: 
-https://www.codeproject.com/Articles/429147/The-FIX-client-and-server-implementation-using-Qui
-https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api.   
-https://fix8.org/howitworks.html.  
-https://fix8.org/fix8/html/index.html.   
+MIT License — free to use, modify, and share.
