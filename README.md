@@ -1,7 +1,6 @@
 <div align="center">
-  <img width="1024" height="1024" alt="ChatGPT Image Aug 9, 2025, 03_35_17 PM" src="https://github.com/user-attachments/assets/621b8250-6fef-4a25-946c-3e2ff20de9f8" />
+  <img width="1024" height="1024" alt="BINFROSTLOGO" src="https://github.com/user-attachments/assets/621b8250-6fef-4a25-946c-3e2ff20de9f8" />
 
-  # 🌈 **Binfrost**
   **A blazing-fast, multi-protocol Binance client library — bridging your code to the Binance universe.**
   
   _"Like the mythical Bifrost bridge, Binfrost connects you instantly and securely — only here, it’s crypto, not Asgard."_
