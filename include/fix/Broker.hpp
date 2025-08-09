@@ -20,6 +20,6 @@ namespace BNB::FIX
         virtual std::string getEndpoint() { return "fix-oe.testnet.binance.vision"; }
         virtual std::string getPort() { return "9000"; }
         virtual std::string getSenderCompID() { return "BROKER"; }
-        virtual std::string getDictionnaryPath() { return "..include/codegen/fix/OE/FIX44.xml"; }
+        virtual std::string getDictionnaryPath() { return "../include/codegen/fix/OE/FIX44.xml"; }
     };
 }
