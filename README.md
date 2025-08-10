@@ -80,18 +80,18 @@ make
 - ✅ **FIX** `onMessage` handler for user  
 - ✅ **CRYPTO** ED25519 key loading  
 - ✅ **FIX** Feeder & broker wrapper  
+- ✅ **FIX** Get Market Info implementation  
 
 ---
 
 ## 📋 TODO
 
-- ✅ **FIX** Get Market Info implementation  
-- ✅ **FIX** Add response type with code, type, and data  
 - ✅ **WS** Example builds via vcpkg  
 - ✅ **LIBRARY** Export as library for RTEX integration  
 - ✅ **LIBRARY** Version 0.0 Beta  
 - ✅ **WS_API** Rework WS to use beast instead of wspp
 - ✅ **WS_API** Logon without signature after authentication  
+- ✅ **FIX** Add response type with code, type, and data  
 - ✅ **REST** Remove singleton request builder and aggregate to client  
 - ✅ **WS** Remove singleton request builder and aggregate to client  
 - ✅ **UTESTS** More coverage for signatures, payloads, key loading  

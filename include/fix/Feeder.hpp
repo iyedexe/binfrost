@@ -13,7 +13,6 @@
 #include "codegen/fix/MD/fix44/MarketDataSnapshot.hpp"
 #include "codegen/fix/MD/fix44/MarketDataIncrementalRefresh.hpp"
 #include "codegen/fix/MD/fix44/News.hpp"
-
 #include "codegen/fix/MD/fix44/MessageCracker.hpp"
 
 using namespace FIX;
@@ -29,20 +28,21 @@ namespace BNB::FIX
                 init();
             }
         void onMessage(const Message &message, const SessionID &sessionID){crack(message, sessionID);}    
-        void onMessage(const FIX44::MD::Heartbeat& message, const SessionID& sessionID) override;
-        void onMessage(const FIX44::MD::TestRequest& message, const SessionID& sessionID) override;
-        void onMessage(const FIX44::MD::Reject& message, const SessionID& sessionID) override;
-        void onMessage(const FIX44::MD::Logout& message, const SessionID& sessionID) override;
-        void onMessage(const FIX44::MD::Logon& message, const SessionID& sessionID) override;
-        void onMessage(const FIX44::MD::LimitQuery& message, const SessionID& sessionID) override;
-        void onMessage(const FIX44::MD::LimitResponse& message, const SessionID& sessionID) override;
-        void onMessage(const FIX44::MD::InstrumentListRequest& message, const SessionID& sessionID) override;
-        void onMessage(const FIX44::MD::InstrumentList& message, const SessionID& sessionID) override;
-        void onMessage(const FIX44::MD::MarketDataRequest& message, const SessionID& sessionID) override;
-        void onMessage(const FIX44::MD::MarketDataRequestReject& message, const SessionID& sessionID) override;
-        void onMessage(const FIX44::MD::MarketDataSnapshot& message, const SessionID& sessionID) override;
-        void onMessage(const FIX44::MD::MarketDataIncrementalRefresh& message, const SessionID& sessionID) override;
-        void onMessage(const FIX44::MD::News& message, const SessionID& sessionID) override;
+
+        virtual void onMessage(const FIX44::MD::Heartbeat& message, const SessionID& sessionID) override;
+        virtual void onMessage(const FIX44::MD::TestRequest& message, const SessionID& sessionID) override;
+        virtual void onMessage(const FIX44::MD::Reject& message, const SessionID& sessionID) override;
+        virtual void onMessage(const FIX44::MD::Logout& message, const SessionID& sessionID) override;
+        virtual void onMessage(const FIX44::MD::Logon& message, const SessionID& sessionID) override;
+        virtual void onMessage(const FIX44::MD::LimitQuery& message, const SessionID& sessionID) override;
+        virtual void onMessage(const FIX44::MD::LimitResponse& message, const SessionID& sessionID) override;
+        virtual void onMessage(const FIX44::MD::InstrumentListRequest& message, const SessionID& sessionID) override;
+        virtual void onMessage(const FIX44::MD::InstrumentList& message, const SessionID& sessionID) override;
+        virtual void onMessage(const FIX44::MD::MarketDataRequest& message, const SessionID& sessionID) override;
+        virtual void onMessage(const FIX44::MD::MarketDataRequestReject& message, const SessionID& sessionID) override;
+        virtual void onMessage(const FIX44::MD::MarketDataSnapshot& message, const SessionID& sessionID) override;
+        virtual void onMessage(const FIX44::MD::MarketDataIncrementalRefresh& message, const SessionID& sessionID) override;
+        virtual void onMessage(const FIX44::MD::News& message, const SessionID& sessionID) override;
         
     private:
         virtual std::string getEndpoint() { return "fix-md.testnet.binance.vision"; }
